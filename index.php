@@ -99,7 +99,7 @@ switch (ENVIRONMENT)
  * Include the path if the folder is not in the same directory
  * as this file.
  */
-	$system_path = 'system';
+	$system_path = 'C:/Users/skebix/Desktop/prestamos-ceri/system';
 
 /*
  *---------------------------------------------------------------
@@ -114,7 +114,7 @@ switch (ENVIRONMENT)
  *
  * NO TRAILING SLASH!
  */
-	$application_folder = 'application';
+	$application_folder = 'C:/Users/skebix/Desktop/prestamos-ceri/application';
 
 /*
  *---------------------------------------------------------------
