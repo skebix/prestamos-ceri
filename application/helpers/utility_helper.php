@@ -21,3 +21,19 @@ function js_url(){
 function img_url(){
     return assets_url() . 'img/';
 }
+
+function bootstrap_url(){
+    return assets_url() . 'bootstrap/';
+}
+
+function bootstrap_css_url(){
+    return bootstrap_url() . 'css/';
+}
+
+function bootstrap_fonts_url(){
+    return bootstrap_url() . 'fonts/';
+}
+
+function bootstrap_js_url(){
+    return bootstrap_url() . 'js/';
+}

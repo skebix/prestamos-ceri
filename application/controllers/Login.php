@@ -10,9 +10,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Login extends CI_Controller {
 
     function index(){
-        $data['title'] = 'Ingreso a prestamos-ceri';
+        $data['title'] = 'Ingresar';
 
-        $this->load->view('templates/header');
+        $this->load->view('templates/header', $data);
         $this->load->view('templates/login/login_form', $data);
         $this->load->view('templates/footer');
     }
