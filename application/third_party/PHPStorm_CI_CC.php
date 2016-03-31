@@ -77,6 +77,8 @@
 	 ***************** YOUR LIBRARIES *****************
 	 * @property Layout              $layout               Layout Class
 	 ***************** YOUR MODELS *****************
+	 * @property News_model          $news_model
+	 * @property Usuarios_model      $usuarios_model
 	 * @property user_model          $user_model           ,$user
 	 * @property data_model          $data_model
 	 * @property products_model      $products_model
