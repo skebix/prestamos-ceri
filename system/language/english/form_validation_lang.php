@@ -37,7 +37,7 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['form_validation_required']		= 'The {field} field is required.';
+$lang['form_validation_required']		= 'El campo {field} es requerido.';
 $lang['form_validation_isset']			= 'The {field} field must have a value.';
 $lang['form_validation_valid_email']		= 'The {field} field must contain a valid email address.';
 $lang['form_validation_valid_emails']		= 'The {field} field must contain all valid email addresses.';
@@ -58,7 +58,7 @@ $lang['form_validation_matches']		= 'The {field} field does not match the {param
 $lang['form_validation_differs']		= 'The {field} field must differ from the {param} field.';
 $lang['form_validation_is_unique'] 		= 'The {field} field must contain a unique value.';
 $lang['form_validation_is_natural']		= 'The {field} field must only contain digits.';
-$lang['form_validation_is_natural_no_zero']	= 'The {field} field must only contain digits and must be greater than zero.';
+$lang['form_validation_is_natural_no_zero']	= 'El campo {field} debe contener s&oacute;lo n&uacute;meros positivos.';
 $lang['form_validation_decimal']		= 'The {field} field must contain a decimal number.';
 $lang['form_validation_less_than']		= 'The {field} field must contain a number less than {param}.';
 $lang['form_validation_less_than_equal_to']	= 'The {field} field must contain a number less than or equal to {param}.';
