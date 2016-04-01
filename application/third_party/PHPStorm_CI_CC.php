@@ -76,6 +76,7 @@
 	 * @property CI_Javascript       $javascript           Javascript Class
 	 ***************** YOUR LIBRARIES *****************
 	 * @property Layout              $layout               Layout Class
+	 * @property Bcrypt              $bcrypt               Bcrypt class for hashing passwords
 	 ***************** YOUR MODELS *****************
 	 * @property News_model          $news_model
 	 * @property Usuarios_model      $usuarios_model
