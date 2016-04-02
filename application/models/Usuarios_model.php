@@ -20,4 +20,9 @@ class Usuarios_model extends CI_Model {
 
         return $this->db->get()->row_array();
     }
+
+    public function get_categorias_usuario(){
+        $query = $this->db->get('categoria_usuario');
+        return $query->result_array();
+    }
 }

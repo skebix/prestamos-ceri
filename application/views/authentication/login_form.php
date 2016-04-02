@@ -17,8 +17,8 @@ echo form_open('authentication', $attributes);
             <input type="text" class="form-control" id="inputCedula" name="cedula" value="<?php echo set_value('cedula'); ?>" placeholder="C&eacute;dula">
         </div>
     </div>
-    <div class="form-group">
 
+    <div class="form-group">
         <label for="inputPassword" class="col-sm-2 control-label">Contrase&ntilde;a</label>
         <div class="col-sm-10">
             <?php echo form_error('password'); ?>
