@@ -44,28 +44,36 @@ echo form_open('usuarios/registro', $attributes);
 </div>
 
 <div class="form-group">
-    <label for="inputCedula" class="col-sm-2 control-label">C&eacute;dula</label>
+    <label for="inputEmail" class="col-sm-2 control-label">Correo electr&oacute;nico</label>
     <div class="col-sm-10">
-        <?php echo form_error('cedula'); ?>
-        <input type="text" class="form-control" id="inputCedula" name="cedula" value="<?php echo set_value('cedula'); ?>" placeholder="C&eacute;dula">
+        <?php echo form_error('email'); ?>
+        <input type="text" class="form-control" id="inputEmail" name="email" value="<?php echo set_value('email'); ?>" placeholder="Correo electr&oacute;nico">
     </div>
 </div>
 
 <div class="form-group">
     <label for="inputTelefono" class="col-sm-2 control-label">Tel&eacute;fono</label>
 
-    <select class="form-control col-sm-2" name="codigo-area">
-        <option>0212</option>
-        <option>0412</option>
-        <option>0414</option>
-        <option>0416</option>
-        <option>0424</option>
-        <option>0426</option>
+    <select title="codigo-area" class="form-control col-sm-2" name="codigo_area">
+        <option value="0212">0212</option>
+        <option value="0412">0412</option>
+        <option value="0414">0414</option>
+        <option value="0416">0416</option>
+        <option value="0424">0424</option>
+        <option value="0426">0426</option>
     </select>
 
     <div class="col-sm-8">
         <?php echo form_error('telefono'); ?>
         <input type="text" class="form-control" id="inputTelefono" name="telefono" value="<?php echo set_value('telefono'); ?>" placeholder="Tel&eacute;fono">
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="inputCedula" class="col-sm-2 control-label">C&eacute;dula</label>
+    <div class="col-sm-10">
+        <?php echo form_error('cedula'); ?>
+        <input type="text" class="form-control" id="inputCedula" name="cedula" value="<?php echo set_value('cedula'); ?>" placeholder="C&eacute;dula">
     </div>
 </div>
 
@@ -88,13 +96,21 @@ echo form_open('usuarios/registro', $attributes);
 <div class="form-group">
     <label for="categoriasUsuario" class="col-sm-2 control-label">Tipo de usuario</label>
 
-    <select class="form-control col-sm-10" name="categoriasUsuario">
+    <select class="form-control col-sm-10" name="id_categoria_usuario">
         {categorias_usuario}
             <option value="{id}">{categoria}</option>
         {/categorias_usuario}
     </select>
-
 </div>
+
+<?php if($administrador): ?>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" value="1" name="id_administracion">
+            El usuario ser&aacute; administrador?
+        </label>
+    </div>
+<?php endif; ?>
 
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">

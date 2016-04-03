@@ -28,7 +28,7 @@ echo form_open('authentication', $attributes);
 
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-default">Ingresar</button>
+            <button type="submit" class="btn btn-primary">Ingresar</button>
         </div>
     </div>
 </form>

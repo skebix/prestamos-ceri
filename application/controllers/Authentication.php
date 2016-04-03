@@ -28,9 +28,9 @@ class Authentication extends CI_Controller {
 
         if (!$this->form_validation->run()) {
             //Si no pasa las reglas de validación, mostramos el formulario
-            $this->load->view('templates/header', $data);
-            $this->load->view('authentication/login_form', $data);
-            $this->load->view('templates/footer');
+            $this->parser->parse('templates/header', $data);
+            $this->parser->parse('authentication/login_form', $data);
+            $this->parser->parse('templates/footer', $data);
         }else{
             //Si los datos tienen el formato correcto, debo verificar si el usuario existe en la BD
             $cedula = $this->input->post('cedula');

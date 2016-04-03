@@ -7,7 +7,7 @@ class Home extends CI_Controller {
 
         $data['title'] = 'Home';
 
-		$this->load->view('templates/header', $data);
+		$this->parser->parse('templates/header', $data);
         $this->load->view('home');
 		$this->load->view('templates/footer');
 	}
