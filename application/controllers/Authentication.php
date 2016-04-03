@@ -41,6 +41,8 @@ class Authentication extends CI_Controller {
             //Ahora, si existe un usuario en la BD con esa cédula, debo verificar que la contraseña coincida
             if ($this->bcrypt->check_password($password, $usuario['hashed_password'])) {
                 $this->session->set_userdata($usuario);
+                $administrador = ($usuario['id_administracion'] === '1') ? true : false;
+                $this->session->set_userdata('administrador', $administrador);
 
                 redirect('home'); //TODO Redirigir con éxito al home
             }
@@ -51,7 +53,8 @@ class Authentication extends CI_Controller {
     }
 
     public function logout(){
-        $this->session->unset_userdata('cedula');
+        $eliminar = array('cedula', 'administrador');
+        $this->session->unset_userdata($eliminar);
         redirect('home'); //TODO Redirigir con éxito al home
     }
 }

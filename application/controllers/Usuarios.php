@@ -49,9 +49,9 @@ class Usuarios extends CI_Controller {
         if (!$this->form_validation->run()) {
 
             //Si el que intenta crear la cuenta es un Administrador, le doy opciones para crear nuevos administradores.
-            $cedula = $this->session->cedula;
-            $id_administracion = $this->session->id_administracion;
-            $data['administrador'] = ($cedula && $id_administracion === '1') ? true : false;
+            $cedula = $this->session->administrador;
+            $administrador = $this->session->administrador;
+            $data['administrador'] = $administrador;
 
             //Si no pasa las reglas de validación, mostramos el formulario
             $this->parser->parse('templates/header', $data);
@@ -89,6 +89,48 @@ class Usuarios extends CI_Controller {
 
             //Si llegué a este punto es porque no pudo guardar el usuario
             redirect('home'); //TODO Redirigir con error al home
+        }
+    }
+
+    public function listar(){
+
+        //Lo primero es ver si es Administrador, no?
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $data['title'] = 'Lista de Usuarios';
+
+            $usuarios = $this->usuarios_model->get_usuarios();
+            $data['usuarios'] = $usuarios;
+
+            $this->parser->parse('templates/header', $data);
+            $this->parser->parse('usuarios/show', $data);
+            $this->parser->parse('templates/footer', $data);
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            redirect('home'); //TODO redirect al home con error
+        }
+    }
+
+    public function eliminar($cedula){
+
+        //Lo primero es ver si es Administrador, no?
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $data['title'] = 'Lista de Usuarios';
+
+            $delete_id = $this->usuarios_model->delete_user($cedula);
+            if($delete_id){
+                //TODO redirigir a la lista con éxito
+                redirect('usuarios/listar');
+            }else{
+                //TODO redirigir a la lista con error
+                redirect('usuarios/listar');
+            }
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            redirect('home'); //TODO redirect al home con error
         }
     }
 

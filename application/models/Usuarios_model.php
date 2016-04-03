@@ -30,4 +30,9 @@ class Usuarios_model extends CI_Model {
         $insert_id = $this->db->insert('usuarios', $usuario);
         return $insert_id;
     }
+
+    public function delete_user($cedula){
+        $delete_id = $this->db->delete('usuarios', array('cedula' => $cedula));
+        return $delete_id;
+    }
 }
