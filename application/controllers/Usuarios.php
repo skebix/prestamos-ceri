@@ -20,7 +20,7 @@ class Usuarios extends CI_Controller {
         echo "Por diseñar";
     }
 
-    public function mostrar($cedula = NULL){
+    public function mostrar($cedula){
 
         //Vamos a la BD con la cédula que recibimos como parámetro
         $usuario = $this->usuarios_model->get_usuario($cedula);
@@ -112,11 +112,38 @@ class Usuarios extends CI_Controller {
         }
     }
 
+    public function detalles($cedula){
+
+        //Lo primero es ver si es Administrador, o si el que intenta ver los detalles es el mismo usuario
+        $cedula_sesion = $this->session->cedula;
+        $administrador = $this->session->administrador;
+        if($administrador || ($cedula === $cedula_sesion)){
+            $data['title'] = 'Detalles del Usuario';
+
+            $usuario = $this->usuarios_model->get_usuario($cedula);
+            $administracion = $this->categoria_model->get_administracion($usuario['id_administracion']);
+            $categoria = $this->categoria_model->get_categoria($usuario['id_categoria_usuario']);
+
+            $data['tipo_usuario'] = $administracion['tipo_usuario'];
+            $data['categoria'] = $categoria['categoria'];
+            $data = array_merge($data, $usuario);
+
+            $this->parser->parse('templates/header', $data);
+            $this->parser->parse('usuarios/details', $data);
+            $this->parser->parse('templates/footer', $data);
+
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            redirect('home'); //TODO redirect al home con error
+        }
+    }
+
     public function eliminar($cedula){
 
-        //Lo primero es ver si es Administrador, no?
+        //Lo primero es ver si es Administrador, o si el que intenta borrarlo es el mismo usuario
+        $cedula_sesion = $this->session->cedula;
         $administrador = $this->session->administrador;
-        if($administrador){
+        if($administrador || ($cedula === $cedula_sesion)){
 
             $data['title'] = 'Lista de Usuarios';
 

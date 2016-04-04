@@ -14,7 +14,6 @@ class Usuarios_model extends CI_Model {
     }
 
     public function get_usuario($cedula){
-        $this->db->select('*');
         $this->db->from('usuarios');
         $this->db->where('cedula', $cedula);
 
