@@ -7,5 +7,5 @@
  */
 ?>
 
-<p>Ingrese al siguiente enlace para realizar el cambio de contrase&ntilde;a: <a href="<?= base_url('authentication/reset_password/{token_temporal}') ?>">cambiar contrase&ntilde;a</a> </p>
+<p>Ingrese al siguiente enlace para realizar el cambio de contrase&ntilde;a: <a href="<?= base_url('authentication/validate_token/{cedula}/{token_temporal}') ?>">cambiar contrase&ntilde;a</a> </p>
 <p>El enlace es v&aacute;lido por un s&oacute;lo uso</p>

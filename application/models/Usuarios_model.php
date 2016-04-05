@@ -47,4 +47,10 @@ class Usuarios_model extends CI_Model {
         $update_id = $this->db->update('usuarios', $hashed_token);
         return $update_id;
     }
+
+    public function update_password($cedula, $hashed_password){
+        $this->db->where('cedula', $cedula);
+        $update_id = $this->db->update('usuarios', $hashed_password);
+        return $update_id;
+    }
 }
