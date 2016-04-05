@@ -1,5 +1,5 @@
 <button type="button" class="btn btn-danger">
-    <a class="logout-button" href="<?= base_url('authentication/logout') ?>">Cerrar sesi&oacute;n</a>
+    <a class="logout-button" href="<?= base_url('authentication/salir') ?>">Cerrar sesi&oacute;n</a>
 </button>
 
 <br><br><br><br><br>

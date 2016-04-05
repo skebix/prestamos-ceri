@@ -20,6 +20,13 @@ class Usuarios_model extends CI_Model {
         return $this->db->get()->row_array();
     }
 
+    public function get_usuario_by_email($email){
+        $this->db->from('usuarios');
+        $this->db->where('email', $email);
+
+        return $this->db->get()->row_array();
+    }
+
     public function get_categorias_usuario(){
         $query = $this->db->get('categoria_usuario');
         return $query->result_array();
@@ -33,5 +40,11 @@ class Usuarios_model extends CI_Model {
     public function delete_user($cedula){
         $delete_id = $this->db->delete('usuarios', array('cedula' => $cedula));
         return $delete_id;
+    }
+
+    public function update_token($cedula, $hashed_token){
+        $this->db->where('cedula', $cedula);
+        $update_id = $this->db->update('usuarios', $hashed_token);
+        return $update_id;
     }
 }
