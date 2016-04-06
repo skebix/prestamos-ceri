@@ -1,1 +1,0 @@
-<p> Before this is over, I shall win</p>
