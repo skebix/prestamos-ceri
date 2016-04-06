@@ -144,7 +144,7 @@ class Authentication extends CI_Controller {
     }
 
     public function salir(){
-        $eliminar = array('cedula', 'administrador', 'reset_password');
+        $eliminar = array('id', 'cedula', 'administrador', 'reset_password');
         $this->session->unset_userdata($eliminar);
         $this->session->sess_destroy();
         redirect('home'); //TODO Redirigir con éxito al home

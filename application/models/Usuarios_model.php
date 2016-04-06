@@ -27,6 +27,13 @@ class Usuarios_model extends CI_Model {
         return $this->db->get()->row_array();
     }
 
+    public function get_usuario_by_id($id){
+        $this->db->from('usuarios');
+        $this->db->where('id', $id);
+
+        return $this->db->get()->row_array();
+    }
+
     public function get_categorias_usuario(){
         $query = $this->db->get('categoria_usuario');
         return $query->result_array();
@@ -51,6 +58,12 @@ class Usuarios_model extends CI_Model {
     public function update_password($cedula, $hashed_password){
         $this->db->where('cedula', $cedula);
         $update_id = $this->db->update('usuarios', $hashed_password);
+        return $update_id;
+    }
+
+    public function update_user($id, $usuario){
+        $this->db->where('id', $id);
+        $update_id = $this->db->update('usuarios', $usuario);
         return $update_id;
     }
 }

@@ -128,25 +128,47 @@ class Usuarios extends CI_Controller {
         }
     }
 
-    public function actualizar($cedula){
+    public function actualizar($id){
 
         //Lo primero es ver si es Administrador, o si el que intenta actualizar es el mismo usuario
-        $cedula_sesion = $this->session->cedula;
+        $id_sesion = $this->session->id;
         $administrador = $this->session->administrador;
-        if($administrador || ($cedula === $cedula_sesion)){
+        if($administrador || ($id === $id_sesion)){
 
+            //Tomo los datos del usuario de la BD, para poder pre-llenar el formulario
             $data['title'] = 'Actualizar Usuario';
 
-            $usuario = $this->usuarios_model->get_usuario($cedula);
+            $categorias_usuario = $this->usuarios_model->get_categorias_usuario();
+            $data['categorias_usuario'] = $categorias_usuario;
+
+            $usuario = $this->usuarios_model->get_usuario_by_id($id);
             $data = array_merge($data, $usuario);
+            $data['codigo_area_selected'] = substr($data['telefono'], 0, 4);
             $data['telefono'] = substr($data['telefono'], -7);
+
+            $codigo_area = array(
+                '0212'  => '0412',
+                '0412'  => '0412',
+                '0414'  => '0414',
+                '0416'  => '0416',
+                '0424'  => '0424',
+                '0426'  => '0426',
+            );
+
+            $atributos_codigo_area = array(
+                'class'       => 'form-control col-sm-2',
+            );
+
+            $data['codigo_area'] = $codigo_area;
+            $data['atributos_codigo_area'] = $atributos_codigo_area;
+            $data['categoria_usuario_selected'] = $usuario['id_categoria_usuario'];
 
             $this->form_validation->set_rules('primer_nombre', 'Primer nombre', 'trim|required|callback__alpha_space|max_length[255]');
             $this->form_validation->set_rules('segundo_nombre', 'Segundo nombre', 'trim|required|callback__alpha_space|max_length[255]');
             $this->form_validation->set_rules('primer_apellido', 'Primer apellido', 'trim|required|callback__alpha_space|max_length[255]');
             $this->form_validation->set_rules('segundo_apellido', 'Segundo apellido', 'trim|required|callback__alpha_space|max_length[255]');
-            $this->form_validation->set_rules('cedula', 'C&eacute;dula', 'required|is_unique[usuarios.cedula]|is_natural_no_zero', array('is_unique' => 'Esa c&eacute;dula ya se encuentra registrada en el sistema.'));
-            $this->form_validation->set_rules('email', 'Correo electr&oacute;nico', 'required|is_unique[usuarios.email]|valid_email', array('is_unique' => 'Ese correo electr&oacute;nico ya se encuentra registrado en el sistema.'));
+            $this->form_validation->set_rules('cedula', 'C&eacute;dula', 'required|callback__unique_cedula|is_natural_no_zero');
+            $this->form_validation->set_rules('email', 'Correo electr&oacute;nico', 'required|callback__unique_email|valid_email');
             $this->form_validation->set_rules('telefono', 'Tel&eacute;fono', 'required|is_natural_no_zero|exact_length[7]');
             $this->form_validation->set_rules('password', 'Contrase&ntilde;a', 'required');
             $this->form_validation->set_rules('password_confirmation', 'Confirmar contrase&ntilde;a', 'required|matches[password]');
@@ -183,10 +205,10 @@ class Usuarios extends CI_Controller {
                 //TO MY FUTURE SELF: 2 is a regular user.
                 $usuario['id_administracion'] = ($this->input->post('id_administracion')) ? $this->input->post('id_administracion') : 2;
 
-                $was_inserted = $this->usuarios_model->create_user($usuario);
+                $was_updated = $this->usuarios_model->update_user($id, $usuario);
 
                 //Si lo guardó correctamente, redirigir al home con éxito
-                if($was_inserted){
+                if($was_updated){
                     redirect('home'); //TODO Redirigir con éxito al home
                 }
 
@@ -226,5 +248,21 @@ class Usuarios extends CI_Controller {
         $this->form_validation->set_message('_alpha_space', 'El campo {field} puede contener &uacute;nicamente letras y espacios.');
         //To my future self: ^ es el inicio, $ el fin, \p{L} son las letras y el modificador u trata el string como UTF-8
         return (preg_match('/^[\p{L} ]*$/u', $str))? true: false;
+    }
+
+    public function _unique_email($email){
+        $this->form_validation->set_message('_unique_email', 'Ese correo electr&oacute;nico ya se encuentra registrado en el sistema.');
+        $usuario = $this->usuarios_model->get_usuario_by_email($email);
+        $id_actualizar = $this->uri->segment(3, 0);
+        return !($usuario && ($id_actualizar != $usuario['id']));
+    }
+
+    public function _unique_cedula($cedula){
+        $this->form_validation->set_message('_unique_cedula', 'Esa c&eacute;dula ya se encuentra registrada en el sistema.');
+        $id_actualizar = $this->uri->segment(3, 0);
+        $usuario_nueva_cedula = $this->usuarios_model->get_usuario($cedula);
+        //To my future self: si ya hay un usuario con la cédula "nueva" (que tomé del input), y la cédula es distinta a
+        //la que antes tenía, entonces no puedo actualizar ese campo porque ya alguien la tiene registrada.
+        return !($usuario_nueva_cedula && ($id_actualizar != $usuario_nueva_cedula['id']));
     }
 }

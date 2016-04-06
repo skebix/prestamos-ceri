@@ -19,5 +19,6 @@
     <li>Contrase&ntilde;a hasheada: {hashed_password}</li>
     <li>Tipo de usuario: {tipo_usuario}</li>
     <li>Categor&iacute;a: {categoria}</li>
-
 </ul>
+
+<a class="logout-button btn btn-success" href="<?= base_url('usuarios/actualizar/{id}') ?>">Editar usuario</a>

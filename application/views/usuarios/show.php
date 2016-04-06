@@ -33,7 +33,7 @@
                 <th scope="row">{id}</th>
                 <td>{primer_nombre} {segundo_nombre}</td>
                 <td>{primer_apellido} {segundo_apellido}</td>
-                <td>{cedula}</td>
+                <td><a href="<?= base_url('usuarios/detalles/{cedula}') ?>">{cedula}</a></td>
                 <td>{telefono}</td>
                 <td>{email}</td>
                 <td><a href="<?= base_url('usuarios/eliminar/{cedula}') ?>">Eliminar usuario</a></td>

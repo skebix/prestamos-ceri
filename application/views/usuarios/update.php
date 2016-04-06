@@ -7,7 +7,7 @@
  */
 
 $attributes = array('class' => 'form-horizontal');
-echo form_open('usuarios/actualizar', $attributes);
+echo form_open('usuarios/actualizar/{id}', $attributes);
 
 ?>
 
@@ -15,7 +15,7 @@ echo form_open('usuarios/actualizar', $attributes);
     <label for="inputPrimerNombre" class="col-sm-2 control-label">Primer nombre</label>
     <div class="col-sm-10">
         <?php echo form_error('primer_nombre'); ?>
-        <input type="text" class="form-control" id="inputPrimerNombre" name="primer_nombre" value="<?php echo set_value('primer_nombre'); ?>" placeholder="Primer nombre">
+        <input type="text" class="form-control" id="inputPrimerNombre" name="primer_nombre" value="<?php echo set_value('primer_nombre', $primer_nombre); ?>" placeholder="Primer nombre">
     </div>
 </div>
 
@@ -23,7 +23,7 @@ echo form_open('usuarios/actualizar', $attributes);
     <label for="inputSegundoNombre" class="col-sm-2 control-label">Segundo nombre</label>
     <div class="col-sm-10">
         <?php echo form_error('segundo_nombre'); ?>
-        <input type="text" class="form-control" id="inputSegundoNombre" name="segundo_nombre" value="<?php echo set_value('segundo_nombre'); ?>" placeholder="Segundo nombre">
+        <input type="text" class="form-control" id="inputSegundoNombre" name="segundo_nombre" value="<?php echo set_value('segundo_nombre', $segundo_nombre); ?>" placeholder="Segundo nombre">
     </div>
 </div>
 
@@ -31,7 +31,7 @@ echo form_open('usuarios/actualizar', $attributes);
     <label for="inputPrimerApellido" class="col-sm-2 control-label">Primer apellido</label>
     <div class="col-sm-10">
         <?php echo form_error('primer_apellido'); ?>
-        <input type="text" class="form-control" id="inputPrimerApellido" name="primer_apellido" value="<?php echo set_value('primer_apellido'); ?>" placeholder="Primer apellido">
+        <input type="text" class="form-control" id="inputPrimerApellido" name="primer_apellido" value="<?php echo set_value('primer_apellido', $primer_apellido); ?>" placeholder="Primer apellido">
     </div>
 </div>
 
@@ -39,7 +39,7 @@ echo form_open('usuarios/actualizar', $attributes);
     <label for="inputSegundoApellido" class="col-sm-2 control-label">Segundo apellido</label>
     <div class="col-sm-10">
         <?php echo form_error('segundo_apellido'); ?>
-        <input type="text" class="form-control" id="inputSegundoApellido" name="segundo_apellido" value="<?php echo set_value('segundo_apellido'); ?>" placeholder="Segundo apelido">
+        <input type="text" class="form-control" id="inputSegundoApellido" name="segundo_apellido" value="<?php echo set_value('segundo_apellido', $segundo_apellido); ?>" placeholder="Segundo apelido">
     </div>
 </div>
 
@@ -47,25 +47,18 @@ echo form_open('usuarios/actualizar', $attributes);
     <label for="inputEmail" class="col-sm-2 control-label">Correo electr&oacute;nico</label>
     <div class="col-sm-10">
         <?php echo form_error('email'); ?>
-        <input type="text" class="form-control" id="inputEmail" name="email" value="<?php echo set_value('email'); ?>" placeholder="Correo electr&oacute;nico">
+        <input type="text" class="form-control" id="inputEmail" name="email" value="<?php echo set_value('email', $email); ?>" placeholder="Correo electr&oacute;nico">
     </div>
 </div>
 
 <div class="form-group">
     <label for="inputTelefono" class="col-sm-2 control-label">Tel&eacute;fono</label>
 
-    <select title="codigo-area" class="form-control col-sm-2" name="codigo_area">
-        <option value="0212">0212</option>
-        <option value="0412">0412</option>
-        <option value="0414">0414</option>
-        <option value="0416">0416</option>
-        <option value="0424">0424</option>
-        <option value="0426">0426</option>
-    </select>
+    <?= form_dropdown('codigo_area', $codigo_area, $codigo_area_selected, $atributos_codigo_area); ?>
 
     <div class="col-sm-8">
         <?php echo form_error('telefono'); ?>
-        <input type="text" class="form-control" id="inputTelefono" name="telefono" value="<?php echo set_value('telefono'); ?>" placeholder="Tel&eacute;fono">
+        <input type="text" class="form-control" id="inputTelefono" name="telefono" value="<?php echo set_value('telefono', $telefono); ?>" placeholder="Tel&eacute;fono">
     </div>
 </div>
 
@@ -73,7 +66,7 @@ echo form_open('usuarios/actualizar', $attributes);
     <label for="inputCedula" class="col-sm-2 control-label">C&eacute;dula</label>
     <div class="col-sm-10">
         <?php echo form_error('cedula'); ?>
-        <input type="text" class="form-control" id="inputCedula" name="cedula" value="<?php echo set_value('cedula'); ?>" placeholder="C&eacute;dula">
+        <input type="text" class="form-control" id="inputCedula" name="cedula" value="<?php echo set_value('cedula', $cedula); ?>" placeholder="C&eacute;dula">
     </div>
 </div>
 
@@ -114,7 +107,7 @@ echo form_open('usuarios/actualizar', $attributes);
 
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-primary">Registrar</button>
+        <button type="submit" class="btn btn-success">Actualizar usuario</button>
     </div>
 </div>
 </form>
