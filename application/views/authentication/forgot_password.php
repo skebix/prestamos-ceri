@@ -7,7 +7,7 @@
  */
 
 $attributes = array('class' => 'form-horizontal');
-echo form_open('authentication/forgot_password', $attributes);
+echo form_open('autenticacion/forgot-password', $attributes);
 
 ?>
 

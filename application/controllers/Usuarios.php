@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Created by PhpStorm.
  * User: skebix
@@ -11,9 +10,6 @@ class Usuarios extends CI_Controller {
 
     public function __construct(){
         parent::__construct();
-        $this->load->model('usuarios_model');
-        $this->load->helper('url_helper');
-        $this->load->helper('text');
     }
 
     public function index(){
@@ -73,13 +69,13 @@ class Usuarios extends CI_Controller {
 
             $was_inserted = $this->usuarios_model->create_user($usuario);
 
-            //Si lo guardó correctamente, redirigir al home con éxito
+            //Si lo guardó correctamente, redirigir al inicio con éxito
             if($was_inserted){
-                redirect('home'); //TODO Redirigir con éxito al home
+                redirect('inicio'); //TODO Redirigir con éxito al inicio
             }
 
             //Si llegué a este punto es porque no pudo guardar el usuario
-            redirect('home'); //TODO Redirigir con error al home
+            redirect('inicio'); //TODO Redirigir con error al inicio
         }
     }
 
@@ -99,7 +95,7 @@ class Usuarios extends CI_Controller {
             $this->parser->parse('templates/footer', $data);
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            redirect('home'); //TODO redirect al home con error
+            redirect('inicio'); //TODO redirect al inicio con error
         }
     }
 
@@ -124,7 +120,7 @@ class Usuarios extends CI_Controller {
             $this->parser->parse('templates/footer', $data);
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            redirect('home'); //TODO redirect al home con error
+            redirect('inicio'); //TODO redirect al inicio con error
         }
     }
 
@@ -207,17 +203,17 @@ class Usuarios extends CI_Controller {
 
                 $was_updated = $this->usuarios_model->update_user($id, $usuario);
 
-                //Si lo guardó correctamente, redirigir al home con éxito
+                //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_updated){
-                    redirect('home'); //TODO Redirigir con éxito al home
+                    redirect('inicio'); //TODO Redirigir con éxito al inicio
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el usuario
-                redirect('home'); //TODO Redirigir con error al home
+                redirect('inicio'); //TODO Redirigir con error al inicio
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            redirect('home'); //TODO redirect al home con error
+            redirect('inicio'); //TODO redirect al inicio con error
         }
     }
 
@@ -240,7 +236,7 @@ class Usuarios extends CI_Controller {
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            redirect('home'); //TODO redirect al home con error
+            redirect('inicio'); //TODO redirect al inicio con error
         }
     }
 

@@ -7,7 +7,7 @@
  */
 
 $attributes = array('class' => 'form-horizontal');
-echo form_open('authentication', $attributes);
+echo form_open('autenticacion', $attributes);
 ?>
 
     <div class="form-group">

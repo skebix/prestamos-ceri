@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Created by PhpStorm.
  * User: skebix
@@ -7,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Time: 09:30 AM
  */
 
-class Authentication extends CI_Controller {
+class Autenticacion extends CI_Controller {
 
     public function __construct(){
         parent::__construct();
@@ -18,7 +17,7 @@ class Authentication extends CI_Controller {
         //Lo primero es ver si ya ingresó, no?
         $cedula = $this->session->cedula;
         if($cedula){
-            redirect('home'); //TODO Redirigir con éxito al home
+            redirect('inicio'); //TODO Redirigir con éxito al home
         }
 
         $data['title'] = 'Ingresar';
@@ -44,11 +43,11 @@ class Authentication extends CI_Controller {
                 $administrador = ($usuario['id_administracion'] === '1') ? true : false;
                 $this->session->set_userdata('administrador', $administrador);
 
-                redirect('home'); //TODO Redirigir con éxito al home
+                redirect('inicio'); //TODO Redirigir con éxito al home
             }
 
             //Si llegué a este punto es porque la contraseña no coincide
-            redirect('home'); //TODO Redirigir con error al home
+            redirect('inicio'); //TODO Redirigir con error al home
         }
     }
 
@@ -93,13 +92,13 @@ class Authentication extends CI_Controller {
             $resultado = $this->email->send();
 
             if($resultado){
-                redirect('home'); //TODO redirect al home con éxito
+                redirect('inicio'); //TODO redirect al home con éxito
             }
-            redirect('home'); //TODO redirect al home con error
+            redirect('inicio'); //TODO redirect al home con error
         }
     }
 
-    public function validate_token($cedula, $unhashed_token){
+    public function validar_token($cedula, $unhashed_token){
 
         $usuario = $this->usuarios_model->get_usuario($cedula);
 
@@ -109,7 +108,7 @@ class Authentication extends CI_Controller {
 
             $this->reset_password();
         }else{
-            redirect('home'); //TODO redirect con error, token inválido
+            redirect('inicio'); //TODO redirect con error, token inválido
         }
     }
 
@@ -139,7 +138,7 @@ class Authentication extends CI_Controller {
                 $this->salir();
             }
         }else{
-            redirect('home'); //TODO redirigir con error, el token fue usado o no hay token
+            redirect('inicio'); //TODO redirigir con error, el token fue usado o no hay token
         }
     }
 
@@ -147,7 +146,7 @@ class Authentication extends CI_Controller {
         $eliminar = array('id', 'cedula', 'administrador', 'reset_password');
         $this->session->unset_userdata($eliminar);
         $this->session->sess_destroy();
-        redirect('home'); //TODO Redirigir con éxito al home
+        redirect('inicio'); //TODO Redirigir con éxito al home
     }
 
     public function _email_exists($str){

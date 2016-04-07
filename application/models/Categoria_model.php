@@ -15,6 +15,11 @@ class Categoria_model extends CI_Model {
         return $this->db->get()->row_array();
     }
 
+    public function create_categoria($datos){
+        $insert_id = $this->db->insert('categoria_usuario', $datos);
+        return $insert_id;
+    }
+
     public function get_administracion($id_administracion){
         $this->db->from('administracion');
         $this->db->where('id', $id_administracion);
