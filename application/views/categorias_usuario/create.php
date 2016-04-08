@@ -11,7 +11,7 @@ echo form_open('categorias-usuario/crear', $attributes);
 ?>
 
     <div class="form-group">
-        <label for="inputCategoriasUsuario" class="col-sm-2 control-label">Categor&iacute;a usuario</label>
+        <label for="inputCategoriasUsuario" class="col-sm-2 control-label">Categor&iacute;a de usuario</label>
         <div class="col-sm-10">
             <?php echo form_error('categoria_usuario'); ?>
             <input type="text" class="form-control" id="inputCategoriasUsuario" name="categoria_usuario" value="<?php echo set_value('categoria_usuario'); ?>" placeholder="Categor&iacute;a usuario">

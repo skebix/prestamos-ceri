@@ -224,8 +224,6 @@ class Usuarios extends CI_Controller {
         $administrador = $this->session->administrador;
         if($administrador || ($cedula === $cedula_sesion)){
 
-            $data['title'] = 'Lista de Usuarios';
-
             $delete_id = $this->usuarios_model->delete_user($cedula);
             if($delete_id){
                 //TODO redirigir a la lista con éxito

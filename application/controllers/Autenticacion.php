@@ -133,7 +133,7 @@ class Autenticacion extends CI_Controller {
                 $data2['forgot_password_token'] = null;
 
                 $updated_password = $this->usuarios_model->update_password($cedula, $data);
-                $updated_token = $this->usuarios_model->update_password($cedula, $data2);
+                $updated_token = $this->usuarios_model->update_token($cedula, $data2);
 
                 $this->salir();
             }
