@@ -8,31 +8,31 @@
 
 class Categoria_model extends CI_Model {
 
-    public function get_categoria($id_categoria){
-        $this->db->from('categoria_usuario');
+    public function get_categoria($table, $id_categoria){
+        $this->db->from($table);
         $this->db->where('id', $id_categoria);
 
         return $this->db->get()->row_array();
     }
 
-    public function get_usuarios(){
-        $query = $this->db->get('categoria_usuario');
+    public function get_categorias($table){
+        $query = $this->db->get($table);
         return $query->result_array();
     }
 
-    public function create_categoria($datos){
-        $insert_id = $this->db->insert('categoria_usuario', $datos);
+    public function create_categoria($table, $datos){
+        $insert_id = $this->db->insert($table, $datos);
         return $insert_id;
     }
 
-    public function update_categoria($id, $categoria){
+    public function update_categoria($table, $id, $categoria){
         $this->db->where('id', $id);
-        $update_id = $this->db->update('categoria_usuario', $categoria);
+        $update_id = $this->db->update($table, $categoria);
         return $update_id;
     }
 
-    public function delete_categoria($id){
-        $delete_id = $this->db->delete('categoria_usuario', array('id' => $id));
+    public function delete_categoria($table, $id){
+        $delete_id = $this->db->delete($table, array('id' => $id));
         return $delete_id;
     }
 
