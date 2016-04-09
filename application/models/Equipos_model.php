@@ -13,14 +13,21 @@ class Equipos_model extends CI_Model {
         return $insert_id;
     }
 
-    public function get_equipos(){
-        $this->db->from('equipos');
+    public function get_equipos($table){
+        $this->db->select($table . '.id, ' . $table . '.nombre_equipo, categoria_equipo.categoria');
+        $this->db->from($table);
         $this->db->join('categoria_equipo', 'equipos.id_categoria_equipo = categoria_equipo.id');
         $query = $this->db->get();
 
         return $query->result_array();
     }
 
+    public function get_equipo($id){
+        $this->db->from('equipos');
+        $this->db->where('id', $id);
+
+        return $this->db->get()->row_array();
+    }
 
     public function update_equipo($table, $id, $categoria){
         $this->db->where('id', $id);

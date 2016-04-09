@@ -108,9 +108,11 @@ class Usuarios extends CI_Controller {
         if($administrador || ($cedula === $cedula_sesion)){
             $data['title'] = 'Detalles del Usuario';
 
+            $table = 'categoria_usuario';
+
             $usuario = $this->usuarios_model->get_usuario($cedula);
             $administracion = $this->categoria_model->get_administracion($usuario['id_administracion']);
-            $categoria = $this->categoria_model->get_categoria($usuario['id_categoria_usuario']);
+            $categoria = $this->categoria_model->get_categoria($table, $usuario['id_categoria_usuario']);
 
             $data['tipo_usuario'] = $administracion['tipo_usuario'];
             $data['categoria'] = $categoria['categoria'];
@@ -135,7 +137,8 @@ class Usuarios extends CI_Controller {
             //Tomo los datos del usuario de la BD, para poder pre-llenar el formulario
             $data['title'] = 'Actualizar Usuario';
 
-            $categorias_usuario = $this->usuarios_model->get_categorias_usuario();
+            $table = 'categoria_usuario';
+            $categorias_usuario = $this->categoria_model->get_categorias($table);
             $data['categorias_usuario'] = $categorias_usuario;
 
             $usuario = $this->usuarios_model->get_usuario_by_id($id);

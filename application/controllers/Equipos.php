@@ -66,7 +66,7 @@ class Equipos extends CI_Controller {
             $data['title'] = 'Listado de Equipos';
 
             $table = 'equipos';
-            $equipos = $this->equipos_model->get_equipos();
+            $equipos = $this->equipos_model->get_equipos($table);
             $data['equipos'] = $equipos;
 
             $this->parser->parse('templates/header', $data);
@@ -85,35 +85,45 @@ class Equipos extends CI_Controller {
         if($administrador){
 
             //Tomo los datos del equipo de la BD, para poder pre-llenar el formulario
-            $data['title'] = 'Actualizar Categor&iacute;a de equipo';
+            $data['title'] = 'Actualizar Equipo';
 
             $table = 'categoria_equipo';
+            $categorias_equipo = $this->categoria_model->get_categorias($table);
+            $data['categorias_equipo'] = array_column($categorias_equipo, 'categoria', 'id');;
 
-            $categoria = $this->categoria_model->get_categoria($table, $id);
-            $data['id'] = $categoria['id'];
-            $data['categoria'] = $categoria['categoria'];
+            $equipo = $this->equipos_model->get_equipo($id);
+            $data = array_merge($data, $equipo);
+            $data['categoria_equipo_selected'] = $equipo['id_categoria_equipo'];
 
-            $this->form_validation->set_rules('categoria_equipo', 'Categor&iacute;a de equipo', 'trim|required|callback__alpha_special|max_length[255]');
+            $atributos_categoria_equipo = array('class' => 'form-control col-sm-2',);
+
+            $data['atributos_categoria_equipo'] = $atributos_categoria_equipo;
+
+            $this->form_validation->set_rules('nombre_equipo', 'Nombre equipo', 'trim|required|callback__alpha_special|max_length[255]');
 
             if (!$this->form_validation->run()){
 
                 //Si no pasa las reglas de validación, mostramos el formulario
                 $this->parser->parse('templates/header', $data);
-                $this->parser->parse('categorias_equipo/update', $data);
+                $this->parser->parse('equipos/update', $data);
                 $this->parser->parse('templates/footer', $data);
             }else{
-                $categoria['categoria'] = $this->input->post('categoria_equipo');
+                //Si los datos tienen el formato correcto, debo registrar el equipo en la BD
+                $equipo = array();
 
-                //Si los datos tienen el formato correcto, debo registrar al equipo en la BD
-                $was_updated = $this->categoria_model->update_categoria($table, $id, $categoria);
+                $equipo['nombre_equipo'] = $this->input->post('nombre_equipo');
+                $equipo['id_categoria_equipo'] = $this->input->post('categoria_equipo');
+
+                $table = 'equipos';
+                $was_updated = $this->equipos_model->update_equipo($table, $id, $equipo);
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_updated){
-                    redirect('categorias-equipo/listar'); //TODO Redirigir con éxito al inicio
+                    redirect('equipos/listar'); //TODO Redirigir con éxito al inicio
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el equipo
-                redirect('categorias-equipo/listar'); //TODO Redirigir con error al inicio
+                redirect('equipos/listar'); //TODO Redirigir con error al inicio
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
@@ -126,14 +136,14 @@ class Equipos extends CI_Controller {
         //Lo primero es ver si es Administrador
         $administrador = $this->session->administrador;
         if($administrador){
-            $table = 'categoria_equipo';
-            $delete_id = $this->categoria_model->delete_categoria($table, $id);
+            $table = 'equipos';
+            $delete_id = $this->equipos_model->delete_equipo($table, $id);
             if($delete_id){
                 //TODO redirigir a la lista con éxito
-                redirect('categorias-equipo/listar');
+                redirect('equipos/listar');
             }else{
                 //TODO redirigir a la lista con error
-                redirect('categorias-equipo/listar');
+                redirect('equipos/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
