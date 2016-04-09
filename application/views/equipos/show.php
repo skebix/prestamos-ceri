@@ -2,13 +2,13 @@
 /**
  * Created by PhpStorm.
  * User: skebix
- * Date: 08/04/2016
- * Time: 09:57 AM
+ * Date: 09/04/2016
+ * Time: 10:44 AM
  */
 ?>
 
 <div class="panel panel-default">
-    <div class="panel-heading">{title}</div>
+    <div class="panel-heading">Lista de Equipos</div>
     <div class="panel-body">
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur at cum cumque, cupiditate dignissimos
             dolor earum facere ipsa ipsam laborum officia, perferendis provident qui rem sit tempore unde veritatis? Nam.
@@ -19,20 +19,22 @@
         <thead>
         <tr>
             <th>ID</th>
-            <th>Categor&iacute;a de equipo</th>
+            <th>Nombre de Equipo</th>
+            <th>Categor&iacute;a de Equipo</th>
             <th>Actualizar</th>
             <th>Eliminar</th>
         </tr>
         </thead>
         <tbody>
-        {categorias}
+        {equipos}
         <tr>
             <th scope="row">{id}</th>
+            <td>{nombre_equipo}</td>
             <td>{categoria}</td>
-            <td><a href="<?= base_url('categorias-equipo/actualizar/{id}') ?>">Actualizar categor&iacute;a</a></td>
-            <td><a href="<?= base_url('categorias-equipo/eliminar/{id}') ?>">Eliminar categor&iacute;a</a></td>
+            <td><a href="<?= base_url('equipos/actualizar/{id}') ?>">Actualizar</a></td>
+            <td><a href="<?= base_url('equipos/eliminar/{id}') ?>">Eliminar</a></td>
         </tr>
-        {/categorias}
+        {/equipos}
         </tbody>
     </table>
 </div>

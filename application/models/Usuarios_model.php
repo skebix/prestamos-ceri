@@ -34,11 +34,6 @@ class Usuarios_model extends CI_Model {
         return $this->db->get()->row_array();
     }
 
-    public function get_categorias_usuario(){
-        $query = $this->db->get('categoria_usuario');
-        return $query->result_array();
-    }
-
     public function create_user($usuario){
         $insert_id = $this->db->insert('usuarios', $usuario);
         return $insert_id;

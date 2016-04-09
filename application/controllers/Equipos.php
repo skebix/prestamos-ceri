@@ -2,11 +2,11 @@
 /**
  * Created by PhpStorm.
  * User: skebix
- * Date: 08/04/2016
- * Time: 09:35 AM
+ * Date: 09/04/2016
+ * Time: 07:21 AM
  */
 
-class Categorias_equipo extends CI_Controller {
+class Equipos extends CI_Controller {
 
     public function __construct(){
         parent::__construct();
@@ -21,30 +21,35 @@ class Categorias_equipo extends CI_Controller {
         $administrador = $this->session->administrador;
         if($administrador){
 
-            $data['title'] = 'Crear categor&iacute;a';
+            $data['title'] = 'Nuevo equipo';
 
-            $this->form_validation->set_rules('categoria_equipo', 'Categor&iacute;a de equipo', 'trim|required|callback__alpha_special|max_length[255]');
+            $table = 'categoria_equipo';
+            $categorias_equipo = $this->categoria_model->get_categorias($table);
+            $data['categorias_equipo'] = $categorias_equipo;
 
-            if (!$this->form_validation->run()) {
+            $this->form_validation->set_rules('nombre_equipo', 'Categor&iacute;a de equipo', 'trim|required|callback__alpha_special|max_length[255]');
+
+            if(!$this->form_validation->run()){
 
                 //Si no pasa las reglas de validación, mostramos el formulario
                 $this->parser->parse('templates/header', $data);
-                $this->parser->parse('categorias_equipo/create', $data);
+                $this->parser->parse('equipos/create', $data);
                 $this->parser->parse('templates/footer', $data);
             }else{
                 //Si los datos tienen el formato correcto, debo registrar la nueva categoría en la BD
-                $datos['categoria'] = $this->input->post('categoria_equipo');
+                $datos['id_categoria_equipo'] = $this->input->post('id_categoria_equipo');
+                $datos['nombre_equipo'] = $this->input->post('nombre_equipo');
 
-                $table = 'categoria_equipo';
-                $was_inserted = $this->categoria_model->create_categoria($table, $datos);
+                $table = 'equipos';
+                $was_inserted = $this->equipos_model->create_equipo($table, $datos);
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_inserted){
-                    redirect('categorias-equipo/listar'); //TODO Redirigir con éxito al inicio
+                    redirect('equipos/listar'); //TODO Redirigir con éxito al inicio
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el equipo
-                redirect('categorias-equipo/listar'); //TODO Redirigir con error al inicio
+                redirect('equipos/listar'); //TODO Redirigir con error al inicio
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
@@ -58,14 +63,14 @@ class Categorias_equipo extends CI_Controller {
         $administrador = $this->session->administrador;
         if($administrador){
 
-            $data['title'] = 'Lista de Categor&iacute;as de equipo';
+            $data['title'] = 'Listado de Equipos';
 
-            $table = 'categoria_equipo';
-            $categorias = $this->categoria_model->get_categorias($table);
-            $data['categorias'] = $categorias;
+            $table = 'equipos';
+            $equipos = $this->equipos_model->get_equipos();
+            $data['equipos'] = $equipos;
 
             $this->parser->parse('templates/header', $data);
-            $this->parser->parse('categorias_equipo/show', $data);
+            $this->parser->parse('equipos/show', $data);
             $this->parser->parse('templates/footer', $data);
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
@@ -97,8 +102,7 @@ class Categorias_equipo extends CI_Controller {
                 $this->parser->parse('categorias_equipo/update', $data);
                 $this->parser->parse('templates/footer', $data);
             }else{
-                $equipo['id_categoria_equipo'] = $this->input->post('id_categoria_equipo');
-                $equipo['nombre_equipo'] = $this->input->post('nombre_equipo');
+                $categoria['categoria'] = $this->input->post('categoria_equipo');
 
                 //Si los datos tienen el formato correcto, debo registrar al equipo en la BD
                 $was_updated = $this->categoria_model->update_categoria($table, $id, $categoria);

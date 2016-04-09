@@ -20,7 +20,8 @@ class Usuarios extends CI_Controller {
 
         $data['title'] = 'Registro';
 
-        $categorias_usuario = $this->usuarios_model->get_categorias_usuario();
+        $table = 'categoria_usuario';
+        $categorias_usuario = $this->categoria_model->get_categorias($table);
         $data['categorias_usuario'] = $categorias_usuario;
 
         $this->form_validation->set_rules('primer_nombre', 'Primer nombre', 'trim|required|callback__alpha_space|max_length[255]');
