@@ -42,3 +42,9 @@
         </tbody>
     </table>
 </div>
+<br>
+<a class="logout-button" href="<?= base_url('usuarios/registro') ?>">
+    <button type="button" class="btn btn-primary">
+        Agregar usuario
+    </button>
+</a>

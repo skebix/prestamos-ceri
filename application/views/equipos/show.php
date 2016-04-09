@@ -38,3 +38,8 @@
         </tbody>
     </table>
 </div>
+<a class="logout-button" href="<?= base_url('equipos/crear') ?>">
+    <button type="button" class="btn btn-primary">
+        Agregar equipo
+    </button>
+</a>

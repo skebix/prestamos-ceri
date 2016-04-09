@@ -1,9 +1,28 @@
-<button type="button" class="btn btn-danger">
-    <a class="logout-button" href="<?= base_url('autenticacion/salir') ?>">Cerrar sesi&oacute;n</a>
-</button>
-
-<br><br><br><br><br>
+<?= $this->session->mensaje; ?><br><br>
 
 <?php if($this->session->cedula): ?>
     Bienvenido, <?= $this->session->primer_nombre . ' ' . $this->session->primer_apellido; ?>
+    <br><br>
+    <a class="logout-button" href="<?= base_url('autenticacion/salir') ?>">
+        <button type="button" class="btn btn-danger">
+            Cerrar sesi&oacute;n
+        </button>
+    </a>
+    <br><br>
+    <?php if($this->session->administrador): ?>
+        <p>Links de administraci&oacute;n:</p>
+        <ul>
+            <li><a href="<?= base_url('categorias-usuario/listar') ?>">Categor&iacute;as de Usuario</a></li>
+            <li><a href="<?= base_url('categorias-equipo/listar') ?>">Categor&iacute;as de Equipos</a></li>
+            <li><a href="<?= base_url('usuarios/listar') ?>">Usuarios</a></li>
+            <li><a href="<?= base_url('equipos/listar') ?>">Equipos</a></li>
+        </ul>
+    <?php endif; ?>
+<?php else: ?>
+    <a class="login-button" href="<?= base_url('autenticacion') ?>">
+        <button type="button" class="btn btn-primary">
+            Ingresar
+        </button>
+    </a>
+    <br><br>
 <?php endif; ?>

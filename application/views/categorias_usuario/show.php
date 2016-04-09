@@ -14,7 +14,6 @@
             dolor earum facere ipsa ipsam laborum officia, perferendis provident qui rem sit tempore unde veritatis? Nam.
         </p>
     </div>
-
     <table class="table">
         <thead>
         <tr>
@@ -36,3 +35,9 @@
         </tbody>
     </table>
 </div>
+<br>
+<a class="logout-button" href="<?= base_url('categorias-usuario/crear') ?>">
+    <button type="button" class="btn btn-primary">
+        Agregar categor&iacute;a
+    </button>
+</a>

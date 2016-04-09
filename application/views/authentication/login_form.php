@@ -32,3 +32,9 @@ echo form_open('autenticacion', $attributes);
         </div>
     </div>
 </form>
+
+<a class="" href="<?= base_url('autenticacion/forgot-password') ?>">
+    <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary">Olvid&oacute; su contrase&ntilde;a</button>
+    </div>
+</a>

@@ -36,3 +36,9 @@
         </tbody>
     </table>
 </div>
+<br>
+<a class="logout-button" href="<?= base_url('categorias-equipo/crear') ?>">
+    <button type="button" class="btn btn-primary">
+        Agregar categor&iacute;a
+    </button>
+</a>

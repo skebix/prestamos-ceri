@@ -7,7 +7,7 @@ class Inicio extends CI_Controller {
         $data['title'] = 'Inicio';
 
 		$this->parser->parse('templates/header', $data);
-        $this->load->view('home');
-		$this->load->view('templates/footer');
+        $this->parser->parse('home', $data);
+		$this->parser->parse('templates/footer', $data);
 	}
 }

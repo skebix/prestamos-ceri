@@ -17,13 +17,14 @@ class Autenticacion extends CI_Controller {
         //Lo primero es ver si ya ingresó, no?
         $cedula = $this->session->cedula;
         if($cedula){
-            redirect('inicio'); //TODO Redirigir con éxito al home
+            $this->session->set_userdata('mensaje', 'Ya se encuentra logueado en el sistema');
+            redirect('inicio');
         }
 
         $data['title'] = 'Ingresar';
 
         $this->form_validation->set_rules('cedula', 'C&eacute;dula', 'required|is_natural_no_zero');
-        $this->form_validation->set_rules('password', 'Contrase&ntilde;a', 'required');
+        $this->form_validation->set_rules('password', 'Contrase&ntilde;a', 'required|callback__password_correct');
 
         if (!$this->form_validation->run()) {
             //Si no pasa las reglas de validación, mostramos el formulario
@@ -31,23 +32,16 @@ class Autenticacion extends CI_Controller {
             $this->parser->parse('authentication/login_form', $data);
             $this->parser->parse('templates/footer', $data);
         }else{
-            //Si los datos tienen el formato correcto, debo verificar si el usuario existe en la BD
+            //Si los datos tienen el formato correcto, agregar los datos a la sesión
             $cedula = $this->input->post('cedula');
-            $password = $this->input->post('password');
-
             $usuario = $this->usuarios_model->get_usuario($cedula);
 
-            //Ahora, si existe un usuario en la BD con esa cédula, debo verificar que la contraseña coincida
-            if($this->bcrypt->check_password($password, $usuario['hashed_password'])){
-                $this->session->set_userdata($usuario);
-                $administrador = ($usuario['id_administracion'] === '1') ? true : false;
-                $this->session->set_userdata('administrador', $administrador);
+            $this->session->set_userdata($usuario);
+            $administrador = ($usuario['id_administracion'] === '1') ? true : false;
+            $this->session->set_userdata('administrador', $administrador);
 
-                redirect('inicio'); //TODO Redirigir con éxito al home
-            }
-
-            //Si llegué a este punto es porque la contraseña no coincide
-            redirect('inicio'); //TODO Redirigir con error al home
+            $this->session->set_userdata('mensaje', 'Acaba de ingresar al sistema');
+            redirect('inicio');
         }
     }
 
@@ -92,9 +86,11 @@ class Autenticacion extends CI_Controller {
             $resultado = $this->email->send();
 
             if($resultado){
-                redirect('inicio'); //TODO redirect al home con éxito
+                $this->session->set_userdata('mensaje', 'Correo enviado satisfactoriamente.');
+                redirect('inicio');
             }
-            redirect('inicio'); //TODO redirect al home con error
+            $this->session->set_userdata('mensaje', 'Error al enviar el correo electr&oacute;nico.');
+            redirect('inicio');
         }
     }
 
@@ -108,7 +104,8 @@ class Autenticacion extends CI_Controller {
 
             $this->reset_password();
         }else{
-            redirect('inicio'); //TODO redirect con error, token inválido
+            $this->session->set_userdata('mensaje', 'El token ya fue utilizado o es inv&aacute;lido.');
+            redirect('inicio');
         }
     }
 
@@ -138,20 +135,28 @@ class Autenticacion extends CI_Controller {
                 $this->salir();
             }
         }else{
-            redirect('inicio'); //TODO redirigir con error, el token fue usado o no hay token
+            $this->session->set_userdata('mensaje', 'El token ya fue utilizado o es inv&aacute;lido.');
+            redirect('inicio');
         }
     }
 
     public function salir(){
-        $eliminar = array('id', 'cedula', 'administrador', 'reset_password');
+        $eliminar = array('id', 'cedula', 'administrador', 'reset_password', 'mensaje');
         $this->session->unset_userdata($eliminar);
-        $this->session->sess_destroy();
-        redirect('inicio'); //TODO Redirigir con éxito al home
+        $this->session->set_userdata('mensaje', 'Sesi&oacute;n cerrada.');
+        redirect('inicio');
     }
 
     public function _email_exists($str){
         $this->form_validation->set_message('_email_exists', 'El correo electr&oacute;nico no se encuentra registrado en el sistema.');
         $usuario = $this->usuarios_model->get_usuario_by_email($str);
         return ($usuario)? true: false;
+    }
+
+    public function _password_correct($str){
+        $this->form_validation->set_message('_password_correct', 'Combinación de c&eacute;dula y contrase&ntilde;a inv&aacute;lida.');
+        $cedula = $this->input->post('cedula');
+        $usuario = $this->usuarios_model->get_usuario($cedula);
+        return $this->bcrypt->check_password($str, $usuario['hashed_password']);
     }
 }
