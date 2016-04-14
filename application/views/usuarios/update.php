@@ -52,6 +52,14 @@ echo form_open('usuarios/actualizar/{id}', $attributes);
 </div>
 
 <div class="form-group">
+    <label for="inputCorreoInstitucional" class="col-sm-2 control-label">Correo institucional</label>
+    <div class="col-sm-10">
+        <?php echo form_error('correo_institucional'); ?>
+        <input type="text" class="form-control" id="inputCorreoInstitucional" name="correo_institucional" value="<?php echo set_value('correo_institucional', $correo_institucional); ?>" placeholder="Correo institucional">
+    </div>
+</div>
+
+<div class="form-group">
     <label for="inputTelefono" class="col-sm-2 control-label">Tel&eacute;fono</label>
 
     <?= form_dropdown('codigo_area', $codigo_area, $codigo_area_selected, $atributos_codigo_area); ?>
@@ -88,22 +96,41 @@ echo form_open('usuarios/actualizar/{id}', $attributes);
 
 <div class="form-group">
     <label for="categoriasUsuario" class="col-sm-2 control-label">Tipo de usuario</label>
+    <?= form_dropdown('id_categoria_usuario', $categorias_usuario, $categoria_usuario_selected, $atributos_categorias_usuario); ?>
+</div>
 
-    <select class="form-control col-sm-10" name="id_categoria_usuario">
-        {categorias_usuario}
-        <option value="{id}">{categoria}</option>
-        {/categorias_usuario}
-    </select>
+<div class="form-group">
+    <label for="inputTwitter" class="col-sm-2 control-label">Twitter</label>
+    <div class="col-sm-10">
+        <?php echo form_error('twitter'); ?>
+        <input type="text" class="form-control" id="inputTwitter" name="twitter" value="<?php echo set_value('twitter', $twitter); ?>" placeholder="Twitter">
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="inputFacebook" class="col-sm-2 control-label">Facebook</label>
+    <div class="col-sm-10">
+        <?php echo form_error('facebook'); ?>
+        <input type="text" class="form-control" id="inputFacebook" name="facebook" value="<?php echo set_value('facebook',$facebook); ?>" placeholder="Facebook">
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="inputInstagram" class="col-sm-2 control-label">Instagram</label>
+    <div class="col-sm-10">
+        <?php echo form_error('instagram'); ?>
+        <input type="text" class="form-control" id="inputInstagram" name="instagram" value="<?php echo set_value('instagram', $instagram); ?>" placeholder="Instagram">
+    </div>
 </div>
 
 <?php if($administrador): ?>
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" value="1" name="administrador">
-            El usuario ser&aacute; administrador?
-        </label>
+    <div class="form-group">
+        <label for="administrador" class="col-sm-2 control-label">El usuario ser&aacute; administrador?</label>
+        <?= form_checkbox('administrador', '1', $administrador_actualizar, $atributos_administrador); ?>
     </div>
 <?php endif; ?>
+
+<br>
 
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">

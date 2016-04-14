@@ -16,9 +16,13 @@
     <li>C&eacute;dula: {cedula}</li>
     <li>Tel&eacute;fono: {telefono}</li>
     <li>Correo electr&oacute;nico: {email}</li>
+    <li>Correo institucional: {correo_institucional}</li>
     <li>Contrase&ntilde;a hasheada: {hashed_password}</li>
     <li>Tipo de usuario: {tipo_usuario}</li>
     <li>Categor&iacute;a: {categoria}</li>
+    <li>Facebook: {facebook}</li>
+    <li>Instagram: {instagram}</li>
+    <li>Twitter: {twitter}</li>
 </ul>
 
 <a class="logout-button btn btn-success" href="<?= base_url('usuarios/actualizar/{id}') ?>">Editar usuario</a>

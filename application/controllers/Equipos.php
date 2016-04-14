@@ -89,7 +89,7 @@ class Equipos extends CI_Controller {
 
             $table = 'categoria_equipo';
             $categorias_equipo = $this->categoria_model->get_categorias($table);
-            $data['categorias_equipo'] = array_column($categorias_equipo, 'categoria', 'id');;
+            $data['categorias_equipo'] = array_column($categorias_equipo, 'categoria', 'id');
 
             $equipo = $this->equipos_model->get_equipo($id);
             $data = array_merge($data, $equipo);

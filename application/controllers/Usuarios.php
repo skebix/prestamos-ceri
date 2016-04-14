@@ -34,8 +34,10 @@ class Usuarios extends CI_Controller {
         $this->form_validation->set_rules('password', 'Contrase&ntilde;a', 'required');
         $this->form_validation->set_rules('password_confirmation', 'Confirmar contrase&ntilde;a', 'required|matches[password]');
 
-        $this->form_validation->set_rules('correo_institucional', 'Correo institucional', 'is_unique[usuarios.correo_institucional]|valid_email', array('is_unique' => 'Ese correo electr&oacute;nico ya se encuentra registrado en el sistema.'));
-        //TODO validaciones para Twitter, Facebook, e Instagram
+        $this->form_validation->set_rules('correo_institucional', 'Correo institucional', 'trim|is_unique[usuarios.correo_institucional]|valid_email', array('is_unique' => 'Ese correo electr&oacute;nico ya se encuentra registrado en el sistema.'));
+        $this->form_validation->set_rules('twitter', 'Twitter', 'trim|max_length[15]|callback__valid_twitter_username');
+        $this->form_validation->set_rules('facebook', 'Facebook', 'trim|min_length[5]|callback__valid_facebook_username');
+        $this->form_validation->set_rules('instagram', 'Instagram', 'trim|max_length[30]|callback__valid_instagram_username');
 
         if (!$this->form_validation->run()) {
 
@@ -51,7 +53,6 @@ class Usuarios extends CI_Controller {
             //Si los datos tienen el formato correcto, debo registrar al usuario en la BD
             $usuario = array();
 
-            $usuario['primer_nombre'] = $this->input->post('primer_nombre');
             $usuario['primer_nombre'] = $this->input->post('primer_nombre');
             $usuario['segundo_nombre'] = $this->input->post('segundo_nombre');
             $usuario['primer_apellido'] = $this->input->post('primer_apellido');
@@ -77,11 +78,13 @@ class Usuarios extends CI_Controller {
 
             //Si lo guardó correctamente, redirigir al inicio con éxito
             if($was_inserted){
-                redirect('inicio'); //TODO Redirigir con éxito al inicio
+                $this->session->set_userdata('mensaje', 'El usuario fue creado satisfactoriamente.');
+                redirect('inicio');
             }
 
             //Si llegué a este punto es porque no pudo guardar el usuario
-            redirect('inicio'); //TODO Redirigir con error al inicio
+            $this->session->set_userdata('mensaje', 'No se pudo crear el usuario, por favor intente de nuevo.');
+            redirect('inicio');
         }
     }
 
@@ -101,7 +104,8 @@ class Usuarios extends CI_Controller {
             $this->parser->parse('templates/footer', $data);
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            redirect('inicio'); //TODO redirect al inicio con error
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
         }
     }
 
@@ -127,7 +131,8 @@ class Usuarios extends CI_Controller {
             $this->parser->parse('templates/footer', $data);
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            redirect('inicio'); //TODO redirect al inicio con error
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
         }
     }
 
@@ -143,15 +148,17 @@ class Usuarios extends CI_Controller {
 
             $table = 'categoria_usuario';
             $categorias_usuario = $this->categoria_model->get_categorias($table);
-            $data['categorias_usuario'] = $categorias_usuario;
+            $data['categorias_usuario'] = array_column($categorias_usuario, 'categoria', 'id');
 
             $usuario = $this->usuarios_model->get_usuario_by_id($id);
+            $data['categoria_usuario_selected'] = $usuario['id_categoria_usuario'];
+
             $data = array_merge($data, $usuario);
             $data['codigo_area_selected'] = substr($data['telefono'], 0, 4);
             $data['telefono'] = substr($data['telefono'], -7);
 
             $codigo_area = array(
-                '0212'  => '0412',
+                '0212'  => '0212',
                 '0412'  => '0412',
                 '0414'  => '0414',
                 '0416'  => '0416',
@@ -163,9 +170,19 @@ class Usuarios extends CI_Controller {
                 'class'       => 'form-control col-sm-2',
             );
 
+            $atributos_categorias_usuario = array(
+                'class'       => 'form-control col-sm-10',
+            );
+
+            $atributos_administrador = array(
+                'class'       => 'checkbox',
+            );
+
             $data['codigo_area'] = $codigo_area;
             $data['atributos_codigo_area'] = $atributos_codigo_area;
-            $data['categoria_usuario_selected'] = $usuario['id_categoria_usuario'];
+            $data['atributos_categorias_usuario'] = $atributos_categorias_usuario;
+            $data['administrador_actualizar'] = $usuario['administrador'];
+            $data['atributos_administrador'] = $atributos_administrador;
 
             $this->form_validation->set_rules('primer_nombre', 'Primer nombre', 'trim|required|callback__alpha_space|max_length[255]');
             $this->form_validation->set_rules('segundo_nombre', 'Segundo nombre', 'trim|required|callback__alpha_space|max_length[255]');
@@ -179,7 +196,7 @@ class Usuarios extends CI_Controller {
 
             if (!$this->form_validation->run()){
 
-                //Si el que intenta crear la cuenta es un Administrador, le doy opciones para cambiar el tipo a Administrador.
+                //Si el que intenta actualizar la cuenta es un Administrador, le doy opciones para cambiar el tipo a Administrador.
                 $data['administrador'] = $administrador;
 
                 //Si no pasa las reglas de validación, mostramos el formulario
@@ -207,19 +224,26 @@ class Usuarios extends CI_Controller {
                 $usuario['hashed_password'] = $password;
                 $usuario['administrador'] = ($this->input->post('administrador')) ? $this->input->post('administrador') : FALSE;
 
-                $was_updated = $this->usuarios_model->update_user($id, $usuario);
+                $usuario['correo_institucional'] = $this->input->post('correo_institucional');
+                $usuario['twitter'] = $this->input->post('twitter');
+                $usuario['facebook'] = $this->input->post('facebook');
+                $usuario['instagram'] = $this->input->post('instagram');
 
+                $was_updated = $this->usuarios_model->update_user($id, $usuario);
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_updated){
-                    redirect('inicio'); //TODO Redirigir con éxito al inicio
+                    $this->session->set_userdata('mensaje', 'El usuario fue actualizado satisfactoriamente.');
+                    redirect('usuarios/listar');
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el usuario
-                redirect('inicio'); //TODO Redirigir con error al inicio
+                $this->session->set_userdata('mensaje', 'No se pudo actualizar el usuario, por favor intente de nuevo.');
+                redirect('usuarios/detalles/' . $usuario['cedula']);
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            redirect('inicio'); //TODO redirect al inicio con error
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
         }
     }
 
@@ -232,15 +256,16 @@ class Usuarios extends CI_Controller {
 
             $delete_id = $this->usuarios_model->delete_user($cedula);
             if($delete_id){
-                //TODO redirigir a la lista con éxito
+                $this->session->set_userdata('mensaje', 'El usuario ha sido eliminado satisfactoriamente.');
                 redirect('usuarios/listar');
             }else{
-                //TODO redirigir a la lista con error
+                $this->session->set_userdata('mensaje', 'No se pudo eliminar el usuario, por favor intente de nuevo.');
                 redirect('usuarios/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            redirect('inicio'); //TODO redirect al inicio con error
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
         }
     }
 
@@ -248,6 +273,21 @@ class Usuarios extends CI_Controller {
         $this->form_validation->set_message('_alpha_space', 'El campo {field} puede contener &uacute;nicamente letras y espacios.');
         //To my future self: ^ es el inicio, $ el fin, \p{L} son las letras y el modificador u trata el string como UTF-8
         return (preg_match('/^[\p{L} ]*$/u', $str))? true: false;
+    }
+
+    public function _valid_twitter_username($str){
+        $this->form_validation->set_message('_valid_twitter_username', 'El campo {field} no contiene un usuario de Twitter v&aacute;lido.');
+        return (preg_match('/^[a-zA-Z0-9_]*$/', $str))? true: false;
+    }
+
+    public function _valid_facebook_username($str){
+        $this->form_validation->set_message('_valid_facebook_username', 'El campo {field} no contiene un usuario de Facebook v&aacute;lido.');
+        return (preg_match('/^[a-zA-Z0-9\.]*$/', $str))? true: false;
+    }
+
+    public function _valid_instagram_username($str){
+        $this->form_validation->set_message('_valid_instagram_username', 'El campo {field} no contiene un usuario de Instagram v&aacute;lido.');
+        return (preg_match('/^[a-zA-Z0-9\._]*$/', $str))? true: false;
     }
 
     public function _unique_email($email){
