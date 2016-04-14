@@ -82,6 +82,7 @@
 	 * @property Usuarios_model      $usuarios_model
 	 * @property Categoria_model     $categoria_model
 	 * @property Equipos_model       $equipos_model
+	 * @property Servicios_model     $servicios_model
 	 * @property user_model          $user_model           ,$user
 	 * @property data_model          $data_model
 	 * @property products_model      $products_model

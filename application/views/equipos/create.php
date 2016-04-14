@@ -11,6 +11,8 @@ echo form_open('equipos/crear', $attributes);
 
 ?>
 
+<?= $this->session->mensaje; ?><br><br>
+
     <div class="form-group">
         <label for="inputNombreEquipo" class="col-sm-2 control-label">Nombre equipo</label>
         <div class="col-sm-10">

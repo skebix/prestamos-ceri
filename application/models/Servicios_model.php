@@ -2,40 +2,40 @@
 /**
  * Created by PhpStorm.
  * User: skebix
- * Date: 09/04/2016
- * Time: 07:58 AM
+ * Date: 14/04/2016
+ * Time: 03:55 PM
  */
 
-class Equipos_model extends CI_Model {
+class Servicios_model extends CI_Model {
 
-    public function create_equipo($table, $datos){
+    public function create_servicio($table, $datos){
         $insert_id = $this->db->insert($table, $datos);
         return $insert_id;
     }
 
-    public function get_equipos($table){
-        $this->db->select($table . '.id, ' . $table . '.nombre_equipo, categoria_equipo.categoria');
+    public function get_servicios($table){
+        $this->db->select($table . '.id, ' . $table . '.nombre_servicio, categoria_servicio.categoria');
         $this->db->from($table);
-        $this->db->join('categoria_equipo', 'equipos.id_categoria_equipo = categoria_equipo.id');
+        $this->db->join('categoria_servicio', 'servicios.id_categoria_servicio = categoria_servicio.id');
         $query = $this->db->get();
 
         return $query->result_array();
     }
 
-    public function get_equipo($id){
-        $this->db->from('equipos');
+    public function get_servicio($id){
+        $this->db->from('servicios');
         $this->db->where('id', $id);
 
         return $this->db->get()->row_array();
     }
 
-    public function update_equipo($table, $id, $categoria){
+    public function update_servicio($table, $id, $categoria){
         $this->db->where('id', $id);
         $update_id = $this->db->update($table, $categoria);
         return $update_id;
     }
 
-    public function delete_equipo($table, $id){
+    public function delete_servicio($table, $id){
         $delete_id = $this->db->delete($table, array('id' => $id));
         return $delete_id;
     }

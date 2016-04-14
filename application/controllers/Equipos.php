@@ -45,15 +45,18 @@ class Equipos extends CI_Controller {
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_inserted){
-                    redirect('equipos/listar'); //TODO Redirigir con éxito al inicio
+                    $this->session->set_userdata('mensaje', 'El equipo fue a&ntilde;adido satisfactoriamente.');
+                    redirect('equipos/listar');
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el equipo
-                redirect('equipos/listar'); //TODO Redirigir con error al inicio
+                $this->session->set_userdata('mensaje', 'No se pudo agregar el equipo, por favor intente nuevamente.');
+                redirect('equipos/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            redirect('inicio'); //TODO redirect al inicio con error
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
         }
     }
 
@@ -74,7 +77,8 @@ class Equipos extends CI_Controller {
             $this->parser->parse('templates/footer', $data);
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            redirect('inicio'); //TODO redirect al inicio con error
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
         }
     }
 
@@ -119,15 +123,18 @@ class Equipos extends CI_Controller {
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_updated){
-                    redirect('equipos/listar'); //TODO Redirigir con éxito al inicio
+                    $this->session->set_userdata('mensaje', 'El equipo fue modificado satisfactoriamente.');
+                    redirect('equipos/listar');
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el equipo
-                redirect('equipos/listar'); //TODO Redirigir con error al inicio
+                $this->session->set_userdata('mensaje', 'No se pudo modificar el equipo, por favor intente nuevamente.');
+                redirect('equipos/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            redirect('inicio'); //TODO redirect al inicio con error
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
         }
     }
 
@@ -139,15 +146,16 @@ class Equipos extends CI_Controller {
             $table = 'equipos';
             $delete_id = $this->equipos_model->delete_equipo($table, $id);
             if($delete_id){
-                //TODO redirigir a la lista con éxito
+                $this->session->set_userdata('mensaje', 'El equipo ha sido eliminado satisfactoriamente.');
                 redirect('equipos/listar');
             }else{
-                //TODO redirigir a la lista con error
+                $this->session->set_userdata('mensaje', 'No se pudo eliminar el equipo, por favor intente nuevamente.');
                 redirect('equipos/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            redirect('inicio'); //TODO redirect al inicio con error
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
         }
     }
 

@@ -17,6 +17,7 @@
             <li><a href="<?= base_url('categorias-servicio/listar') ?>">Categor&iacute;as de Servicios</a></li>
             <li><a href="<?= base_url('usuarios/listar') ?>">Usuarios</a></li>
             <li><a href="<?= base_url('equipos/listar') ?>">Equipos</a></li>
+            <li><a href="<?= base_url('servicios/listar') ?>">Servicios</a></li>
         </ul>
     <?php endif; ?>
 <?php else: ?>
