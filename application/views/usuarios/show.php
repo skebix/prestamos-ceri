@@ -7,6 +7,8 @@
  */
 ?>
 
+<?= $this->session->mensaje; ?><br><br>
+
 <div class="panel panel-default">
     <div class="panel-heading">Lista de Usuarios</div>
     <div class="panel-body">

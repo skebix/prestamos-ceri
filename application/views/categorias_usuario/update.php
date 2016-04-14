@@ -11,6 +11,8 @@ echo form_open('categorias-usuario/actualizar/{id}', $attributes);
 
 ?>
 
+<?= $this->session->mensaje; ?><br><br>
+
 <div class="form-group">
     <label for="inputCategoriasUsuario" class="col-sm-2 control-label">Categor&iacute;a de usuario</label>
     <div class="col-sm-10">
@@ -19,9 +21,9 @@ echo form_open('categorias-usuario/actualizar/{id}', $attributes);
     </div>
 </div>
 
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-success">Actualizar categor&iacute;a</button>
-        </div>
+<div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-success">Actualizar categor&iacute;a</button>
     </div>
+</div>
 </form>

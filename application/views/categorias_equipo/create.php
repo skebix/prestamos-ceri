@@ -10,6 +10,8 @@ $attributes = array('class' => 'form-horizontal');
 echo form_open('categorias-equipo/crear', $attributes);
 ?>
 
+<?= $this->session->mensaje; ?><br><br>
+
 <div class="form-group">
     <label for="inputCategoriasEquipo" class="col-sm-2 control-label">Categor&iacute;a de equipo</label>
     <div class="col-sm-10">

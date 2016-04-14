@@ -36,10 +36,4 @@ class Categoria_model extends CI_Model {
         return $delete_id;
     }
 
-    public function get_administracion($id_administracion){
-        $this->db->from('administracion');
-        $this->db->where('id', $id_administracion);
-
-        return $this->db->get()->row_array();
-    }
 }

@@ -14,6 +14,7 @@
         <ul>
             <li><a href="<?= base_url('categorias-usuario/listar') ?>">Categor&iacute;as de Usuario</a></li>
             <li><a href="<?= base_url('categorias-equipo/listar') ?>">Categor&iacute;as de Equipos</a></li>
+            <li><a href="<?= base_url('categorias-servicio/listar') ?>">Categor&iacute;as de Servicios</a></li>
             <li><a href="<?= base_url('usuarios/listar') ?>">Usuarios</a></li>
             <li><a href="<?= base_url('equipos/listar') ?>">Equipos</a></li>
         </ul>
@@ -25,4 +26,9 @@
         </button>
     </a>
     <br><br>
+    <a class="login-button" href="<?= base_url('usuarios/registro') ?>">
+        <button type="button" class="btn btn-primary">
+            Registrarse
+        </button>
+    </a>
 <?php endif; ?>

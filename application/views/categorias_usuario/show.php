@@ -7,6 +7,8 @@
  */
 ?>
 
+<?= $this->session->mensaje; ?><br><br>
+
 <div class="panel panel-default">
     <div class="panel-heading">{title}</div>
     <div class="panel-body">
@@ -29,7 +31,7 @@
             <th scope="row">{id}</th>
             <td>{categoria}</td>
             <td><a href="<?= base_url('categorias-usuario/actualizar/{id}') ?>">Actualizar categor&iacute;a</a></td>
-            <td><a href="<?= base_url('categorias-usuario/eliminar/{id}') ?>">Eliminar usuario</a></td>
+            <td><a href="<?= base_url('categorias-usuario/eliminar/{id}') ?>">Eliminar categor&iacute;a</a></td>
         </tr>
         {/categorias}
         </tbody>

@@ -2,11 +2,11 @@
 /**
  * Created by PhpStorm.
  * User: skebix
- * Date: 08/04/2016
- * Time: 09:35 AM
+ * Date: 13/04/2016
+ * Time: 04:16 PM
  */
 
-class Categorias_equipo extends CI_Controller {
+class Categorias_servicio extends CI_Controller {
 
     public function __construct(){
         parent::__construct();
@@ -23,30 +23,30 @@ class Categorias_equipo extends CI_Controller {
 
             $data['title'] = 'Crear categor&iacute;a';
 
-            $this->form_validation->set_rules('categoria_equipo', 'Categor&iacute;a de equipo', 'trim|required|callback__alpha_special|max_length[255]');
+            $this->form_validation->set_rules('categoria_servicio', 'Categor&iacute;a de servicio', 'trim|required|callback__alpha_special|max_length[255]');
 
             if (!$this->form_validation->run()) {
 
                 //Si no pasa las reglas de validación, mostramos el formulario
                 $this->parser->parse('templates/header', $data);
-                $this->parser->parse('categorias_equipo/create', $data);
+                $this->parser->parse('categorias_servicio/create', $data);
                 $this->parser->parse('templates/footer', $data);
             }else{
                 //Si los datos tienen el formato correcto, debo registrar la nueva categoría en la BD
-                $datos['categoria'] = $this->input->post('categoria_equipo');
+                $datos['categoria'] = $this->input->post('categoria_servicio');
 
-                $table = 'categoria_equipo';
+                $table = 'categoria_servicio';
                 $was_inserted = $this->categoria_model->create_categoria($table, $datos);
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_inserted){
-                    $this->session->set_userdata('mensaje', 'Categor&iacute;a de equipo creada satisfactoriamente.');
-                    redirect('categorias-equipo/listar');
+                    $this->session->set_userdata('mensaje', 'Categor&iacute;a de servicio creada satisfactoriamente.');
+                    redirect('categorias-servicio/listar');
                 }
 
-                //Si llegué a este punto es porque no pudo guardar el equipo
-                $this->session->set_userdata('mensaje', 'No se pudo crear su categor&iacute;a de equipo.');
-                redirect('categorias-equipo/listar');
+                //Si llegué a este punto es porque no pudo guardar el servicio
+                $this->session->set_userdata('mensaje', 'No se pudo crear su categor&iacute;a de servicio.');
+                redirect('categorias-servicio/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
@@ -61,14 +61,14 @@ class Categorias_equipo extends CI_Controller {
         $administrador = $this->session->administrador;
         if($administrador){
 
-            $data['title'] = 'Lista de Categor&iacute;as de equipo';
+            $data['title'] = 'Lista de Categor&iacute;as de servicio';
 
-            $table = 'categoria_equipo';
+            $table = 'categoria_servicio';
             $categorias = $this->categoria_model->get_categorias($table);
             $data['categorias'] = $categorias;
 
             $this->parser->parse('templates/header', $data);
-            $this->parser->parse('categorias_equipo/show', $data);
+            $this->parser->parse('categorias_servicio/show', $data);
             $this->parser->parse('templates/footer', $data);
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
@@ -83,38 +83,38 @@ class Categorias_equipo extends CI_Controller {
         $administrador = $this->session->administrador;
         if($administrador){
 
-            //Tomo los datos del equipo de la BD, para poder pre-llenar el formulario
-            $data['title'] = 'Actualizar Categor&iacute;a de equipo';
+            //Tomo los datos del servicio de la BD, para poder pre-llenar el formulario
+            $data['title'] = 'Actualizar Categor&iacute;a de servicio';
 
-            $table = 'categoria_equipo';
+            $table = 'categoria_servicio';
 
             $categoria = $this->categoria_model->get_categoria($table, $id);
             $data['id'] = $categoria['id'];
             $data['categoria'] = $categoria['categoria'];
 
-            $this->form_validation->set_rules('categoria_equipo', 'Categor&iacute;a de equipo', 'trim|required|callback__alpha_special|max_length[255]');
+            $this->form_validation->set_rules('categoria_servicio', 'Categor&iacute;a de servicio', 'trim|required|callback__alpha_special|max_length[255]');
 
             if (!$this->form_validation->run()){
 
                 //Si no pasa las reglas de validación, mostramos el formulario
                 $this->parser->parse('templates/header', $data);
-                $this->parser->parse('categorias_equipo/update', $data);
+                $this->parser->parse('categorias_servicio/update', $data);
                 $this->parser->parse('templates/footer', $data);
             }else{
-                $categoria['categoria'] = $this->input->post('categoria_equipo');
+                $categoria['categoria'] = $this->input->post('categoria_servicio');
 
-                //Si los datos tienen el formato correcto, debo registrar al equipo en la BD
+                //Si los datos tienen el formato correcto, debo registrar al servicio en la BD
                 $was_updated = $this->categoria_model->update_categoria($table, $id, $categoria);
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_updated){
-                    $this->session->set_userdata('mensaje', 'Categor&iacute;a de equipo actualizada satisfactoriamente.');
-                    redirect('categorias-equipo/listar');
+                    $this->session->set_userdata('mensaje', 'Categor&iacute;a de servicio actualizada satisfactoriamente.');
+                    redirect('categorias-servicio/listar');
                 }
 
-                //Si llegué a este punto es porque no pudo guardar el equipo
-                $this->session->set_userdata('mensaje', 'No se pudo actualizar su categor&iacute;a de equipo.');
-                redirect('categorias-equipo/listar');
+                //Si llegué a este punto es porque no pudo guardar el servicio
+                $this->session->set_userdata('mensaje', 'No se pudo actualizar su categor&iacute;a de servicio.');
+                redirect('categorias-servicio/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
@@ -128,14 +128,14 @@ class Categorias_equipo extends CI_Controller {
         //Lo primero es ver si es Administrador
         $administrador = $this->session->administrador;
         if($administrador){
-            $table = 'categoria_equipo';
+            $table = 'categoria_servicio';
             $delete_id = $this->categoria_model->delete_categoria($table, $id);
             if($delete_id){
-                $this->session->set_userdata('mensaje', 'Categor&iacute;a de equipo eliminada satisfactoriamente.');
-                redirect('categorias-equipo/listar');
+                $this->session->set_userdata('mensaje', 'Categor&iacute;a de servicio eliminada satisfactoriamente.');
+                redirect('categorias-servicio/listar');
             }else{
-                $this->session->set_userdata('mensaje', 'No se pudo eliminar su categor&iacute;a de equipo.');
-                redirect('categorias-equipo/listar');
+                $this->session->set_userdata('mensaje', 'No se pudo eliminar su categor&iacute;a de servicio.');
+                redirect('categorias-servicio/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador

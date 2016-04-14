@@ -34,6 +34,9 @@ class Usuarios extends CI_Controller {
         $this->form_validation->set_rules('password', 'Contrase&ntilde;a', 'required');
         $this->form_validation->set_rules('password_confirmation', 'Confirmar contrase&ntilde;a', 'required|matches[password]');
 
+        $this->form_validation->set_rules('correo_institucional', 'Correo institucional', 'is_unique[usuarios.correo_institucional]|valid_email', array('is_unique' => 'Ese correo electr&oacute;nico ya se encuentra registrado en el sistema.'));
+        //TODO validaciones para Twitter, Facebook, e Instagram
+
         if (!$this->form_validation->run()) {
 
             //Si el que intenta crear la cuenta es un Administrador, le doy opciones para crear nuevos administradores.
@@ -61,13 +64,15 @@ class Usuarios extends CI_Controller {
             $telefono = $this->input->post('telefono');
             $usuario['telefono'] = $codigo_area . '-' . $telefono;
 
+            $usuario['correo_institucional'] = $this->input->post('correo_institucional');
+            $usuario['twitter'] = $this->input->post('twitter');
+            $usuario['facebook'] = $this->input->post('facebook');
+            $usuario['instagram'] = $this->input->post('instagram');
+
             $raw_password = $this->input->post('password');
             $password = $this->bcrypt->hash_password($raw_password);
             $usuario['hashed_password'] = $password;
-
-            //TO MY FUTURE SELF: 2 is a regular user.
-            $usuario['id_administracion'] = ($this->input->post('id_administracion')) ? $this->input->post('id_administracion') : 2;
-
+            $usuario['administrador'] = ($this->input->post('administrador')) ? $this->input->post('administrador') : FALSE;
             $was_inserted = $this->usuarios_model->create_user($usuario);
 
             //Si lo guardó correctamente, redirigir al inicio con éxito
@@ -111,10 +116,9 @@ class Usuarios extends CI_Controller {
             $table = 'categoria_usuario';
 
             $usuario = $this->usuarios_model->get_usuario($cedula);
-            $administracion = $this->categoria_model->get_administracion($usuario['id_administracion']);
             $categoria = $this->categoria_model->get_categoria($table, $usuario['id_categoria_usuario']);
 
-            $data['tipo_usuario'] = $administracion['tipo_usuario'];
+            $data['tipo_usuario'] = ($usuario['administrador']) ? 'Administrador' : 'Regular';
             $data['categoria'] = $categoria['categoria'];
             $data = array_merge($data, $usuario);
 
@@ -201,9 +205,7 @@ class Usuarios extends CI_Controller {
                 $raw_password = $this->input->post('password');
                 $password = $this->bcrypt->hash_password($raw_password);
                 $usuario['hashed_password'] = $password;
-
-                //TO MY FUTURE SELF: 2 is a regular user.
-                $usuario['id_administracion'] = ($this->input->post('id_administracion')) ? $this->input->post('id_administracion') : 2;
+                $usuario['administrador'] = ($this->input->post('administrador')) ? $this->input->post('administrador') : FALSE;
 
                 $was_updated = $this->usuarios_model->update_user($id, $usuario);
 

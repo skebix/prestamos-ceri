@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: skebix
- * Date: 08/04/2016
- * Time: 09:57 AM
+ * Date: 13/04/2016
+ * Time: 04:19 PM
  */
 ?>
 
@@ -20,7 +20,7 @@
         <thead>
         <tr>
             <th>ID</th>
-            <th>Categor&iacute;a de equipo</th>
+            <th>Categor&iacute;a de servicio</th>
             <th>Actualizar</th>
             <th>Eliminar</th>
         </tr>
@@ -30,15 +30,15 @@
         <tr>
             <th scope="row">{id}</th>
             <td>{categoria}</td>
-            <td><a href="<?= base_url('categorias-equipo/actualizar/{id}') ?>">Actualizar categor&iacute;a</a></td>
-            <td><a href="<?= base_url('categorias-equipo/eliminar/{id}') ?>">Eliminar categor&iacute;a</a></td>
+            <td><a href="<?= base_url('categorias-servicio/actualizar/{id}') ?>">Actualizar categor&iacute;a</a></td>
+            <td><a href="<?= base_url('categorias-servicio/eliminar/{id}') ?>">Eliminar categor&iacute;a</a></td>
         </tr>
         {/categorias}
         </tbody>
     </table>
 </div>
 <br>
-<a class="logout-button" href="<?= base_url('categorias-equipo/crear') ?>">
+<a class="logout-button" href="<?= base_url('categorias-servicio/crear') ?>">
     <button type="button" class="btn btn-primary">
         Agregar categor&iacute;a
     </button>

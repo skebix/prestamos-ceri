@@ -33,22 +33,25 @@ class Categorias_usuario extends CI_Controller {
                 $this->parser->parse('templates/footer', $data);
             }else{
                 //Si los datos tienen el formato correcto, debo registrar la nueva categoría en la BD
-                $datos['categoria'] = $this->input->post('categoria_equipo');
+                $datos['categoria'] = $this->input->post('categoria_usuario');
 
                 $table = 'categoria_usuario';
                 $was_inserted = $this->categoria_model->create_categoria($table, $datos);
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_inserted){
-                    redirect('inicio'); //TODO Redirigir con éxito al inicio
+                    $this->session->set_userdata('mensaje', 'Categor&iacute;a de usuario creada satisfactoriamente.');
+                    redirect('categorias-usuario/listar');
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el usuario
-                redirect('inicio'); //TODO Redirigir con error al inicio
+                $this->session->set_userdata('mensaje', 'No se pudo crear su categor&iacute;a de usuario.');
+                redirect('categorias-usuario/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            redirect('inicio'); //TODO redirect al inicio con error
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
         }
     }
 
@@ -69,7 +72,8 @@ class Categorias_usuario extends CI_Controller {
             $this->parser->parse('templates/footer', $data);
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            redirect('inicio'); //TODO redirect al inicio con error
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
         }
     }
 
@@ -104,15 +108,18 @@ class Categorias_usuario extends CI_Controller {
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_updated){
-                    redirect('categorias-usuario/listar'); //TODO Redirigir con éxito al inicio
+                    $this->session->set_userdata('mensaje', 'Categor&iacute;a de usuario actualizada satisfactoriamente.');
+                    redirect('categorias-usuario/listar');
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el usuario
-                redirect('categorias-usuario/listar'); //TODO Redirigir con error al inicio
+                $this->session->set_userdata('mensaje', 'No se pudo actualizar su categor&iacute;a de usuario.');
+                redirect('categorias-usuario/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            redirect('inicio'); //TODO redirect al inicio con error
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
         }
     }
 
@@ -124,15 +131,16 @@ class Categorias_usuario extends CI_Controller {
             $table = 'categoria_usuario';
             $delete_id = $this->categoria_model->delete_categoria($table, $id);
             if($delete_id){
-                //TODO redirigir a la lista con éxito
+                $this->session->set_userdata('mensaje', 'Categor&iacute;a de usuario eliminada satisfactoriamente.');
                 redirect('categorias-usuario/listar');
             }else{
-                //TODO redirigir a la lista con error
+                $this->session->set_userdata('mensaje', 'No se pudo eliminar su categor&iacute;a de usuario.');
                 redirect('categorias-usuario/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            redirect('inicio'); //TODO redirect al inicio con error
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
         }
     }
 

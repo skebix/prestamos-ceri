@@ -37,8 +37,6 @@ class Autenticacion extends CI_Controller {
             $usuario = $this->usuarios_model->get_usuario($cedula);
 
             $this->session->set_userdata($usuario);
-            $administrador = ($usuario['id_administracion'] === '1') ? true : false;
-            $this->session->set_userdata('administrador', $administrador);
 
             $this->session->set_userdata('mensaje', 'Acaba de ingresar al sistema');
             redirect('inicio');

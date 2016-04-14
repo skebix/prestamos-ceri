@@ -99,7 +99,7 @@ echo form_open('usuarios/actualizar/{id}', $attributes);
 <?php if($administrador): ?>
     <div class="checkbox">
         <label>
-            <input type="checkbox" value="1" name="id_administracion">
+            <input type="checkbox" value="1" name="administrador">
             El usuario ser&aacute; administrador?
         </label>
     </div>
