@@ -27,15 +27,15 @@
         </tr>
         </thead>
         <tbody>
-        {espacios}
+        <?php foreach($espacios as $espacio): ?>
         <tr>
-            <th scope="row">{id}</th>
-            <td>{nombre_espacio}</td>
-            <td><?= ('{otro_espacio}')? "Sí": "No"; ?></td>
-            <td><a href="<?= base_url('espacios/actualizar/{id}') ?>">Actualizar espacio</a></td>
-            <td><a href="<?= base_url('espacios/eliminar/{id}') ?>">Eliminar espacio</a></td>
+            <th scope="row"><?= $espacio['id'] ?></th>
+            <td><?= $espacio['nombre_espacio'] ?></td>
+            <td><?= ($espacio['otro_espacio'])? "S&iacute;": "No"; ?></td>
+            <td><a href="<?= base_url('espacios/actualizar/' . $espacio['id']) ?>">Actualizar espacio</a></td>
+            <td><a href="<?= base_url('espacios/eliminar/' . $espacio['id']) ?>">Eliminar espacio</a></td>
         </tr>
-        {/espacios}
+        <?php endforeach; ?>
         </tbody>
     </table>
 </div>

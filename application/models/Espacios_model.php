@@ -35,5 +35,4 @@ class Espacios_model extends CI_Model {
         $delete_id = $this->db->delete($table, array('id' => $id));
         return $delete_id;
     }
-
 }
