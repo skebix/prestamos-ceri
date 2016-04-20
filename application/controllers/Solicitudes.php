@@ -13,6 +13,6 @@ class Solicitudes extends CI_Controller {
     }
 
     public function index(){
-        ;
+        echo "Prueba 2";
     }
 }
