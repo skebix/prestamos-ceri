@@ -6,4 +6,13 @@
  * Time: 10:54 PM
  */
 
-//TODO solicitudes 2
+class Solicitudes extends CI_Controller {
+
+    public function __construct(){
+        parent::__construct();
+    }
+
+    public function index(){
+        ;
+    }
+}
