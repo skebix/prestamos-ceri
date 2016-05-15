@@ -13,7 +13,7 @@ class Autenticacion extends CI_Controller {
     }
 
     function index(){
-
+        //Prueba
         //Lo primero es ver si ya ingresó, no?
         $cedula = $this->session->cedula;
         if($cedula){
