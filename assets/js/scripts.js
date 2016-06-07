@@ -4,4 +4,11 @@
 
 $(document).ready(function(){
     $(".help-block").parent().parent().addClass('has-error');
+
+    $(function () {
+        $('.date').datetimepicker({
+            format: 'YYYY/MM/DD'
+        });
+    });
+
 });
