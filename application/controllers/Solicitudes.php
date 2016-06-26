@@ -68,13 +68,42 @@ class Solicitudes extends CI_Controller {
         if($administrador){
 
             $data['title'] = 'Borrado de solicitudes';
+            $table = 'solicitudes_equipos';
+            $this->db->from($table);
+            $this->db->where('id_solicitud', $id);
+            $delete_id = $this->db->get()->row_array();
+            if ($delete_id){
+                $this->db->delete($table, array('id_solicitud' => $id));
+            }
+            $table = 'solicitudes_espacios';
+            $this->db->from($table);
+            $this->db->where('id_solicitud', $id);
+            $delete_id = $this->db->get()->row_array();
+            if ($delete_id){
+                $this->db->delete($table, array('id_solicitud' => $id));
+            }
+            $table = 'solicitudes_servicios';
+            $this->db->from($table);
+            $this->db->where('id_solicitud', $id);
+            $delete_id = $this->db->get()->row_array();
+            if ($delete_id){
+                $this->db->delete($table, array('id_solicitud' => $id));
+            }
+            $table = 'usos_espacios';
+            $this->db->from($table);
+            $this->db->where('id_solicitud', $id);
+            $delete_id = $this->db->get()->row_array();
+            if ($delete_id){
+                $this->db->delete($table, array('id_solicitud' => $id));
+            }
             $table = 'solicitudes';
-            $delete_id = $this->db->select($table . $id);
-            $equipos = $this->equipos_model->get_equipos($table);
-            $data['equipos'] = $equipos;
-
+            $this->db->from($table);
+            $this->db->where('id', $id);
+            $delete_id = $this->db->get()->row_array();
+            if ($delete_id){
+                $this->db->delete($table, array('id' => $id));
+            }
             $this->parser->parse('templates/header', $data);
-            $this->parser->parse('equipos/show', $data);
             $this->parser->parse('templates/footer', $data);
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
