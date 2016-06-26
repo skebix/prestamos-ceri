@@ -14,6 +14,7 @@
         <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="<?= css_url(); ?>style.css">
         <link rel="stylesheet" type="text/css" href="<?= css_url(); ?>sticky-footer.css">
+        <link rel="stylesheet" type="text/css" href="<?= css_url(); ?>simple-sidebar.css">
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -49,16 +50,22 @@
                         </ul>
                     </li>
                 </ul>
-                <form class="navbar-form navbar-left" role="search">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Buscar">
-                    </div>
-                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></span></span></button>
-                </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Acerca de</a></li>
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Buscar">
+                        </div>
+                        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></span></span></button>
+                    </form>
                 </ul>
             </div>
         </div>
     </nav>
+    <div id="wrapper">
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">Menu administrativo</li>
+            </ul>
+        </div>
+    </div>
     <div class="container">
