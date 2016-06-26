@@ -61,7 +61,7 @@ class Solicitudes extends CI_Controller {
             redirect('inicio');
         }
     }
-    function borrar(){
+    function borrar($id){
 
         //Comprobacion de que el usuario sea un administrador
         $administrador = $this->session->administrador;
@@ -69,7 +69,7 @@ class Solicitudes extends CI_Controller {
 
             $data['title'] = 'Borrado de solicitudes';
             $table = 'solicitudes';
-            $delete_id = $this->db->select($table . '.id, ');
+            $delete_id = $this->db->select($table . $id);
             $equipos = $this->equipos_model->get_equipos($table);
             $data['equipos'] = $equipos;
 
