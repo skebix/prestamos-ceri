@@ -25,16 +25,14 @@ echo form_open('autenticacion', $attributes);
             <input type="password" class="form-control" id="inputPassword" name="password" value="<?php echo set_value('password'); ?>" placeholder="Contrase&ntilde;a">
         </div>
     </div>
-
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <button type="submit" class="btn btn-primary">Ingresar</button>
         </div>
+        </form>
     </div>
-</form>
-
-<a class="" href="<?= base_url('autenticacion/forgot-password') ?>">
     <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-primary">Olvid&oacute; su contrase&ntilde;a</button>
+        <a href="<?= base_url('autenticacion/forgot-password') ?>">
+            <button type="submit" class="btn btn-primary">Olvid&oacute; su contrase&ntilde;a</button>
+        </a>
     </div>
-</a>

@@ -13,7 +13,7 @@
         <!-- Google Hosted Fonts and homemade styles -->
         <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="<?= css_url(); ?>style.css">
-
+        <link rel="stylesheet" type="text/css" href="<?= css_url(); ?>sticky-footer.css">
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -22,3 +22,43 @@
         <![endif]-->
     </head>
     <body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="<?= base_url('') ?>">CERI-PRES</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="<?= base_url('') ?>">Inicio <span class="sr-only">(current)</span></a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Menu <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Eventos</a></li>
+                            <li><a href="#">Noticias</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Escuela</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Contacto</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-left" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Buscar">
+                    </div>
+                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></span></span></button>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">Acerca de</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">

@@ -13,7 +13,7 @@ class Solicitudes extends CI_Controller {
     }
 
     public function index(){
-        echo "Prueba 3";
+        echo "Fase de pruebas de solicitudes: crear / actualizar/ borrar";
     }
 
     function crear(){
@@ -39,7 +39,6 @@ class Solicitudes extends CI_Controller {
                 $insert_id = $this->db->insert('solicitudes', $datos);
 
 
-
                 $datos['id_categoria_equipo'] = $this->input->post('id_categoria_equipo');
                 $datos['nombre_equipo'] = $this->input->post('nombre_equipo');
 
@@ -62,5 +61,25 @@ class Solicitudes extends CI_Controller {
             redirect('inicio');
         }
     }
+    function borrar(){
 
+        //Comprobacion de que el usuario sea un administrador
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $data['title'] = 'Borrado de solicitudes';
+            $table = 'solicitudes';
+            $delete_id = $this->db->select($table . '.id, ');
+            $equipos = $this->equipos_model->get_equipos($table);
+            $data['equipos'] = $equipos;
+
+            $this->parser->parse('templates/header', $data);
+            $this->parser->parse('equipos/show', $data);
+            $this->parser->parse('templates/footer', $data);
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
 }
