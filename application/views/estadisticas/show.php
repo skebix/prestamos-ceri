@@ -18,17 +18,17 @@
         </tr>
         </thead>
         <tbody>
-        {categorias_usuario}
+        {category_stats}
         <tr>
             <td scope="row">{categoria}</td>
             <td>{cantidad}</td>
             <td>{tiempo}</td>
         </tr>
-        {/categorias_usuario}
+        {/category_stats}
         <tr>
             <th scope="row">TOTALES</th>
-            <th>{cantidad}</th>
-            <th>{tiempo}</th>
+            <th><?php echo $summary['cantidad_total']; ?></th>
+            <th><?php echo $summary['tiempo_total']; ?></th>
         </tr>
         </tbody>
     </table>
