@@ -9,7 +9,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">Estad&iacute;sticas del servicio de pr&eacute;stamos</div>
 
-    <table class="table table-striped table-hover ">
+    <table class="table table-striped table-hover">
         <thead>
         <tr>
             <th>Tipo de usuario</th>
@@ -47,14 +47,68 @@
         {materials_stats}
         <tr>
             <td scope="row">{espacio}</td>
-            <td>{cantidad_prestamos}</td>
-            <td>{tiempo_prestamos}</td>
+            <td>{cantidad_prestamo}</td>
+            <td>{tiempo_prestamo}</td>
         </tr>
         {/materials_stats}
         <tr>
             <th scope="row">TOTALES</th>
-            <th><?php //echo $summary2['cantidad_total']; ?></th>
-            <th><?php //echo $summary2['tiempo_total']; ?></th>
+            <th><?php echo $summary2['cantidad_total']; ?></th>
+            <th><?php echo $summary2['tiempo_total']; ?></th>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!-- Seccion de estadisticas de uso de salas y espacios-->
+<div class="panel panel-default">
+
+    <table class="table table-striped table-hover ">
+        <thead>
+        <tr>
+            <th>Uso de salas y espacios</th>
+            <th>Cantidad de prestamos</th>
+            <th>Tiempo de uso</th>
+        </tr>
+        </thead>
+        <tbody>
+        {use_stats}
+        <tr>
+            <td scope="row">{uso_espacio}</td>
+            <td>{cantidad_prestamo}</td>
+            <td>{tiempo_prestamo}</td>
+        </tr>
+        {/use_stats}
+        <tr>
+            <th scope="row">TOTALES</th>
+            <th><?php echo $summary3['cantidad_total']; ?></th>
+            <th><?php echo $summary3['tiempo_total']; ?></th>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!-- Seccion de estadisticas de equipos-->
+<div class="panel panel-default">
+
+    <table class="table table-striped table-hover ">
+        <thead>
+        <tr>
+            <th>Equipos</th>
+            <th>Cantidad de prestamos</th>
+            <th>Tiempo de uso</th>
+        </tr>
+        </thead>
+        <tbody>
+        {stuff_stats}
+        <tr>
+            <td scope="row">{equipos}</td>
+            <td>{cantidad_prestamo}</td>
+            <td>{tiempo_prestamo}</td>
+        </tr>
+        {/stuff_stats}
+        <tr>
+            <th scope="row">TOTALES</th>
+            <th><?php echo $summary4['cantidad_total']; ?></th>
+            <th><?php echo $summary4['tiempo_total']; ?></th>
         </tr>
         </tbody>
     </table>
