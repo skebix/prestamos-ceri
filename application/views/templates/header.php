@@ -10,6 +10,8 @@
         <!-- Bootstrap -->
         <link href="<?= bootstrap_css_url(); ?>bootstrap.min.css" rel="stylesheet">
 
+        <link href="<?= css_url(); ?>bootstrap-datetimepicker-build.css" rel="stylesheet">
+
         <!-- Google Hosted Fonts and homemade styles -->
         <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="<?= css_url(); ?>style.css">

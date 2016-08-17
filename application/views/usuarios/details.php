@@ -26,3 +26,9 @@
 </ul>
 
 <a class="logout-button btn btn-success" href="<?= base_url('usuarios/actualizar/{id}') ?>">Editar usuario</a>
+
+<a class="logout-button" href="<?= base_url() ?>">
+    <button type="button" class="btn btn-primary">
+        Volver al home
+    </button>
+</a>

@@ -39,4 +39,12 @@ class Equipos_model extends CI_Model {
         $delete_id = $this->db->delete($table, array('id' => $id));
         return $delete_id;
     }
+
+    public function get_equipos_sin_usar($ids){
+        $this->db->from('equipos');
+        $this->db->where_not_in('id', $ids);
+        $query = $this->db->get();
+
+        return $query->result_array();
+    }
 }

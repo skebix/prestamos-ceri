@@ -23,7 +23,11 @@ class Solicitudes extends CI_Controller {
 
             $data['title'] = 'Nueva solicitud';
 
-            $this->form_validation->set_rules('date', 'Fecha de uso', 'required');
+            $table = 'usuarios';
+            $usuarios = $this->usuarios_model->get_usuarios();
+            $data['usuarios'] = $usuarios;
+
+            $this->form_validation->set_rules('fecha_uso', 'Fecha de uso', 'required');
 
             if(!$this->form_validation->run()){
 
@@ -33,28 +37,31 @@ class Solicitudes extends CI_Controller {
                 $this->parser->parse('templates/footer', $data);
             }else{
                 //Si los datos tienen el formato correcto, debo registrar la nueva categoría en la BD
-                $datos['fecha_uso'] = $this->input->post('date');
+                $datos['id_reservado'] = $this->session->id;
+                $datos['id_usuario'] = $this->input->post('id_usuario');
+                $datos['fecha_solicitud'] = date('Y-m-d');
 
+                $fecha_uso = DateTime::createFromFormat('d/m/Y', $this->input->post('fecha_uso'));
+                $datos['fecha_uso'] = $fecha_uso->format('Y-m-d');
 
-                $insert_id = $this->db->insert('solicitudes', $datos);
+                $hora_entrega = DateTime::createFromFormat('h:i A', $this->input->post('hora_entrega'));
+                $datos['hora_entrega'] = $hora_entrega->format('H:i:s');
 
+                $hora_devolucion = DateTime::createFromFormat('h:i A', $this->input->post('hora_devolucion'));
+                $datos['hora_devolucion'] = $hora_devolucion->format('H:i:s');
 
-
-                $datos['id_categoria_equipo'] = $this->input->post('id_categoria_equipo');
-                $datos['nombre_equipo'] = $this->input->post('nombre_equipo');
-
-                $table = 'equipos';
-                $was_inserted = $this->equipos_model->create_equipo($table, $datos);
+                $table = 'solicitudes';
+                $was_inserted = $this->db->insert($table, $datos);
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_inserted){
                     $this->session->set_userdata('mensaje', 'El equipo fue a&ntilde;adido satisfactoriamente.');
-                    redirect('equipos/listar');
+                    redirect('solicitudes/listar');
                 }
 
-                //Si llegué a este punto es porque no pudo guardar el equipo
-                $this->session->set_userdata('mensaje', 'No se pudo agregar el equipo, por favor intente nuevamente.');
-                redirect('equipos/listar');
+                //Si llegué a este punto es porque no pudo guardar la solicitud
+                $this->session->set_userdata('mensaje', 'No se pudo crear la solicitud, por favor intente nuevamente.');
+                redirect('solicitudes/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
@@ -63,4 +70,41 @@ class Solicitudes extends CI_Controller {
         }
     }
 
+    public function nuevo_equipo(){
+        $fecha_uso = $this->input->post('fecha_uso');
+        $hora_entrega = $this->input->post('hora_entrega');
+        $hora_devolucion = $this->input->post('hora_devolucion');
+
+        $fecha_uso = DateTime::createFromFormat('d/m/Y', $fecha_uso);
+        $hora_entrega = DateTime::createFromFormat('h:i A', $hora_entrega);
+        $hora_devolucion = DateTime::createFromFormat('h:i A', $hora_devolucion);
+
+        $fecha_uso = $fecha_uso->format('Y-m-d');
+
+        $solicitudes = $this->solicitudes_model->get_solicitudes_by_date('solicitudes', $fecha_uso);
+
+        $ids_equipos_en_uso = array();
+
+        foreach ($solicitudes as $i => $solicitud){
+            //start1 <= end2 and start2 <= end1 to see if they intersect
+            $inicio_solicitud = DateTime::createFromFormat('H:i:s', $solicitud['hora_entrega']);
+            $fin_solicitud = DateTime::createFromFormat('H:i:s', $solicitud['hora_devolucion']);
+            if($hora_entrega <= $fin_solicitud and $inicio_solicitud <= $hora_devolucion){
+                $equipos = $this->solicitudes_model->get_equipos_by_solicitud('solicitudes_equipos', $solicitud['id']);
+                foreach ($equipos as $j => $equipo){
+                    $ids_equipos_en_uso[] = $equipo['id_equipo'];
+                }
+            }
+        }
+
+        if(empty($ids_equipos_en_uso)){
+            $ids_equipos_en_uso[] = '0';
+        }
+
+        $ids_equipos_en_uso = array_unique($ids_equipos_en_uso);
+
+        $equipos_disponibles = $this->equipos_model->get_equipos_sin_usar($ids_equipos_en_uso);
+
+        echo json_encode($equipos_disponibles);
+    }
 }

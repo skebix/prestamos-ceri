@@ -20,6 +20,7 @@
             <li><a href="<?= base_url('servicios/listar') ?>">Servicios</a></li>
             <li><a href="<?= base_url('espacios/listar') ?>">Espacios</a></li>
             <li><a href="<?= base_url('usos/listar') ?>">Usos</a></li>
+            <li><a href="<?= base_url('solicitudes/listar') ?>">Solicitudes</a></li>
         </ul>
     <?php endif; ?>
 <?php else: ?>

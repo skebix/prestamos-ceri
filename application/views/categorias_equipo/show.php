@@ -43,3 +43,9 @@
         Agregar categor&iacute;a
     </button>
 </a>
+
+<a class="logout-button" href="<?= base_url() ?>">
+    <button type="button" class="btn btn-primary">
+        Volver al home
+    </button>
+</a>

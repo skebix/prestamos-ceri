@@ -26,3 +26,9 @@ echo form_open('espacios/crear', $attributes);
         </div>
     </div>
 </form>
+
+<a class="logout-button" href="<?= base_url() ?>">
+    <button type="button" class="btn btn-primary">
+        Volver al home
+    </button>
+</a>
