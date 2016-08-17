@@ -60,5 +60,6 @@ p {
 		<h1><?php echo $heading; ?></h1>
 		<?php echo $message; ?>
 	</div>
+	<a href=""><button class="btn btn-warning">Volver </button></a>
 </body>
 </html>

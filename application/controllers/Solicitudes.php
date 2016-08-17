@@ -13,7 +13,7 @@ class Solicitudes extends CI_Controller {
     }
 
     public function index(){
-        echo "Prueba 3";
+        echo "Fase de pruebas de solicitudes: crear / actualizar/ borrar";
     }
 
     function crear(){
@@ -63,6 +63,57 @@ class Solicitudes extends CI_Controller {
                 $this->session->set_userdata('mensaje', 'No se pudo crear la solicitud, por favor intente nuevamente.');
                 redirect('solicitudes/listar');
             }
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
+    
+    function borrar($id){
+
+        //Comprobacion de que el usuario sea un administrador
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $data['title'] = 'Borrado de solicitudes';
+            $table = 'solicitudes_equipos';
+            $this->db->from($table);
+            $this->db->where('id_solicitud', $id);
+            $delete_id = $this->db->get()->row_array();
+            if ($delete_id){
+                $this->db->delete($table, array('id_solicitud' => $id));
+            }
+            $table = 'solicitudes_espacios';
+            $this->db->from($table);
+            $this->db->where('id_solicitud', $id);
+            $delete_id = $this->db->get()->row_array();
+            if ($delete_id){
+                $this->db->delete($table, array('id_solicitud' => $id));
+            }
+            $table = 'solicitudes_servicios';
+            $this->db->from($table);
+            $this->db->where('id_solicitud', $id);
+            $delete_id = $this->db->get()->row_array();
+            if ($delete_id){
+                $this->db->delete($table, array('id_solicitud' => $id));
+            }
+            $table = 'usos_espacios';
+            $this->db->from($table);
+            $this->db->where('id_solicitud', $id);
+            $delete_id = $this->db->get()->row_array();
+            if ($delete_id){
+                $this->db->delete($table, array('id_solicitud' => $id));
+            }
+            $table = 'solicitudes';
+            $this->db->from($table);
+            $this->db->where('id', $id);
+            $delete_id = $this->db->get()->row_array();
+            if ($delete_id){
+                $this->db->delete($table, array('id' => $id));
+            }
+            $this->parser->parse('templates/header', $data);
+            $this->parser->parse('templates/footer', $data);
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
             $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');

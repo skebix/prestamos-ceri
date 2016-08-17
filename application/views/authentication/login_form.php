@@ -10,31 +10,28 @@ $attributes = array('class' => 'form-horizontal');
 echo form_open('autenticacion', $attributes);
 ?>
 
-    <div class="form-group">
-        <label for="inputCedula" class="col-sm-2 control-label">C&eacute;dula</label>
-        <div class="col-sm-10">
-            <?php echo form_error('cedula'); ?>
-            <input type="text" class="form-control" id="inputCedula" name="cedula" value="<?php echo set_value('cedula'); ?>" placeholder="C&eacute;dula">
-        </div>
+<div class="form-group">
+    <label for="inputCedula" class="col-sm-2 control-label">C&eacute;dula</label>
+    <div class="col-sm-10">
+        <?php echo form_error('cedula'); ?>
+        <input type="text" class="form-control" id="inputCedula" name="cedula" value="<?php echo set_value('cedula'); ?>" placeholder="C&eacute;dula">
     </div>
+</div>
 
-    <div class="form-group">
-        <label for="inputPassword" class="col-sm-2 control-label">Contrase&ntilde;a</label>
-        <div class="col-sm-10">
-            <?php echo form_error('password'); ?>
-            <input type="password" class="form-control" id="inputPassword" name="password" value="<?php echo set_value('password'); ?>" placeholder="Contrase&ntilde;a">
-        </div>
+<div class="form-group">
+    <label for="inputPassword" class="col-sm-2 control-label">Contrase&ntilde;a</label>
+    <div class="col-sm-10">
+        <?php echo form_error('password'); ?>
+        <input type="password" class="form-control" id="inputPassword" name="password" value="<?php echo set_value('password'); ?>" placeholder="Contrase&ntilde;a">
     </div>
-
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-primary">Ingresar</button>
-        </div>
+</div>
+<div class="form-group">
+    <div class="col-sm-offset-2 col-sm-4">
+        <button type="submit" class="btn btn-primary">Ingresar</button>
     </div>
-</form>
-
-<a class="" href="<?= base_url('autenticacion/forgot-password') ?>">
-    <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-primary">Olvid&oacute; su contrase&ntilde;a</button>
-    </div>
-</a>
+</div>
+<div class="col-sm-offset-2 col-sm-4">
+    <a href="<?= base_url('autenticacion/forgot-password') ?>">
+        <button type="button" class="btn btn-primary">Olvid&oacute; su contrase&ntilde;a</button>
+    </a>
+</div>
