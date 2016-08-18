@@ -69,7 +69,7 @@ class Estadisticas extends CI_Controller {
                 $m = 0;
                 while ($m < $N_usuarios) //Recorrido del numero de usuarios
                 {
-                    if (($solicitudes[$n]['id_reservado'] == $usuarios[$m]['id'])
+                    if (($solicitudes[$n]['id_solicitante'] == $usuarios[$m]['id'])
                         and
                         ($usuarios[$m]['id_categoria_usuario'] == $categorias[$x]['id']))
                     {

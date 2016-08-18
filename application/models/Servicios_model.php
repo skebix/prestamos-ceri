@@ -39,4 +39,13 @@ class Servicios_model extends CI_Model {
         $delete_id = $this->db->delete($table, array('id' => $id));
         return $delete_id;
     }
+
+    public function get_servicios_solicitud($id){
+        $this->db->select('*');
+        $this->db->from('solicitudes_servicios');
+        $this->db->where('id_solicitud ='.$id);
+        $this->db->join('servicios','servicios.id = solicitudes_servicios.id_servicio');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
 }

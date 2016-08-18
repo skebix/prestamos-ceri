@@ -88,15 +88,14 @@ $(document).ready(function(){
             var opciones_seleccionadas = $.map($('select[id^="select-nuevo-equipo-"] option:selected'), function(n){
                 return n.value;
             });
-
             var lista_equipos = $.map(equipos, function(n){
                 return n['id'];
             });
-
             var equipos_disponibles = lista_equipos.diff(opciones_seleccionadas);
-
             $('#select-nuevo-equipo-' + cantidad_clicks_nuevo_equipo + ' option:selected').removeAttr('selected');
             $('#select-nuevo-equipo-' + cantidad_clicks_nuevo_equipo + ' option[value="' + equipos_disponibles[0] + '"]').attr('selected','selected');
+            console.log(opciones_seleccionadas);
+            console.log(equipos_disponibles);
         }
 
         if(cantidad_selects == equipos.length){
@@ -187,8 +186,6 @@ $(document).ready(function(){
         console.log(valor + '++++');
         $(this).parent().remove();
         $('.nuevo-equipo').removeClass('hidden');
-    });
-
-    */
+    });*/
 
 });

@@ -47,4 +47,13 @@ class Equipos_model extends CI_Model {
 
         return $query->result_array();
     }
+
+    public function get_equipos_solicitud($id){
+        $this->db->select('*');
+        $this->db->from('solicitudes_equipos');
+        $this->db->where('id_solicitud ='.$id);
+        $this->db->join('equipos','equipos.id = solicitudes_equipos.id_equipo');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
 }

@@ -35,4 +35,13 @@ class Espacios_model extends CI_Model {
         $delete_id = $this->db->delete($table, array('id' => $id));
         return $delete_id;
     }
+
+    public function get_espacios_solicitud($id){
+        $this->db->select('*');
+        $this->db->from('solicitudes_espacios');
+        $this->db->where('id_solicitud ='.$id);
+        $this->db->join('espacios','espacios.id = solicitudes_espacios.id_espacio');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
 }

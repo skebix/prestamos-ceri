@@ -158,4 +158,57 @@ class Solicitudes extends CI_Controller {
 
         echo json_encode($equipos_disponibles);
     }
+    public function listar(){
+        //Lo primero es ver si es Administrador, no?
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $data['title'] = 'Lista de Espacios';
+
+            $table_solicitudes = 'solicitudes';
+            $table_usuarios = 'usuarios';
+            $data['solicitudes'] = $this->solicitudes_model->get_solicitudes_extended($table_solicitudes,$table_usuarios);
+            $this->parser->parse('templates/header', $data);
+            $this->parser->parse('solicitudes/show', $data);
+            $this->parser->parse('templates/footer', $data);
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
+    public function detalles($id)
+    {
+        //Lo primero es ver si es Administrador, o si el que intenta ver los detalles es el mismo usuario
+        $administrador = $this->session->administrador;
+        if ($administrador) {
+            $data['title'] = 'Detalles de la solicitud';
+            $table_solicitudes = 'solicitudes';
+            $table_usuarios = 'usuarios';
+            $equipos_reservados = $this->equipos_model->get_equipos_solicitud($id);
+            $espacios_reservados = $this->espacios_model->get_espacios_solicitud($id);
+            $servicios_reservados = $this->servicios_model->get_servicios_solicitud($id);
+            $this->db->select('id_solicitante, fecha_solicitud, fecha_uso');
+            $this->db->from($table_solicitudes);
+            $this->db->where($table_solicitudes.'.id ='.$id);
+            $solicitud_unica = $this->db->get()->result_array();
+            $idsol = $solicitud_unica[0]['id_solicitante'];
+            $this->db->select('primer_nombre, segundo_nombre, primer_apellido, segundo_apellido');
+            $this->db->from($table_usuarios);
+            $this->db->where($table_usuarios.'.id ='.$idsol);
+            $usuario = $this->db->get()->result_array();
+            $data['solicitud'] = $solicitud_unica;
+            $data['usuario'] = $usuario;
+            $data['equipos'] = $equipos_reservados;
+            $data['espacios'] = $espacios_reservados;
+            $data['servicios'] = $servicios_reservados;
+            $this->parser->parse('templates/header', $data);
+            $this->parser->parse('solicitudes/details', $data);
+            $this->parser->parse('templates/footer', $data);
+        } else {
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
 }
