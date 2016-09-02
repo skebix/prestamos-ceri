@@ -15,7 +15,7 @@
             <a href="<?= base_url('servicios/listar') ?>" class="btn btn-default"><span class="glyphicon glyphicon-blackboard"></span> Servicios</a>
             <a href="<?= base_url('espacios/listar') ?>" class="btn btn-default"><span class="glyphicon glyphicon-calendar"></span> Espacios</a>
             <a href="<?= base_url('usos/listar') ?>" class="btn btn-default"><span class="glyphicon glyphicon-wrench"></span> Usos</a>
-            <li><a href="<?= base_url('solicitudes/listar') ?>">Usos</a></li>
+            <a href="<?= base_url('solicitudes/listar') ?>" class="btn btn-default"><span class="glyphicon glyphicon-wrench"></span> Solicitudes</a>
             <a href="<?= base_url('estadisticas') ?>" class="btn btn-default"><span class="glyphicon glyphicon-equalizer"></span> Estad&iacutesticas de uso</a>
         </div>
     <?php endif; ?>

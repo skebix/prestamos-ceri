@@ -53,4 +53,13 @@ class Espacios_model extends CI_Model {
 
         return $query->result_array();
     }
+
+    public function get_espacios_solicitud($id){
+        $this->db->select('*');
+        $this->db->from('solicitudes_espacios');
+        $this->db->where('id_solicitud ='.$id);
+        $this->db->join('espacios','espacios.id = solicitudes_espacios.id_espacio');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
 }
