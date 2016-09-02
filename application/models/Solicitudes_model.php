@@ -8,8 +8,17 @@
 
 class Solicitudes_model extends CI_Model {
 
-    public function create_servicio($table, $datos){
-        $insert_id = $this->db->insert($table, $datos);
+    public function create_solicitud($table, $datos){
+        $this->db->insert($table, $datos);
+        $insert_id = $this->db->insert_id();
+
+        return $insert_id;
+    }
+
+    public function insert_auxiliares($table, $datos){
+        $this->db->insert($table, $datos);
+        $insert_id = $this->db->insert_id();
+
         return $insert_id;
     }
 
@@ -29,8 +38,14 @@ class Solicitudes_model extends CI_Model {
         return $query->result_array();
     }
 
-    
+    public function get_espacios_by_solicitud($table, $id_solicitud){
+        $this->db->from($table);
+        $this->db->where('id_solicitud', $id_solicitud);
+        $query = $this->db->get();
 
+        return $query->result_array();
+    }
+    
     public function get_servicios($table){
         $this->db->select($table . '.id, ' . $table . '.nombre_servicio, categoria_servicio.categoria');
         $this->db->from($table);

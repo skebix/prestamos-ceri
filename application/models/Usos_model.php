@@ -15,13 +15,30 @@ class Usos_model extends CI_Model {
         return $this->db->get()->row_array();
     }
 
+    public function get_uso_by_name($table, $name){
+        $this->db->from($table);
+        $this->db->where('uso', $name);
+
+        return $this->db->get()->row_array();
+    }
+
     public function get_usos($table){
         $query = $this->db->get($table);
         return $query->result_array();
     }
 
+    public function get_usos_sistema($table){
+        $this->db->from($table);
+        $this->db->where('otro_uso', FALSE);
+        $query = $this->db->get();
+
+        return $query->result_array();
+    }
+
     public function create_uso($table, $datos){
-        $insert_id = $this->db->insert($table, $datos);
+        $this->db->insert($table, $datos);
+        $insert_id = $this->db->insert_id();
+
         return $insert_id;
     }
 

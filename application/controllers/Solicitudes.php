@@ -21,13 +21,83 @@ class Solicitudes extends CI_Controller {
         $administrador = $this->session->administrador;
         if($administrador){
 
-            $data['title'] = 'Nueva solicitud';
-
-            $table = 'usuarios';
             $usuarios = $this->usuarios_model->get_usuarios();
+
+            $data['title'] = 'Nueva solicitud';
             $data['usuarios'] = $usuarios;
 
+            $select_nuevo_espacio = $this->input->post('select_nuevo_espacio');
+            $select_usos_espacio = $this->input->post('select_usos_espacio');
+
+            $select_nuevo_equipo = $this->input->post('select_nuevo_equipo');
+            $select_nuevo_servicio = $this->input->post('select_nuevo_servicio');
+
+            $input_nuevo_espacio = $this->input->post('input_nuevo_espacio');
+            $input_otro_uso = $this->input->post('input_otro_uso');
+
+            if($this->input->post()){
+                $data = array_merge($this->input->post(), $data);
+            }
+
+            $otro_espacio = $this->espacios_model->get_espacio_by_name('espacios', 'Otro (especifique)');
+            $otro_uso = $this->usos_model->get_uso_by_name('usos', 'Otro (especifique)');
+            $otro_servicio = $this->servicios_model->get_servicio_by_name('servicios', 'Otro (especifique)');
+
+            $indices_espacios = array();
+            if(isset($select_nuevo_espacio)){
+                foreach($select_nuevo_espacio as $k => $v){
+                    if($v == $otro_espacio['id']){
+                        $indices_espacios[] = $k;
+                    }
+                }
+            }
+
+            $viejos_espacios = $input_nuevo_espacio;
+            if(isset($viejos_espacios)){
+                foreach($viejos_espacios as $k => $v){
+                    $data['input_nuevo_espacio_' . $indices_espacios[$k]] = $v;
+                }
+            }
+
+            $indices_usos = array();
+            if(isset($select_usos_espacio)){
+                foreach($select_usos_espacio as $k => $v){
+                    if($v == $otro_uso['id']){
+                        $indices_usos[] = $k;
+                    }
+                }
+            }
+
+            $viejos_usos = $input_otro_uso;
+            if(isset($viejos_usos)){
+                foreach($viejos_usos as $k => $v){
+                    $data['input_otro_uso_' . $indices_usos[$k]] = $v;
+                }
+            }
+
             $this->form_validation->set_rules('fecha_uso', 'Fecha de uso', 'required');
+            $this->form_validation->set_rules('hora_entrega', 'Hora de entrega', 'required');
+            $this->form_validation->set_rules('hora_devolucion', 'Hora de devoluci&oacute;n', 'required');
+
+            $fecha_uso = $this->input->post('fecha_uso');
+            $hora_entrega = $this->input->post('hora_entrega');
+            $hora_devolucion = $this->input->post('hora_devolucion');
+
+            if(!empty($fecha_uso) && !empty($hora_entrega) && !empty($hora_devolucion)){
+                if(!empty($select_nuevo_equipo)){
+                    foreach($select_nuevo_equipo as $k => $v){
+                        $this->form_validation->set_rules('select_nuevo_equipo[' . $k . ']', 'Equipo', 'callback__equipo_ya_reservado');
+                    }
+                }
+
+                if(!empty($select_nuevo_espacio)){
+                    foreach($select_nuevo_espacio as $k => $v){
+                        if($v != $otro_espacio['id']){
+                            $this->form_validation->set_rules('select_nuevo_espacio[' . $k . ']', 'Espacio', 'callback__espacio_ya_reservado');
+                        }
+                    }
+                }
+            }
 
             if(!$this->form_validation->run()){
 
@@ -36,25 +106,76 @@ class Solicitudes extends CI_Controller {
                 $this->parser->parse('solicitudes/create', $data);
                 $this->parser->parse('templates/footer', $data);
             }else{
-                //Si los datos tienen el formato correcto, debo registrar la nueva categoría en la BD
+                //Si los datos tienen el formato correcto, debo registrar la nueva solicitud en la BD
                 $datos['id_reservado'] = $this->session->id;
-                $datos['id_usuario'] = $this->input->post('id_usuario');
+                $datos['id_solicitante'] = $this->input->post('id_solicitante');
                 $datos['fecha_solicitud'] = date('Y-m-d');
 
-                $fecha_uso = DateTime::createFromFormat('d/m/Y', $this->input->post('fecha_uso'));
+                $fecha_uso = DateTime::createFromFormat('d/m/Y', $fecha_uso);
                 $datos['fecha_uso'] = $fecha_uso->format('Y-m-d');
 
-                $hora_entrega = DateTime::createFromFormat('h:i A', $this->input->post('hora_entrega'));
+                $hora_entrega = DateTime::createFromFormat('h:i A', $hora_entrega);
                 $datos['hora_entrega'] = $hora_entrega->format('H:i:s');
 
-                $hora_devolucion = DateTime::createFromFormat('h:i A', $this->input->post('hora_devolucion'));
+                $hora_devolucion = DateTime::createFromFormat('h:i A', $hora_devolucion);
                 $datos['hora_devolucion'] = $hora_devolucion->format('H:i:s');
 
                 $table = 'solicitudes';
-                $was_inserted = $this->db->insert($table, $datos);
+                $id_solicitud = $this->solicitudes_model->create_solicitud($table, $datos);
 
-                //Si lo guardó correctamente, redirigir al inicio con éxito
-                if($was_inserted){
+                if($id_solicitud){
+
+                    if(isset($select_nuevo_equipo)){
+                        foreach($select_nuevo_equipo as $k => $v){
+                            $datos = array();
+                            $datos['id_equipo'] = $v;
+                            $datos['id_solicitud'] = $id_solicitud;
+                            $insert_id = $this->solicitudes_model->insert_auxiliares('solicitudes_equipos', $datos);
+                        }
+                    }
+
+                    if(isset($select_nuevo_espacio)){
+                        foreach($select_nuevo_espacio as $k => $v){
+                            $datos = array();
+                            if($v == $otro_espacio['id']){
+                                $datos['nombre_espacio'] = $data['input_nuevo_espacio_' . $k];
+                                $datos['otro_espacio'] = TRUE;
+                                $id_espacio = $this->espacios_model->create_espacio('espacios', $datos);
+                            }else{
+                                $id_espacio = $v;
+                            }
+
+                            if($select_usos_espacio[$k] == $otro_uso['id']){
+                                $datos = array();
+                                $datos['uso'] = $data['input_otro_uso_' . $k];
+                                $datos['otro_uso'] = TRUE;
+                                $id_uso = $this->usos_model->create_uso('usos', $datos);
+                            }else{
+                                $id_uso = $select_usos_espacio[$k];
+                            }
+
+                            $datos = array();
+                            $datos['id_solicitud'] = $id_solicitud;
+                            $datos['id_espacio'] = $id_espacio;
+                            $datos['id_uso'] = $id_uso;
+                            $insert_id = $this->solicitudes_model->insert_auxiliares('solicitudes_espacios_usos', $datos);
+                        }
+                    }
+
+                    if(isset($select_nuevo_servicio)){
+                        foreach($select_nuevo_servicio as $k => $v){
+                            $datos = array();
+                            $datos['nombre_servicio'] = $data['input_nuevo_servicio'][$k];
+                            $datos['id_categoria_servicio'] = $v;
+                            $id_servicio = $this->servicios_model->create_servicio('servicios', $datos);
+
+                            $datos = array();
+                            $datos['id_servicio'] = $id_servicio;
+                            $datos['id_solicitud'] = $id_solicitud;
+                            $insert_id = $this->solicitudes_model->insert_auxiliares('solicitudes_servicios', $datos);
+                        }
+                    }
+
                     $this->session->set_userdata('mensaje', 'El equipo fue a&ntilde;adido satisfactoriamente.');
                     redirect('solicitudes/listar');
                 }
@@ -75,7 +196,6 @@ class Solicitudes extends CI_Controller {
         //Comprobacion de que el usuario sea un administrador
         $administrador = $this->session->administrador;
         if($administrador){
-
             $data['title'] = 'Borrado de solicitudes';
             $table = 'solicitudes_equipos';
             $this->db->from($table);
@@ -157,5 +277,138 @@ class Solicitudes extends CI_Controller {
         $equipos_disponibles = $this->equipos_model->get_equipos_sin_usar($ids_equipos_en_uso);
 
         echo json_encode($equipos_disponibles);
+    }
+
+    public function nuevo_espacio(){
+        $fecha_uso = $this->input->post('fecha_uso');
+        $hora_entrega = $this->input->post('hora_entrega');
+        $hora_devolucion = $this->input->post('hora_devolucion');
+
+        $fecha_uso = DateTime::createFromFormat('d/m/Y', $fecha_uso);
+        $hora_entrega = DateTime::createFromFormat('h:i A', $hora_entrega);
+        $hora_devolucion = DateTime::createFromFormat('h:i A', $hora_devolucion);
+
+        $fecha_uso = $fecha_uso->format('Y-m-d');
+
+        $solicitudes = $this->solicitudes_model->get_solicitudes_by_date('solicitudes', $fecha_uso);
+
+        $ids_espacios_en_uso = array();
+
+        foreach ($solicitudes as $i => $solicitud){
+            //start1 <= end2 and start2 <= end1 to see if they intersect
+            $inicio_solicitud = DateTime::createFromFormat('H:i:s', $solicitud['hora_entrega']);
+            $fin_solicitud = DateTime::createFromFormat('H:i:s', $solicitud['hora_devolucion']);
+            if($hora_entrega <= $fin_solicitud and $inicio_solicitud <= $hora_devolucion){
+                $espacios = $this->solicitudes_model->get_espacios_by_solicitud('solicitudes_espacios_usos', $solicitud['id']);
+                foreach ($espacios as $j => $espacio){
+                    $ids_espacios_en_uso[] = $espacio['id_espacio'];
+                }
+            }
+        }
+
+        if(empty($ids_espacios_en_uso)){
+            $ids_espacios_en_uso[] = '0';
+        }
+
+        $ids_espacios_en_uso = array_unique($ids_espacios_en_uso);
+
+        $espacios_disponibles = $this->espacios_model->get_espacios_sin_usar($ids_espacios_en_uso);
+
+        $usos_espacio = $this->usos_model->get_usos_sistema('usos');
+
+        $data['espacios'] = $espacios_disponibles;
+        $data['usos'] = $usos_espacio;
+
+        echo json_encode($data);
+    }
+
+    public function nuevo_servicio(){
+        $servicios_disponibles = $this->categoria_model->get_categorias('categoria_servicio');
+
+        echo json_encode($servicios_disponibles);
+    }
+
+    public function _equipo_ya_reservado($id_equipo){
+        $this->form_validation->set_message('_equipo_ya_reservado', 'Este equipo se encuentra reservado por otro usuario.');
+
+        $fecha_uso = $this->input->post('fecha_uso');
+        $hora_entrega = $this->input->post('hora_entrega');
+        $hora_devolucion = $this->input->post('hora_devolucion');
+
+        $fecha_uso = DateTime::createFromFormat('d/m/Y', $fecha_uso);
+        $hora_entrega = DateTime::createFromFormat('h:i A', $hora_entrega);
+        $hora_devolucion = DateTime::createFromFormat('h:i A', $hora_devolucion);
+
+        $fecha_uso = $fecha_uso->format('Y-m-d');
+
+        $solicitudes = $this->solicitudes_model->get_solicitudes_by_date('solicitudes', $fecha_uso);
+
+        $ids_equipos_en_uso = array();
+
+        foreach ($solicitudes as $i => $solicitud){
+            //start1 <= end2 and start2 <= end1 to see if they intersect
+            $inicio_solicitud = DateTime::createFromFormat('H:i:s', $solicitud['hora_entrega']);
+            $fin_solicitud = DateTime::createFromFormat('H:i:s', $solicitud['hora_devolucion']);
+            if($hora_entrega <= $fin_solicitud and $inicio_solicitud <= $hora_devolucion){
+                $equipos = $this->solicitudes_model->get_equipos_by_solicitud('solicitudes_equipos', $solicitud['id']);
+                foreach ($equipos as $j => $equipo){
+                    $ids_equipos_en_uso[] = $equipo['id_equipo'];
+                }
+            }
+        }
+
+        if(empty($ids_equipos_en_uso)){
+            $ids_equipos_en_uso[] = '0';
+        }
+
+        $ids_equipos_en_uso = array_unique($ids_equipos_en_uso);
+
+        if(in_array($id_equipo, $ids_equipos_en_uso)){
+            return false;
+        }
+
+        return true;
+    }
+
+    public function _espacio_ya_reservado($id_espacio){
+        $this->form_validation->set_message('_espacio_ya_reservado', 'Este espacio se encuentra reservado por otro usuario.');
+
+        $fecha_uso = $this->input->post('fecha_uso');
+        $hora_entrega = $this->input->post('hora_entrega');
+        $hora_devolucion = $this->input->post('hora_devolucion');
+
+        $fecha_uso = DateTime::createFromFormat('d/m/Y', $fecha_uso);
+        $hora_entrega = DateTime::createFromFormat('h:i A', $hora_entrega);
+        $hora_devolucion = DateTime::createFromFormat('h:i A', $hora_devolucion);
+
+        $fecha_uso = $fecha_uso->format('Y-m-d');
+
+        $solicitudes = $this->solicitudes_model->get_solicitudes_by_date('solicitudes', $fecha_uso);
+
+        $ids_espacios_en_uso = array();
+
+        foreach ($solicitudes as $i => $solicitud){
+            //start1 <= end2 and start2 <= end1 to see if they intersect
+            $inicio_solicitud = DateTime::createFromFormat('H:i:s', $solicitud['hora_entrega']);
+            $fin_solicitud = DateTime::createFromFormat('H:i:s', $solicitud['hora_devolucion']);
+            if($hora_entrega <= $fin_solicitud and $inicio_solicitud <= $hora_devolucion){
+                $espacios = $this->solicitudes_model->get_espacios_by_solicitud('solicitudes_espacios_usos', $solicitud['id']);
+                foreach ($espacios as $j => $espacio){
+                    $ids_espacios_en_uso[] = $espacio['id_espacio'];
+                }
+            }
+        }
+
+        if(empty($ids_espacios_en_uso)){
+            $ids_espacios_en_uso[] = '0';
+        }
+
+        $ids_espacios_en_uso = array_unique($ids_espacios_en_uso);
+
+        if(in_array($id_espacio, $ids_espacios_en_uso)){
+            return false;
+        }
+
+        return true;
     }
 }

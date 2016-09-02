@@ -47,8 +47,58 @@ $(document).ready(function(){
         }
     });
 
-    var cantidad_clicks_nuevo_equipo = 0;
+    Array.prototype.diff = function(a){
+        return this.filter(function(i){
+            return a.indexOf(i) < 0;
+        });
+    };
+
     var equipos = [];
+    var equipos_disponibles = [];
+    var valor_equipo_anterior = -1;
+
+    function ajax_equipos(){
+
+        var fecha_uso = $("input[name='fecha_uso']").val();
+        var hora_entrega = $("input[name='hora_entrega']").val();
+        var hora_devolucion = $("input[name='hora_devolucion']").val();
+
+        $.ajax({
+            type: "POST",
+            url: base_url + "solicitudes/nuevo-equipo",
+            dataType: 'json',
+            data: {fecha_uso: fecha_uso, hora_entrega: hora_entrega, hora_devolucion: hora_devolucion},
+            success: function(data){
+                equipos = data;
+
+                selects_equipos = $('select[id^="select_nuevo_equipo_"]');
+
+                selects_equipos.each(function(index) {
+                    valor_actual = $(this).val();
+                    texto_equipo = equipos.find(function by_value(o) {
+                        return o.id === valor_actual;
+                    }).nombre_equipo;
+                    $(this).empty();
+                    $(this).append('<option value="' + valor_actual + '">' + texto_equipo + '</option>');
+                });
+
+                actualizar_selects_equipos();
+
+                cantidad_selects = selects_equipos.length;
+
+                if(cantidad_selects == equipos.length){
+                    $('.nuevo-equipo').addClass('hidden');
+                }
+            },
+            error: function() {
+                console.log(base_url + "solicitudes/nuevo-equipo");
+            }
+        });
+    }
+
+    if (typeof cantidad_clicks_nuevo_equipo == 'undefined') {
+        cantidad_clicks_nuevo_equipo = 0;
+    }
 
     $(".nuevo-equipo").click(function(event) {
         event.preventDefault();
@@ -64,7 +114,10 @@ $(document).ready(function(){
                 data: {fecha_uso: fecha_uso, hora_entrega: hora_entrega, hora_devolucion: hora_devolucion},
                 success: function(data){
                     equipos = data;
-                    nuevo_equipo(data);
+
+                    equipos_disponibles = get_equipos_disponibles();
+
+                    nuevo_equipo(equipos);
                 },
                 error: function() {
                     console.log(base_url + "solicitudes/nuevo-equipo");
@@ -75,29 +128,51 @@ $(document).ready(function(){
         }
     });
 
-    function nuevo_equipo(equipos){
-        $('#nuevo-equipo').append('<div id="div-nuevo-equipo-' + cantidad_clicks_nuevo_equipo + '"><select class="form-control" name="select-nuevo-equipo-' + cantidad_clicks_nuevo_equipo + '" id="select-nuevo-equipo-' + cantidad_clicks_nuevo_equipo + '"></select><button type="button" class="btn btn-danger" id="eliminar-equipo-' + cantidad_clicks_nuevo_equipo + '">Eliminar equipo</button></div>');
-
-        $.each(equipos, function(index, value){
-            $('#select-nuevo-equipo-' + cantidad_clicks_nuevo_equipo).append('<option value=' + value['id'] + '>' + value['nombre_equipo'] + '</option>');
+    function get_equipos_disponibles(){
+        opciones_seleccionadas = $.map($('select[id^="select_nuevo_equipo_"] option:selected'), function(n){
+            return n.value;
         });
 
-        cantidad_selects = $('select[id^="select-nuevo-equipo-"]').length;
+        lista_equipos = $.map(equipos, function(n){
+            return n['id'];
+        });
 
-        if(cantidad_selects != 1){
-            var opciones_seleccionadas = $.map($('select[id^="select-nuevo-equipo-"] option:selected'), function(n){
-                return n.value;
-            });
+        equipos_disponibles = lista_equipos.diff(opciones_seleccionadas);
 
-            var lista_equipos = $.map(equipos, function(n){
-                return n['id'];
-            });
+        return equipos_disponibles;
+    }
 
-            var equipos_disponibles = lista_equipos.diff(opciones_seleccionadas);
+    function actualizar_selects_equipos(){
+        equipos_disponibles = get_equipos_disponibles();
 
-            $('#select-nuevo-equipo-' + cantidad_clicks_nuevo_equipo + ' option:selected').removeAttr('selected');
-            $('#select-nuevo-equipo-' + cantidad_clicks_nuevo_equipo + ' option[value="' + equipos_disponibles[0] + '"]').attr('selected','selected');
+        $('select[id^="select_nuevo_equipo_"] option').not(':selected').remove();
+
+        for(i = 0; i < equipos.length; i++) {
+            index = equipos_disponibles.indexOf(equipos[i].id);
+            if(index != -1){
+                $('select[id^="select_nuevo_equipo_"]').append('<option value="' + equipos[i].id + '">' + equipos[i].nombre_equipo + '</option>');
+            }
         }
+    }
+
+    function nuevo_equipo(equipos){
+
+        $('#nuevo-equipo').append('<div id="div-nuevo-equipo-' + cantidad_clicks_nuevo_equipo +
+            '"><select class="form-control"' + 'id="select_nuevo_equipo_' + cantidad_clicks_nuevo_equipo +
+            '" name="select_nuevo_equipo[]"></select><button type="button" class="btn btn-danger" id="eliminar-equipo-' + cantidad_clicks_nuevo_equipo +
+            '">Eliminar equipo</button></div>');
+
+        equipos_disponibles = get_equipos_disponibles();
+
+        valor_primer_equipo = equipos_disponibles.shift();
+        texto_primer_equipo = equipos.find(function by_value(o) {
+            return o.id === valor_primer_equipo;
+        }).nombre_equipo;
+        $('#select_nuevo_equipo_' + cantidad_clicks_nuevo_equipo).append('<option value="' + valor_primer_equipo + '">' + texto_primer_equipo + '</option>');
+
+        actualizar_selects_equipos();
+
+        cantidad_selects = $('select[id^="select_nuevo_equipo_"]').length;
 
         if(cantidad_selects == equipos.length){
             $('.nuevo-equipo').addClass('hidden');
@@ -106,89 +181,370 @@ $(document).ready(function(){
         cantidad_clicks_nuevo_equipo = cantidad_clicks_nuevo_equipo + 1;
     }
 
-    $("#nuevo-equipo").on("change", 'select[id^="select-nuevo-equipo-"]' , function(){
-        var opciones = $('select[id^="select-nuevo-equipo-"] option');
-
-        opciones.prop("disabled","");
-
-        var opciones_seleccionadas = $.map($('select[id^="select-nuevo-equipo-"] option:selected'), function(n){
-            return n.value;
-        });
-
-        opciones.filter(function(){
-            return $.inArray($(this).val(), opciones_seleccionadas) > -1;
-        }).prop("disabled", "disabled");
-
-        opciones.filter(function(){
-            return $.inArray($(this).val(), opciones_seleccionadas) == -1;
-        }).prop("disabled", "");
-
-    }).trigger("change");
-
-    Array.prototype.diff = function(a){
-        return this.filter(function(i){
-            return a.indexOf(i) < 0;
-        });
-    };
-
-    /*var opciones_seleccionadas = $('select[id^="select-nuevo-equipo-"] :selected');
-
-    function manejar_agregar_equipos(equipos){
-        $('#nuevo-equipo').append('<div id="div-nuevo-equipo-' + cantidad_clicks_nuevo_equipo + '"><select class="form-control" name="select-nuevo-equipo-' + cantidad_clicks_nuevo_equipo + '" id="select-nuevo-equipo-' + cantidad_clicks_nuevo_equipo + '"></select><button type="button" class="btn btn-danger" id="eliminar-equipo-' + cantidad_clicks_nuevo_equipo + '">Eliminar equipo</button></div>');
-
-        opciones_seleccionadas = $('select[id^="select-nuevo-equipo-"] :selected');
-
-        if(cantidad_clicks_nuevo_equipo == 0){
-            $.each(equipos, function(index, value){
-                $('#select-nuevo-equipo-' + cantidad_clicks_nuevo_equipo).append('<option value=' + value['id'] + '>' + value['nombre_equipo'] + '</option>');
-            });
-        }else{
-            equipos_en_uso = [];
-
-            opciones_seleccionadas.each(function(index){
-                equipos_en_uso[index] = this.value;
-            });
-
-            $.each(equipos, function(index, value){
-                if(equipos_en_uso.indexOf(value['id']) == -1) {
-                    $('#select-nuevo-equipo-' + cantidad_clicks_nuevo_equipo).append('<option value=' + value['id'] + '>' + value['nombre_equipo'] + '</option>');
-                }
-            });
-        }
-
-        if(opciones_seleccionadas.length == equipos.length - 1){
-            $('.nuevo-equipo').addClass('hidden');
-        }
-
-        cantidad_clicks_nuevo_equipo = cantidad_clicks_nuevo_equipo + 1;
-    }
-
-    var previous_nuevo_equipo;
-
     $("#nuevo-equipo").on({
-        "focus" : function(e){
-            previous_nuevo_equipo = $(this).val();
+        "focus" : function(e) {
+            valor_equipo_anterior = $(this).val();
+            $(this).blur();
         },
-        "change" : function(e){
-
-            todos_select = $('select[id^="select-nuevo-equipo-"]');
-
-            todos_select.each(function(index){
-                $(this).append('<option value=' + equipos_disponibles[previous_nuevo_equipo - 1]['id'] + '>' + equipos_disponibles[previous_nuevo_equipo - 1]['nombre_equipo'] + '</option>');
-            });
-
-            previous_nuevo_equipo = $(this).val();
+        "change" : function(e) {
+            equipos_disponibles.push(valor_equipo_anterior);
+            index = equipos_disponibles.indexOf($(this).val());
+            if(index != -1){
+                equipos_disponibles.splice(index, 1);
+            }
+            actualizar_selects_equipos();
         }
-    }, 'select[id^="select-nuevo-equipo-"]');
+    }, 'select[id^="select_nuevo_equipo_"]');
+
 
     $("#nuevo-equipo").on("click", 'button[id^="eliminar-equipo-"]' , function(){
         select_equipos = $(this).prev();
         valor = select_equipos.val();
-        console.log(valor + '++++');
         $(this).parent().remove();
         $('.nuevo-equipo').removeClass('hidden');
+        equipos_disponibles.push(valor);
+        actualizar_selects_equipos();
     });
 
-    */
+    var espacios = [];
+    var usos = [];
+    var espacios_disponibles = [];
+    var valor_espacio_anterior = -1;
+    var valor_uso_anterior =  -1;
+    var index_otro_espacio = -1;
+    var index_otro_uso = -1;
+    var valor_otro_espacio = -1;
+    var valor_otro_uso = -1;
+
+    function ajax_espacios(){
+
+        var fecha_uso = $("input[name='fecha_uso']").val();
+        var hora_entrega = $("input[name='hora_entrega']").val();
+        var hora_devolucion = $("input[name='hora_devolucion']").val();
+
+        $.ajax({
+            type: "POST",
+            url: base_url + "solicitudes/nuevo-espacio",
+            dataType: 'json',
+            data: {fecha_uso: fecha_uso, hora_entrega: hora_entrega, hora_devolucion: hora_devolucion},
+            success: function(data){
+                espacios = data.espacios;
+                usos = data.usos;
+
+                for(i = 0; i < espacios.length; i++) {
+                    if(espacios[i].nombre_espacio == 'Otro (especifique)'){
+                        index_otro_espacio = i;
+                        valor_otro_espacio = espacios[i].id;
+                    }
+                }
+
+                for(i = 0; i < usos.length; i++) {
+                    if(usos[i].uso == 'Otro (especifique)'){
+                        index_otro_uso = i;
+                        valor_otro_uso = usos[i].id;
+                    }
+                }
+
+                selects_espacios = $('select[id^="select_nuevo_espacio_"]');
+
+                selects_espacios.each(function(index) {
+                    valor_actual = $(this).val();
+                    texto_espacio = espacios.find(function by_value(o) {
+                        return o.id === valor_actual;
+                    }).nombre_espacio;
+                    $(this).empty();
+                    $(this).append('<option value="' + valor_actual + '">' + texto_espacio + '</option>');
+                });
+
+                selects_usos = $('select[id^="select_usos_espacio_"]');
+
+                selects_usos.each(function(index) {
+                    valor_actual = $(this).val();
+
+                    texto_uso = usos.find(function by_value(o) {
+                        return o.id === valor_actual;
+                    }).uso;
+                    $(this).empty();
+                    $(this).append('<option value="' + valor_actual + '">' + texto_uso + '</option>');
+                });
+
+                selects_usos.each(function(index) {
+                    for(i = 0; i < usos.length; i++) {
+                        if($(this).val() != usos[i].id){
+                            $(this).append('<option value="' + usos[i].id + '">' + usos[i].uso + '</option>');
+                        }
+                    }
+                });
+
+                actualizar_selects_espacios();
+            },
+            error: function() {
+                console.log(base_url + "solicitudes/nuevo-espacio");
+            }
+        });
+    }
+
+    if (typeof cantidad_clicks_nuevo_espacio == 'undefined') {
+        cantidad_clicks_nuevo_espacio = 0;
+    }
+
+    $(".nuevo-espacio").click(function(event) {
+        event.preventDefault();
+
+        if(cantidad_clicks_nuevo_espacio == 0){
+            var fecha_uso = $("input[name='fecha_uso']").val();
+            var hora_entrega = $("input[name='hora_entrega']").val();
+            var hora_devolucion = $("input[name='hora_devolucion']").val();
+            $.ajax({
+                type: "POST",
+                url: base_url + "solicitudes/nuevo-espacio",
+                dataType: 'json',
+                data: {fecha_uso: fecha_uso, hora_entrega: hora_entrega, hora_devolucion: hora_devolucion},
+                success: function(data){
+                    espacios = data.espacios;
+                    usos = data.usos;
+
+                    for(i = 0; i < espacios.length; i++) {
+                        if(espacios[i].nombre_espacio == 'Otro (especifique)'){
+                            index_otro_espacio = i;
+                            valor_otro_espacio = espacios[i].id;
+                        }
+                    }
+
+                    espacios_disponibles = get_espacios_disponibles();
+
+                    nuevo_espacio(espacios, usos);
+                },
+                error: function() {
+                    console.log(base_url + "solicitudes/nuevo-espacio");
+                }
+            });
+        }else{
+            nuevo_espacio(espacios, usos);
+        }
+    });
+
+    function get_espacios_disponibles(){
+        opciones_seleccionadas = $.map($('select[id^="select_nuevo_espacio_"] option:selected'), function(n){
+            if(n.text != 'Otro (especifique)'){
+                return n.value;
+            }
+        });
+
+        lista_espacios = $.map(espacios, function(n){
+            return n['id'];
+        });
+
+        espacios_disponibles = lista_espacios.diff(opciones_seleccionadas);
+
+        return espacios_disponibles;
+    }
+
+    function actualizar_selects_espacios(){
+
+        espacios_disponibles = get_espacios_disponibles();
+
+        espacios_disponibles.sort();
+
+        $('select[id^="select_nuevo_espacio_"] option').not(':selected').remove();
+
+        $('select[id^="select_nuevo_espacio_"]').each(function(index) {
+            for(i = 0; i < espacios_disponibles.length; i++) {
+
+                texto_espacio = espacios.find(function by_value(o) {
+                    return o.id === espacios_disponibles[i];
+                }).nombre_espacio;
+
+                if($(this).val() != valor_otro_espacio){
+                    $(this).append('<option value="' + espacios_disponibles[i] + '">' + texto_espacio + '</option>');
+                }else{
+                    if(espacios_disponibles[i] != valor_otro_espacio){
+                        $(this).append('<option value="' + espacios_disponibles[i] + '">' + texto_espacio + '</option>');
+                    }
+                }
+            }
+        });
+    }
+
+    function nuevo_espacio(espacios, usos){
+
+        div_nuevo_equipo = $('#nuevo-espacio');
+
+        div_nuevo_equipo.append('<div id="div-nuevo-espacio-' + cantidad_clicks_nuevo_espacio +
+            '"><select class="form-control"' + 'id="select_nuevo_espacio_' + cantidad_clicks_nuevo_espacio +
+            '" name="select_nuevo_espacio[]"></select><label for="select_usos_espacio[]" class="control-label">Qu&eacute; uso le dar&aacute; al espacio?</label><select class="form-control"' + 'id="select_usos_espacio_' + cantidad_clicks_nuevo_espacio +
+            '" name="select_usos_espacio[]"></select><button type="button" class="btn btn-danger" id="eliminar-espacio-' + cantidad_clicks_nuevo_espacio +
+            '">Eliminar espacio</button></div>');
+
+        for(i = 0; i < usos.length; i++){
+            $('#select_usos_espacio_' + cantidad_clicks_nuevo_espacio).append('<option value="' + usos[i].id + '">' + usos[i].uso + '</option>');
+        }
+
+        espacios_disponibles = get_espacios_disponibles();
+
+        valor_primer_espacio = espacios_disponibles.shift();
+
+        if(valor_primer_espacio == valor_otro_espacio){
+            espacios_disponibles.push(valor_primer_espacio);
+        }
+
+        texto_primer_espacio = espacios.find(function by_value(o) {
+            return o.id === valor_primer_espacio;
+        }).nombre_espacio;
+
+        select_nuevo_espacio = $('#select_nuevo_espacio_' + cantidad_clicks_nuevo_espacio);
+        select_nuevo_espacio.append('<option value="' + valor_primer_espacio + '">' + texto_primer_espacio + '</option>');
+
+        if(select_nuevo_espacio.val() == valor_otro_espacio){
+            $('<input type="text" class="form-control" name="input_nuevo_espacio[]" id="input_nuevo_espacio_' + cantidad_clicks_nuevo_espacio + '" />').insertAfter(select_nuevo_espacio);
+        }
+
+        actualizar_selects_espacios();
+
+        cantidad_clicks_nuevo_espacio = cantidad_clicks_nuevo_espacio + 1;
+    }
+
+    $("#nuevo-espacio").on({
+        "focus" : function(e) {
+            valor_espacio_anterior = $(this).val();
+            $(this).blur();
+        },
+        "change" : function(e) {
+            index = -1;
+            if(valor_espacio_anterior != valor_otro_espacio){
+                espacios_disponibles.push(valor_espacio_anterior);
+            }else{
+                $(this).siblings('input[id^="input_nuevo_espacio_"]').remove();
+            }
+            if($(this).val() != valor_otro_espacio){
+                index = espacios_disponibles.indexOf($(this).val());
+            }else{
+                id_select_espacio = this.id;
+                numero_de_select = id_select_espacio.substr(id_select_espacio.length - 1);
+                $('<input type="text" class="form-control" name="input_nuevo_espacio[]" id="input_nuevo_espacio_' + numero_de_select + '" />').insertAfter($(this));
+            }
+            if(index != -1){
+                espacios_disponibles.splice(index, 1);
+            }
+
+            actualizar_selects_espacios();
+        }
+    }, 'select[id^="select_nuevo_espacio_"]');
+
+    $("#nuevo-espacio").on({
+        "focus" : function(e) {
+            valor_uso_anterior = $(this).val();
+            $(this).blur();
+        },
+        "change" : function(e) {
+            id_select_espacio = this.id;
+            numero_de_select = id_select_espacio.substr(id_select_espacio.length - 1);
+            if(valor_uso_anterior == valor_otro_espacio) {
+                $('#input_otro_uso_' + numero_de_select).remove();
+            }
+            if($(this).val() == valor_otro_espacio){
+                $('<input type="text" class="form-control" name="input_otro_uso[]" id="input_otro_uso_' + numero_de_select + '" data-id="' + numero_de_select + '" />').insertAfter($(this));
+            }
+        }
+    }, 'select[id^="select_usos_espacio_"]');
+
+    $("#nuevo-espacio").on("click", 'button[id^="eliminar-espacio-"]' , function(){
+        select_espacios = $(this).siblings('select[id^="select_nuevo_espacio_"]');
+        valor = select_espacios.val();
+        $(this).parent().remove();
+
+        if(valor != valor_otro_espacio){
+            espacios_disponibles.push(valor);
+        }
+
+        actualizar_selects_espacios();
+    });
+
+    $(window).load(function() {
+        if(cantidad_clicks_nuevo_equipo > 0){
+            ajax_equipos();
+        }
+        if(cantidad_clicks_nuevo_espacio > 0){
+            ajax_espacios();
+        }
+        if(cantidad_clicks_nuevo_servicio > 0){
+            ajax_servicios();
+        }
+    });
+
+    var servicios = [];
+
+    function ajax_servicios(){
+        $.ajax({
+            type: "POST",
+            url: base_url + "solicitudes/nuevo-servicio",
+            dataType: 'json',
+            data: {},
+            success: function(data){
+                servicios = data;
+
+                selects_servicios = $('select[id^="select_nuevo_servicio_"]');
+
+                selects_servicios.each(function(index) {
+                    valor_actual = $(this).val();
+                    texto_servicio = servicios.find(function by_value(o) {
+                        return o.id === valor_actual;
+                    }).categoria;
+                    $(this).empty();
+                    $(this).append('<option value="' + valor_actual + '">' + texto_servicio + '</option>');
+                    for(i = 0; i < servicios.length; i++) {
+                        if(servicios[i].id != valor_actual){
+                            $(this).append('<option value="' + servicios[i].id + '">' + servicios[i].categoria + '</option>');
+                        }
+                    }
+                });
+            },
+            error: function() {
+                console.log(base_url + "solicitudes/nuevo-equipo");
+            }
+        });
+    }
+
+    if (typeof cantidad_clicks_nuevo_servicio == 'undefined') {
+        cantidad_clicks_nuevo_servicio = 0;
+    }
+
+    $(".nuevo-servicio").click(function(event) {
+        event.preventDefault();
+
+        if(cantidad_clicks_nuevo_servicio == 0){
+            $.ajax({
+                type: "POST",
+                url: base_url + "solicitudes/nuevo-servicio",
+                dataType: 'json',
+                data: {},
+                success: function(data){
+                    servicios = data;
+                    nuevo_servicio(data);
+                },
+                error: function() {
+                    console.log(base_url + "solicitudes/nuevo-servicio");
+                }
+            });
+        }else{
+            nuevo_servicio(servicios);
+        }
+    });
+
+    function nuevo_servicio(servicios){
+        $('#nuevo-servicio').append('<div id="div-nuevo-servicio-' + cantidad_clicks_nuevo_servicio + '"><select class="form-control" name="select_nuevo_servicio[]" id="select_nuevo_servicio_' + cantidad_clicks_nuevo_servicio + '"></select><input type="text" class="form-control" name="input_nuevo_servicio[]" id="input_nuevo_servicio_' + cantidad_clicks_nuevo_servicio + '" /><button type="button" class="btn btn-danger" id="eliminar-servicio-' + cantidad_clicks_nuevo_servicio + '">Eliminar servicio</button></div>');
+
+        $.each(servicios, function(index, value){
+            $('#select_nuevo_servicio_' + cantidad_clicks_nuevo_servicio).append('<option value=' + value['id'] + '>' + value['categoria'] + '</option>');
+        });
+
+        cantidad_clicks_nuevo_servicio = cantidad_clicks_nuevo_servicio + 1;
+    }
+
+    $("#nuevo-servicio").on("click", 'button[id^="eliminar-servicio-"]' , function(){
+        select_servicios = $(this).prev();
+        valor = select_servicios.val();
+        $(this).parent().remove();
+    });
 
 });
