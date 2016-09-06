@@ -163,8 +163,7 @@ class Solicitudes extends CI_Controller {
         $administrador = $this->session->administrador;
         if($administrador){
 
-            $data['title'] = 'Lista de Espacios';
-
+            $data['title'] = 'Solicitudes activas';
             $table_solicitudes = 'solicitudes';
             $table_usuarios = 'usuarios';
             $data['solicitudes'] = $this->solicitudes_model->get_solicitudes_extended($table_solicitudes,$table_usuarios);
@@ -183,25 +182,13 @@ class Solicitudes extends CI_Controller {
         $administrador = $this->session->administrador;
         if ($administrador) {
             $data['title'] = 'Detalles de la solicitud';
-            $table_solicitudes = 'solicitudes';
-            $table_usuarios = 'usuarios';
-            $equipos_reservados = $this->equipos_model->get_equipos_solicitud($id);
-            $espacios_reservados = $this->espacios_model->get_espacios_solicitud($id);
-            $servicios_reservados = $this->servicios_model->get_servicios_solicitud($id);
-            $this->db->select('id_solicitante, fecha_solicitud, fecha_uso');
-            $this->db->from($table_solicitudes);
-            $this->db->where($table_solicitudes.'.id ='.$id);
-            $solicitud_unica = $this->db->get()->result_array();
-            $idsol = $solicitud_unica[0]['id_solicitante'];
-            $this->db->select('primer_nombre, segundo_nombre, primer_apellido, segundo_apellido');
-            $this->db->from($table_usuarios);
-            $this->db->where($table_usuarios.'.id ='.$idsol);
-            $usuario = $this->db->get()->result_array();
-            $data['solicitud'] = $solicitud_unica;
-            $data['usuario'] = $usuario;
-            $data['equipos'] = $equipos_reservados;
-            $data['espacios'] = $espacios_reservados;
-            $data['servicios'] = $servicios_reservados;
+            $detalles = $this->solicitudes_model->get_detalles($id);
+            $data['title'] = 'Detalles de la solicitud';
+            $data['equipos'] = $detalles[0];
+            $data['espacios'] = $detalles[1];
+            $data['servicios'] = $detalles[2];
+            $data['usuario'] = $detalles[3];
+            $data['solicitud'] = $detalles[4];
             $this->parser->parse('templates/header', $data);
             $this->parser->parse('solicitudes/details', $data);
             $this->parser->parse('templates/footer', $data);
@@ -211,4 +198,32 @@ class Solicitudes extends CI_Controller {
             redirect('inicio');
         }
     }
+
+    public function recibir($id = null){
+        $administrador = $this->session->administrador;
+        if ($administrador) {
+            if (!$id) {
+                $data['title'] = 'Cierre de solicitud';
+                $table_solicitudes = 'solicitudes';
+                $table_usuarios = 'usuarios';
+                $data['solicitudes'] = $this->solicitudes_model->get_solicitudes_extended($table_solicitudes, $table_usuarios);
+                $this->parser->parse('templates/header', $data);
+                $this->parser->parse('solicitudes/receive', $data);
+                $this->parser->parse('templates/footer', $data);
+            } else {
+                $data['title'] = 'Solicitud '.$id.' finalizada.';
+                $data['id'] = $id;
+                $table_solicitudes = 'solicitudes';
+                $table_usuarios = 'usuarios';
+                $this->parser->parse('templates/header', $data);
+                $this->parser->parse('solicitudes/ended', $data);
+                $this->parser->parse('templates/footer', $data);
+            }
+        } else {
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
+
 }

@@ -17,6 +17,7 @@
             <a href="<?= base_url('usos/listar') ?>" class="btn btn-default"><span class="glyphicon glyphicon-wrench"></span> Usos</a>
             <a href="<?= base_url('solicitudes/listar') ?>" class="btn btn-default"><span class="glyphicon glyphicon-wrench"></span> Solicitudes</a>
             <a href="<?= base_url('estadisticas') ?>" class="btn btn-default"><span class="glyphicon glyphicon-equalizer"></span> Estad&iacutesticas de uso</a>
+            <a href="<?= base_url('solicitudes/recibir') ?>" class="btn btn-default"><span class="glyphicon glyphicon-erase"></span> Recepción de préstamos</a>
         </div>
     <?php endif; ?>
     <br><br>
