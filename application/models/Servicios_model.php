@@ -9,7 +9,9 @@
 class Servicios_model extends CI_Model {
 
     public function create_servicio($table, $datos){
-        $insert_id = $this->db->insert($table, $datos);
+        $this->db->insert($table, $datos);
+        $insert_id = $this->db->insert_id();
+
         return $insert_id;
     }
 
@@ -25,6 +27,13 @@ class Servicios_model extends CI_Model {
     public function get_servicio($id){
         $this->db->from('servicios');
         $this->db->where('id', $id);
+
+        return $this->db->get()->row_array();
+    }
+
+    public function get_servicio_by_name($table, $name){
+        $this->db->from($table);
+        $this->db->where('nombre_servicio', $name);
 
         return $this->db->get()->row_array();
     }
@@ -48,4 +57,5 @@ class Servicios_model extends CI_Model {
         $query = $this->db->get();
         return $query->result_array();
     }
+
 }

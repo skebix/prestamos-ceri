@@ -15,13 +15,22 @@ class Espacios_model extends CI_Model {
         return $this->db->get()->row_array();
     }
 
+    public function get_espacio_by_name($table, $name){
+        $this->db->from($table);
+        $this->db->where('nombre_espacio', $name);
+
+        return $this->db->get()->row_array();
+    }
+
     public function get_espacios($table){
         $query = $this->db->get($table);
         return $query->result_array();
     }
 
     public function create_espacio($table, $datos){
-        $insert_id = $this->db->insert($table, $datos);
+        $this->db->insert($table, $datos);
+        $insert_id = $this->db->insert_id();
+
         return $insert_id;
     }
 
@@ -34,6 +43,15 @@ class Espacios_model extends CI_Model {
     public function delete_espacio($table, $id){
         $delete_id = $this->db->delete($table, array('id' => $id));
         return $delete_id;
+    }
+
+    public function get_espacios_sin_usar($ids){
+        $this->db->from('espacios');
+        $this->db->where('otro_espacio', FALSE);
+        $this->db->where_not_in('id', $ids);
+        $query = $this->db->get();
+
+        return $query->result_array();
     }
 
     public function get_espacios_solicitud($id){

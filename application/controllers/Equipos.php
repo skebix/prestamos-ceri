@@ -27,7 +27,7 @@ class Equipos extends CI_Controller {
             $categorias_equipo = $this->categoria_model->get_categorias($table);
             $data['categorias_equipo'] = $categorias_equipo;
 
-            $this->form_validation->set_rules('nombre_equipo', 'Categor&iacute;a de equipo', 'trim|required|callback__alpha_special|max_length[255]');
+            $this->form_validation->set_rules('nombre_equipo', 'Nombre de equipo', 'trim|required|callback__alpha_special|max_length[255]');
 
             if(!$this->form_validation->run()){
 
