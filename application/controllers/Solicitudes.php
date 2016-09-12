@@ -285,7 +285,7 @@ class Solicitudes extends CI_Controller {
     public function recibir($id = null){
         $administrador = $this->session->administrador;
         if ($administrador) {
-            if (!$id) {
+            if (!$id) { //Mostrar todos los prestamos existentes
                 $data['title'] = 'Cierre de solicitud';
                 $table_solicitudes = 'solicitudes';
                 $table_usuarios = 'usuarios';
@@ -293,16 +293,37 @@ class Solicitudes extends CI_Controller {
                 $this->parser->parse('templates/header', $data);
                 $this->parser->parse('solicitudes/receive', $data);
                 $this->parser->parse('templates/footer', $data);
-            } else {
-                $data['title'] = 'Solicitud '.$id.' finalizada.';
+            } else { //Mostrar el prestamo a cerrar.
+                $data['title'] = 'Confirmar cierre de la solicitud # '.$id;
                 $data['id'] = $id;
-                $table_solicitudes = 'solicitudes';
-                $table_usuarios = 'usuarios';
+                $detalles = $this->solicitudes_model->get_detalles($id);
+                $data['equipos'] = $detalles[0];
+                $data['espacios'] = $detalles[1];
+                $data['servicios'] = $detalles[2];
+                $data['usuario'] = $detalles[3];
+                $data['solicitud'] = $detalles[4];
                 $this->parser->parse('templates/header', $data);
-                $this->parser->parse('solicitudes/ended', $data);
+                $this->parser->parse('solicitudes/confirm_recep', $data);
                 $this->parser->parse('templates/footer', $data);
             }
         } else {
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
+
+    public function cerrado($id){
+        $administrador = $this->session->administrador;
+        if ($administrador){
+            $data['title'] = 'Cierre de solicitud';
+            $id_sol = $this->input->post('solsid');
+            $id_admin = $this->session->id;
+            $close = $this->solicitudes_model->recibir_prestamo($id_sol,$id_admin);
+            $this->parser->parse('templates/header', $data);
+            $this->parser->parse('solicitudes/closed', $data);
+            $this->parser->parse('templates/footer', $data);
+        }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
             $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');

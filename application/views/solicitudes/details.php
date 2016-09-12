@@ -9,34 +9,37 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">Detalles de la solicitud</div>
-    <table class="table">
-        <tbody>
-            <th>Solicitante</th>
-            {usuario}
-            <tr><td>{primer_nombre} {segundo_nombre} {primer_apellido} {segundo_apellido}</td></tr>
-            {/usuario}
-            <th>Fecha de solicitud</th>
-            {solicitud}
-            <tr><td>{fecha_solicitud}</td></tr>
-            {/solicitud}
-            <th>Fecha de uso</th>
-            {solicitud}
-            <tr><td>{fecha_uso}</td></tr>
-            {/solicitud}
-            <th>Equipos reservados</th>
-            {equipos}
-            <tr><td>{nombre_equipo}</td></tr>
-            {/equipos}
-            <th>Espacios reservados</th>
-            {espacios}
-            <tr><td>{nombre_espacio}</td></tr>
-            {/espacios}
-            <th>Servicios reservados</th>
-            {servicios}
-            <tr><td>{nombre_servicio}</td></tr>
-            {/servicios}
-        </tbody>
-    </table>
+    <div class="container">
+        <p><strong>Solicitante:</strong></p>
+        {usuario}
+        {primer_nombre} {segundo_nombre} {primer_apellido} {segundo_apellido}
+        {/usuario}
+        <hr>
+        <p><strong>Fecha de solicitud:</strong></p>
+        {solicitud}
+        {fecha_solicitud}
+        {/solicitud}
+        <hr>
+        <p><strong>Fecha de uso:</strong></p>
+        {solicitud}
+        {fecha_uso}
+        {/solicitud}
+        <hr>
+        <p><strong>Equipos reservados:</strong></p>
+        {equipos}
+        nombre_equipo}
+        {/equipos}
+        <hr>
+        <p><strong>Espacios reservados:</strong></p>
+        {espacios}
+        {nombre_espacio}
+        {/espacios}
+        <hr>
+        <p><strong>Servicios reservado:</strong></p>
+        {servicios}
+        {nombre_servicio}
+        {/servicios}
+    </div>
 </div>
 <button class="btn-default"><a href="<?= base_url('') ?>">Volver</a></button>
 </a>

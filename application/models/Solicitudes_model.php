@@ -116,5 +116,6 @@ class Solicitudes_model extends CI_Model {
         );
         $this->db->where('id', $id_sol);
         $this->db->update($table_solicitudes, $data);
+        return true;
     }
 }

@@ -1,12 +1,3 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: skebix
- * Date: 09/04/2016
- * Time: 10:44 AM
- */
-?>
-
 <div class="panel panel-default">
     <div class="panel-heading">Lista de solicitudes</div>
     <div class="panel-body">
