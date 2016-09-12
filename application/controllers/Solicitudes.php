@@ -249,7 +249,7 @@ class Solicitudes extends CI_Controller {
             $data['title'] = 'Solicitudes activas';
             $table_solicitudes = 'solicitudes';
             $table_usuarios = 'usuarios';
-            $data['solicitudes'] = $this->solicitudes_model->get_solicitudes_extended($table_solicitudes,$table_usuarios);
+            $data['solicitudes'] = $this->solicitudes_model->get_solicitudes_extended($table_solicitudes,$table_usuarios,false);
             $this->parser->parse('templates/header', $data);
             $this->parser->parse('solicitudes/show', $data);
             $this->parser->parse('templates/footer', $data);
@@ -259,7 +259,7 @@ class Solicitudes extends CI_Controller {
             redirect('inicio');
         }
     }
-    public function detalles($id)
+    public function detalles($id) //Seccion de detalles de una solicitud
     {
         //Lo primero es ver si es Administrador, o si el que intenta ver los detalles es el mismo usuario
         $administrador = $this->session->administrador;
@@ -282,14 +282,14 @@ class Solicitudes extends CI_Controller {
         }
     }
 
-    public function recibir($id = null){
+    public function recibir($id = null){ //seccion de recepcion de prestamos
         $administrador = $this->session->administrador;
         if ($administrador) {
             if (!$id) { //Mostrar todos los prestamos existentes
                 $data['title'] = 'Cierre de solicitud';
                 $table_solicitudes = 'solicitudes';
                 $table_usuarios = 'usuarios';
-                $data['solicitudes'] = $this->solicitudes_model->get_solicitudes_extended($table_solicitudes, $table_usuarios);
+                $data['solicitudes'] = $this->solicitudes_model->get_solicitudes_extended($table_solicitudes, $table_usuarios,true);
                 $this->parser->parse('templates/header', $data);
                 $this->parser->parse('solicitudes/receive', $data);
                 $this->parser->parse('templates/footer', $data);
@@ -319,10 +319,14 @@ class Solicitudes extends CI_Controller {
             $data['title'] = 'Cierre de solicitud';
             $id_sol = $this->input->post('solsid');
             $id_admin = $this->session->id;
-            $close = $this->solicitudes_model->recibir_prestamo($id_sol,$id_admin);
-            $this->parser->parse('templates/header', $data);
-            $this->parser->parse('solicitudes/closed', $data);
-            $this->parser->parse('templates/footer', $data);
+            $obs = $this->input->post('obs');
+            $close = $this->solicitudes_model->recibir_prestamo($id_sol,$id_admin,$obs);
+            if ($close){
+                $this->parser->parse('templates/header', $data);
+                $this->parser->parse('solicitudes/closed', $data);
+                $this->parser->parse('templates/footer', $data);
+            }
+
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
             $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');

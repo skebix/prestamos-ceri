@@ -45,7 +45,7 @@
         <form action="<?= base_url('solicitudes/cerrado/{id}') ?>" method="post">
             <input class="label" type="hidden" value={id} id="solsid" name="solsid">
             <label for="obs">Observaciones</label>
-            <input class="form-control" type="text" maxlength="455" id="obs">
+            <input class="form-control" type="text" maxlength="455" id="obs" name="obs">
             <input class="bg-primary" type="submit" value="Confirmar" id="confirm-btn">
         </form>
         </div>

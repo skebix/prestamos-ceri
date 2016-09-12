@@ -78,12 +78,22 @@ class Solicitudes_model extends CI_Model {
         return $query->result_array();
     }
 
-    public function get_solicitudes_extended($table_with_foreign_ids,$table_with_data_of_the_ids){
-        $this->db->select('*');
-        $this->db->from($table_with_data_of_the_ids);
-        $this->db->join($table_with_foreign_ids, $table_with_foreign_ids.'.id_solicitante='.$table_with_data_of_the_ids.'.id');
-        $query = $this->db->get();
-        return $query->result_array();
+    public function get_solicitudes_extended($table_with_foreign_ids,$table_with_data_of_the_ids,$only_active_sols){
+        if ($only_active_sols){
+            $this->db->select('*');
+            $this->db->from($table_with_data_of_the_ids);
+            $this->db->join($table_with_foreign_ids, $table_with_foreign_ids.'.id_solicitante='.$table_with_data_of_the_ids.'.id');
+            $this->db->having('id_recibido', null);
+            $query = $this->db->get();
+            return $query->result_array();
+        }else{
+            $this->db->select('*');
+            $this->db->from($table_with_data_of_the_ids);
+            $this->db->join($table_with_foreign_ids, $table_with_foreign_ids.'.id_solicitante='.$table_with_data_of_the_ids.'.id');
+            $query = $this->db->get();
+            return $query->result_array();
+        }
+
     }
 
     public function get_detalles($id){
@@ -109,10 +119,11 @@ class Solicitudes_model extends CI_Model {
             4 => $solicitud_unica);
         return $data_array;
     }
-    public function recibir_prestamo($id_sol, $id_admin){
+    public function recibir_prestamo($id_sol, $id_admin, $obs){
         $table_solicitudes = 'solicitudes';
         $data = array(
             'id_recibido' => $id_admin,
+            'observaciones' => $obs
         );
         $this->db->where('id', $id_sol);
         $this->db->update($table_solicitudes, $data);
