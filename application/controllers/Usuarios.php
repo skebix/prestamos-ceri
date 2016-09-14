@@ -145,6 +145,7 @@ class Usuarios extends CI_Controller {
 
             //Tomo los datos del usuario de la BD, para poder pre-llenar el formulario
             $data['title'] = 'Actualizar Usuario';
+            $data['id_solicitud'] = $id;
 
             $table = 'categoria_usuario';
             $categorias_usuario = $this->categoria_model->get_categorias($table);

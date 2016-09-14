@@ -27,6 +27,14 @@ class Espacios_model extends CI_Model {
         return $query->result_array();
     }
 
+    public function get_espacios_sistema($table){
+        $this->db->from($table);
+        $this->db->where('otro_espacio', FALSE);
+        $query = $this->db->get();
+
+        return $query->result_array();
+    }
+
     public function create_espacio($table, $datos){
         $this->db->insert($table, $datos);
         $insert_id = $this->db->insert_id();
@@ -55,10 +63,10 @@ class Espacios_model extends CI_Model {
     }
 
     public function get_espacios_solicitud($id){
-        $this->db->select('*');
-        $this->db->from('solicitudes_espacios');
+        $this->db->from('solicitudes_espacios_usos');
         $this->db->where('id_solicitud ='.$id);
-        $this->db->join('espacios','espacios.id = solicitudes_espacios.id_espacio');
+        $this->db->join('espacios', 'espacios.id = solicitudes_espacios_usos.id_espacio');
+
         $query = $this->db->get();
         return $query->result_array();
     }

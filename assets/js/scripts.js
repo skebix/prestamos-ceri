@@ -7,7 +7,7 @@ $(document).ready(function(){
     $(".help-block").parent().parent().addClass('has-error');
 
     $(function () {
-        $('#fecha_uso').datetimepicker({
+        $('#fecha_uso').datetimepicker({ //Poner minDate: new Date() si se quiere que la fecha no pueda ser anterior a hoy
             format: 'DD/MM/YYYY',
             minDate: new Date(),
             locale: 'es'
@@ -461,12 +461,28 @@ $(document).ready(function(){
     });
 
     $(window).load(function() {
+        if(typeof flag_update != 'undefined'){
+            fu = moment(fu, 'YYYY-MM-DD').format('DD/MM/YYYY');
+            he = moment(he, 'HH:mm:ss').format('hh:mm A');
+            hd = moment(hd, 'HH:mm:ss').format('hh:mm A');
+
+            sfu = $("input[name='fecha_uso']");
+            she = $("input[name='hora_entrega']");
+            shd = $("input[name='hora_devolucion']");
+
+            sfu.val(fu);
+            she.val(he);
+            shd.val(hd);
+        }
+
         if(cantidad_clicks_nuevo_equipo > 0){
             ajax_equipos();
         }
+
         if(cantidad_clicks_nuevo_espacio > 0){
             ajax_espacios();
         }
+        
         if(cantidad_clicks_nuevo_servicio > 0){
             ajax_servicios();
         }
@@ -505,7 +521,7 @@ $(document).ready(function(){
         });
     }
 
-    if (typeof cantidad_clicks_nuevo_servicio == 'undefined') {
+    if(typeof cantidad_clicks_nuevo_servicio == 'undefined'){
         cantidad_clicks_nuevo_servicio = 0;
     }
 

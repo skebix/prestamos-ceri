@@ -7,6 +7,8 @@
  */
 ?>
 
+<span class="glyphicon glyphicon-envelope"></span> <?= $this->session->mensaje; ?>
+
 <div class="panel panel-default">
     <div class="panel-heading">Lista de solicitudes</div>
     <div class="panel-body">

@@ -12,7 +12,14 @@ class Equipos_model extends CI_Model {
         $insert_id = $this->db->insert($table, $datos);
         return $insert_id;
     }
+    
+    public function get_equipos_sistema($table){
+        $this->db->from($table);
+        $query = $this->db->get();
 
+        return $query->result_array();
+    }
+    
     public function get_equipos($table){
         $this->db->select($table . '.id, ' . $table . '.nombre_equipo, categoria_equipo.categoria');
         $this->db->from($table);
@@ -49,10 +56,10 @@ class Equipos_model extends CI_Model {
     }
 
     public function get_equipos_solicitud($id){
-        $this->db->select('*');
         $this->db->from('solicitudes_equipos');
-        $this->db->where('id_solicitud ='.$id);
-        $this->db->join('equipos','equipos.id = solicitudes_equipos.id_equipo');
+        $this->db->where('id_solicitud =' . $id);
+        $this->db->join('equipos', 'equipos.id = solicitudes_equipos.id_equipo');
+
         $query = $this->db->get();
         return $query->result_array();
     }

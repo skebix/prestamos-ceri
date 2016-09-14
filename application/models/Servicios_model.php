@@ -50,12 +50,11 @@ class Servicios_model extends CI_Model {
     }
 
     public function get_servicios_solicitud($id){
-        $this->db->select('*');
         $this->db->from('solicitudes_servicios');
         $this->db->where('id_solicitud ='.$id);
         $this->db->join('servicios','servicios.id = solicitudes_servicios.id_servicio');
+
         $query = $this->db->get();
         return $query->result_array();
     }
-
 }

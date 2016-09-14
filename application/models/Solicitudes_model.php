@@ -22,6 +22,11 @@ class Solicitudes_model extends CI_Model {
         return $insert_id;
     }
 
+    public function delete_auxiliares($table, $id_solicitud){
+        $deleted = $this->db->delete($table, array('id_solicitud' => $id_solicitud));
+        return $deleted;
+    }
+
     public function get_solicitudes_by_date($table, $date){
         $this->db->from($table);
         $this->db->where('fecha_uso', $date);
@@ -38,39 +43,46 @@ class Solicitudes_model extends CI_Model {
         return $query->result_array();
     }
 
+    public function get_servicios_by_solicitud($table, $id_solicitud){
+        $this->db->from($table);
+        $this->db->where('id_solicitud', $id_solicitud);
+        $this->db->join('servicios', 'solicitudes_servicios.id_servicio = servicios.id');
+        $query = $this->db->get();
+
+        return $query->result_array();
+    }
+
     public function get_espacios_by_solicitud($table, $id_solicitud){
         $this->db->from($table);
         $this->db->where('id_solicitud', $id_solicitud);
-        $query = $this->db->get();
-
-        return $query->result_array();
-    }
-    
-    public function get_servicios($table){
-        $this->db->select($table . '.id, ' . $table . '.nombre_servicio, categoria_servicio.categoria');
-        $this->db->from($table);
-        $this->db->join('categoria_servicio', 'servicios.id_categoria_servicio = categoria_servicio.id');
+        $this->db->join('espacios', 'solicitudes_espacios_usos.id_espacio = espacios.id');
+        $this->db->join('usos', 'solicitudes_espacios_usos.id_uso = usos.id');
         $query = $this->db->get();
 
         return $query->result_array();
     }
 
-    public function get_servicio($id){
-        $this->db->from('servicios');
+    public function get_espacios_solicitud($id){
+        $this->db->select('*');
+        $this->db->from('solicitudes_espacios');
+        $this->db->where('id_solicitud ='.$id);
+        $this->db->join('espacios','espacios.id = solicitudes_espacios_usos.id_espacio');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    public function get_solicitud($id){
+        $this->db->from('solicitudes');
         $this->db->where('id', $id);
 
         return $this->db->get()->row_array();
     }
 
-    public function update_servicio($table, $id, $categoria){
+    public function update_solicitud($table, $id, $datos){
         $this->db->where('id', $id);
-        $update_id = $this->db->update($table, $categoria);
-        return $update_id;
-    }
+        $was_updated = $this->db->update($table, $datos);
 
-    public function delete_servicio($table, $id){
-        $delete_id = $this->db->delete($table, array('id' => $id));
-        return $delete_id;
+        return $was_updated;
     }
 
     public function get_solicitudes($table){
