@@ -145,8 +145,6 @@ echo form_open('solicitudes/crear', $attributes);
     <?php } ?>
 </div>
 
-
-
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
         <button type="submit" class="btn btn-primary">Crear solicitud</button>

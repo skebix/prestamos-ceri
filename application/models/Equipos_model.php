@@ -47,9 +47,10 @@ class Equipos_model extends CI_Model {
         return $delete_id;
     }
 
-    public function get_equipos_sin_usar($ids){
+    public function get_equipos_sin_usar($ids_equipos_en_uso){
         $this->db->from('equipos');
-        $this->db->where_not_in('id', $ids);
+        $this->db->where_not_in('equipos.id', $ids_equipos_en_uso);
+        $this->db->join('categoria_equipo', 'equipos.id_categoria_equipo = categoria_equipo.id');
         $query = $this->db->get();
 
         return $query->result_array();

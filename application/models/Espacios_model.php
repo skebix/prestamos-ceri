@@ -53,12 +53,12 @@ class Espacios_model extends CI_Model {
         return $delete_id;
     }
 
-    public function get_espacios_sin_usar($ids){
+    public function get_espacios_sin_usar($ids_espacios_en_uso){
         $this->db->from('espacios');
         $this->db->where('otro_espacio', FALSE);
-        $this->db->where_not_in('id', $ids);
-        $query = $this->db->get();
+        $this->db->where_not_in('id', $ids_espacios_en_uso);
 
+        $query = $this->db->get();
         return $query->result_array();
     }
 
