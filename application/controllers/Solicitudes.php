@@ -41,7 +41,6 @@ class Solicitudes extends CI_Controller {
 
             $otro_espacio = $this->espacios_model->get_espacio_by_name('espacios', 'Otro (especifique)');
             $otro_uso = $this->usos_model->get_uso_by_name('usos', 'Otro (especifique)');
-            $otro_servicio = $this->servicios_model->get_servicio_by_name('servicios', 'Otro (especifique)');
 
             $indices_espacios = array();
             if(isset($select_nuevo_espacio)){
@@ -56,6 +55,7 @@ class Solicitudes extends CI_Controller {
             if(isset($viejos_espacios)){
                 foreach($viejos_espacios as $k => $v){
                     $data['input_nuevo_espacio_' . $indices_espacios[$k]] = $v;
+                    $this->form_validation->set_rules('input_nuevo_espacio[' . $indices_espacios[$k] . ']', 'nombre nuevo espacio', 'required');
                 }
             }
 
@@ -72,6 +72,7 @@ class Solicitudes extends CI_Controller {
             if(isset($viejos_usos)){
                 foreach($viejos_usos as $k => $v){
                     $data['input_otro_uso_' . $indices_usos[$k]] = $v;
+                    $this->form_validation->set_rules('input_otro_uso[' . $indices_usos[$k] . ']', 'uso del espacio', 'required');
                 }
             }
 
@@ -95,6 +96,12 @@ class Solicitudes extends CI_Controller {
                         if($v != $otro_espacio['id']){
                             $this->form_validation->set_rules('select_nuevo_espacio[' . $k . ']', 'Espacio', 'callback__espacio_ya_reservado');
                         }
+                    }
+                }
+
+                if(!empty($select_nuevo_servicio)){
+                    foreach($select_nuevo_espacio as $k => $v){
+                        $this->form_validation->set_rules('input_nuevo_servicio[' . $k . ']', 'descripci&oacute;n del servicio', 'required');
                     }
                 }
             }
@@ -177,7 +184,7 @@ class Solicitudes extends CI_Controller {
                     }
 
                     $this->session->set_userdata('mensaje', 'La solicitud fue creada satisfactoriamente.');
-                    redirect('solicitudes/listar');
+                    redirect('solicitudes/detalles/' . $id_solicitud);
                 }
 
                 //Si llegué a este punto es porque no pudo guardar la solicitud
@@ -291,6 +298,7 @@ class Solicitudes extends CI_Controller {
                 if(isset($viejos_espacios)){
                     foreach($viejos_espacios as $k => $v){
                         $data['input_nuevo_espacio_' . $indices_espacios[$k]] = $v;
+                        $this->form_validation->set_rules('input_nuevo_espacio[' . $indices_espacios[$k] . ']', 'nombre nuevo espacio', 'required');
                     }
                 }
 
@@ -307,6 +315,7 @@ class Solicitudes extends CI_Controller {
                 if(isset($viejos_usos)){
                     foreach($viejos_usos as $k => $v){
                         $data['input_otro_uso_' . $indices_usos[$k]] = $v;
+                        $this->form_validation->set_rules('input_otro_uso[' . $indices_usos[$k] . ']', 'uso del espacio', 'required');
                     }
                 }
 
@@ -326,6 +335,12 @@ class Solicitudes extends CI_Controller {
                             if($v != $otro_espacio['id']){
                                 $this->form_validation->set_rules('select_nuevo_espacio[' . $k . ']', 'Espacio', 'callback__espacio_reservado_actualizar');
                             }
+                        }
+                    }
+
+                    if(!empty($select_nuevo_servicio)){
+                        foreach($select_nuevo_servicio as $k => $v){
+                            $this->form_validation->set_rules('input_nuevo_servicio[' . $k . ']', 'descripci&oacute;n del servicio', 'required');
                         }
                     }
                 }
@@ -362,6 +377,20 @@ class Solicitudes extends CI_Controller {
                         $this->solicitudes_model->delete_auxiliares('solicitudes_equipos', $id);
                         $this->solicitudes_model->delete_auxiliares('solicitudes_espacios_usos', $id);
                         $this->solicitudes_model->delete_auxiliares('solicitudes_servicios', $id);
+
+                        foreach($espacios as $k => $espacio){
+                            if($espacio['otro_espacio']){
+                                $this->espacios_model->delete_espacio('espacios', $espacio['id_espacio']);
+                            }
+
+                            if($espacio['otro_uso']){
+                                $this->usos_model->delete_uso('usos', $espacio['id_uso']);
+                            }
+                        }
+
+                        foreach($servicios as $k => $servicio){
+                            $this->servicios_model->delete_servicio('servicios', $servicio['id_servicio']);
+                        }
 
                         $id_solicitud = $id;
                         if(isset($select_nuevo_equipo)){
@@ -424,7 +453,6 @@ class Solicitudes extends CI_Controller {
                     redirect('solicitudes/listar');
                 }
             }else{
-                //Si llegué a este punto es porque no pudo guardar el usuario
                 $this->session->set_userdata('mensaje', 'La solicitud que intenta actualizar no existe.');
                 redirect('solicitudes/listar');
             }
@@ -434,50 +462,60 @@ class Solicitudes extends CI_Controller {
             redirect('inicio');
         }
     }
-    
-    public function borrar($id){
 
-        //Comprobacion de que el usuario sea un administrador
+    public function cerrar($id){
+
+        //Lo primero es ver si es Administrador
         $administrador = $this->session->administrador;
         if($administrador){
-            $data['title'] = 'Borrado de solicitudes';
-            $table = 'solicitudes_equipos';
-            $this->db->from($table);
-            $this->db->where('id_solicitud', $id);
-            $delete_id = $this->db->get()->row_array();
-            if ($delete_id){
-                $this->db->delete($table, array('id_solicitud' => $id));
+            $data['title'] = 'Confirmar cierre de la solicitud #' . $id;
+
+            $solicitud = $this->solicitudes_model->get_solicitud($id);
+
+            if($solicitud){
+                $usuario = $this->usuarios_model->get_usuario_by_id($solicitud['id_solicitante']);
+
+                $data['equipos'] = $this->equipos_model->get_equipos_solicitud($id);
+                $data['espacios'] = $this->espacios_model->get_espacios_solicitud($id);
+                $data['servicios'] = $this->servicios_model->get_servicios_solicitud($id);
+
+                $data = array_merge($data, $usuario);
+                $data = array_merge($data, $solicitud);
+
+                $this->form_validation->set_rules('observaciones', 'observaciones', 'trim|required');
+
+                if (!$this->form_validation->run()){
+
+                    //Si no pasa las reglas de validación, mostramos el formulario
+                    $this->parser->parse('templates/header', $data);
+                    $this->parser->parse('solicitudes/close', $data);
+                    $this->parser->parse('templates/footer', $data);
+                }else{
+                    //Si los datos tienen el formato correcto, debo cerrar la solicitud
+
+                    $datos['id_recibido'] = $this->session->id;
+                    $datos['observaciones'] = $this->input->post('observaciones');
+
+                    $was_updated = $this->solicitudes_model->update_solicitud('solicitudes', $solicitud['id'], $datos);
+
+                    //Si lo actualizó correctamente, redirigir con éxito
+                    if($was_updated){
+                        $this->session->set_userdata('mensaje', 'La solicitud fue cerrada satisfactoriamente.');
+                        redirect('solicitudes/recibir');
+                    }
+
+                    //Si llegué a este punto es porque no pudo cerrar la solicitud
+                    $this->session->set_userdata('mensaje', 'No se pudo cerrar la solicitud, por favor intente nuevamente.');
+                    redirect('solicitudes/cerrar/' . $solicitud['id']);
+                }
+
+                $this->parser->parse('templates/header', $data);
+                $this->parser->parse('solicitudes/confirm', $data);
+                $this->parser->parse('templates/footer', $data);
+            }else{
+                $this->session->set_userdata('mensaje', 'La solicitud que intenta cerrar no existe.');
+                redirect('solicitudes/recibir');
             }
-            $table = 'solicitudes_espacios';
-            $this->db->from($table);
-            $this->db->where('id_solicitud', $id);
-            $delete_id = $this->db->get()->row_array();
-            if ($delete_id){
-                $this->db->delete($table, array('id_solicitud' => $id));
-            }
-            $table = 'solicitudes_servicios';
-            $this->db->from($table);
-            $this->db->where('id_solicitud', $id);
-            $delete_id = $this->db->get()->row_array();
-            if ($delete_id){
-                $this->db->delete($table, array('id_solicitud' => $id));
-            }
-            $table = 'usos_espacios';
-            $this->db->from($table);
-            $this->db->where('id_solicitud', $id);
-            $delete_id = $this->db->get()->row_array();
-            if ($delete_id){
-                $this->db->delete($table, array('id_solicitud' => $id));
-            }
-            $table = 'solicitudes';
-            $this->db->from($table);
-            $this->db->where('id', $id);
-            $delete_id = $this->db->get()->row_array();
-            if ($delete_id){
-                $this->db->delete($table, array('id' => $id));
-            }
-            $this->parser->parse('templates/header', $data);
-            $this->parser->parse('templates/footer', $data);
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
             $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
@@ -485,19 +523,19 @@ class Solicitudes extends CI_Controller {
         }
     }
 
-    public function listar(){
+    public function borrar($id){
 
+    }
+
+    public function listar(){
         //Lo primero es ver si es Administrador, no?
         $administrador = $this->session->administrador;
         if($administrador){
 
-            $data['title'] = 'Solicitudes activas';
-            $table_solicitudes = 'solicitudes';
-            $table_usuarios = 'usuarios';
-            $data['solicitudes'] = $this->solicitudes_model->get_solicitudes_extended($table_solicitudes,$table_usuarios,false);
             $data['title'] = 'Lista de Solicitudes';
 
-            $data['solicitudes'] = $this->solicitudes_model->get_solicitudes_extended('solicitudes', 'usuarios');
+            $data['solicitudes'] = $this->solicitudes_model->get_solicitudes_extended(false);
+
             $this->parser->parse('templates/header', $data);
             $this->parser->parse('solicitudes/show', $data);
             $this->parser->parse('templates/footer', $data);
@@ -511,49 +549,30 @@ class Solicitudes extends CI_Controller {
     public function detalles($id){
         //Lo primero es ver si es Administrador, o si el que intenta ver los detalles es el mismo usuario
         $administrador = $this->session->administrador;
-        if ($administrador) {
+        if($administrador){
             $data['title'] = 'Detalles de la solicitud';
-            $detalles = $this->solicitudes_model->get_detalles($id);
-            $data['title'] = 'Detalles de la solicitud';
-            $data['equipos'] = $detalles[0];
-            $data['espacios'] = $detalles[1];
-            $data['servicios'] = $detalles[2];
-            $data['usuario'] = $detalles[3];
-            $data['solicitud'] = $detalles[4];
-            $this->parser->parse('templates/header', $data);
-            $this->parser->parse('solicitudes/details', $data);
-            $this->parser->parse('templates/footer', $data);
-        } else {
-            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
-            redirect('inicio');
-        }
-    }
 
-    public function recibir($id = null){ //seccion de recepcion de prestamos
-        $administrador = $this->session->administrador;
-        if ($administrador) {
-            if (!$id) { //Mostrar todos los prestamos existentes
-                $data['title'] = 'Cierre de solicitud';
-                $table_solicitudes = 'solicitudes';
-                $table_usuarios = 'usuarios';
-                $data['solicitudes'] = $this->solicitudes_model->get_solicitudes_extended($table_solicitudes, $table_usuarios,true);
+            $solicitud = $this->solicitudes_model->get_solicitud($id);
+
+            if($solicitud){
+                $usuario = $this->usuarios_model->get_usuario_by_id($solicitud['id_solicitante']);
+
+                $data['equipos'] = $this->equipos_model->get_equipos_solicitud($id);
+                $data['espacios'] = $this->espacios_model->get_espacios_solicitud($id);
+                $data['servicios'] = $this->servicios_model->get_servicios_solicitud($id);
+
+                $data = array_merge($data, $usuario);
+                $data = array_merge($data, $solicitud);
+
                 $this->parser->parse('templates/header', $data);
-                $this->parser->parse('solicitudes/receive', $data);
+                $this->parser->parse('solicitudes/details', $data);
                 $this->parser->parse('templates/footer', $data);
-            } else { //Mostrar el prestamo a cerrar.
-                $data['title'] = 'Confirmar cierre de la solicitud # '.$id;
-                $data['id'] = $id;
-                $detalles = $this->solicitudes_model->get_detalles($id);
-                $data['equipos'] = $detalles[0];
-                $data['espacios'] = $detalles[1];
-                $data['servicios'] = $detalles[2];
-                $data['usuario'] = $detalles[3];
-                $data['solicitud'] = $detalles[4];
-                $this->parser->parse('templates/header', $data);
-                $this->parser->parse('solicitudes/confirm_recep', $data);
-                $this->parser->parse('templates/footer', $data);
+            }else{
+                $this->session->set_userdata('mensaje', 'La solicitud que intenta visualizar no existe.');
+                redirect('solicitudes/listar');
             }
+
+
         } else {
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
             $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
@@ -561,19 +580,15 @@ class Solicitudes extends CI_Controller {
         }
     }
 
-    public function cerrado($id){
+    public function recibir(){
         $administrador = $this->session->administrador;
-        if ($administrador){
+        if($administrador){
             $data['title'] = 'Cierre de solicitud';
-            $id_sol = $this->input->post('solsid');
-            $id_admin = $this->session->id;
-            $obs = $this->input->post('obs');
-            $close = $this->solicitudes_model->recibir_prestamo($id_sol,$id_admin,$obs);
-            if ($close){
-                $this->parser->parse('templates/header', $data);
-                $this->parser->parse('solicitudes/closed', $data);
-                $this->parser->parse('templates/footer', $data);
-            }
+            $data['solicitudes'] = $this->solicitudes_model->get_solicitudes_extended(true);
+
+            $this->parser->parse('templates/header', $data);
+            $this->parser->parse('solicitudes/receive', $data);
+            $this->parser->parse('templates/footer', $data);
 
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
@@ -583,79 +598,12 @@ class Solicitudes extends CI_Controller {
     }
 
     public function nuevo_equipo(){
-        $fecha_uso = $this->input->post('fecha_uso');
-        $hora_entrega = $this->input->post('hora_entrega');
-        $hora_devolucion = $this->input->post('hora_devolucion');
-
-        $fecha_uso = DateTime::createFromFormat('d/m/Y', $fecha_uso);
-        $hora_entrega = DateTime::createFromFormat('h:i A', $hora_entrega);
-        $hora_devolucion = DateTime::createFromFormat('h:i A', $hora_devolucion);
-
-        $fecha_uso = $fecha_uso->format('Y-m-d');
-
-        $solicitudes = $this->solicitudes_model->get_solicitudes_by_date('solicitudes', $fecha_uso);
-
-        $ids_equipos_en_uso = array();
-
-        foreach ($solicitudes as $i => $solicitud){
-            //start1 <= end2 and start2 <= end1 to see if they intersect
-            $inicio_solicitud = DateTime::createFromFormat('H:i:s', $solicitud['hora_entrega']);
-            $fin_solicitud = DateTime::createFromFormat('H:i:s', $solicitud['hora_devolucion']);
-            if($hora_entrega <= $fin_solicitud and $inicio_solicitud <= $hora_devolucion){
-                $equipos = $this->solicitudes_model->get_equipos_by_solicitud('solicitudes_equipos', $solicitud['id']);
-                foreach ($equipos as $j => $equipo){
-                    $ids_equipos_en_uso[] = $equipo['id_equipo'];
-                }
-            }
-        }
-
-        if(empty($ids_equipos_en_uso)){
-            $ids_equipos_en_uso[] = '0';
-        }
-
-        $ids_equipos_en_uso = array_unique($ids_equipos_en_uso);
-
-        $equipos_disponibles = $this->equipos_model->get_equipos_sin_usar($ids_equipos_en_uso);
         $equipos_disponibles = $this->equipos_model->get_equipos_sistema('equipos');
 
         echo json_encode($equipos_disponibles);
     }
 
     public function nuevo_espacio(){
-        $fecha_uso = $this->input->post('fecha_uso');
-        $hora_entrega = $this->input->post('hora_entrega');
-        $hora_devolucion = $this->input->post('hora_devolucion');
-
-        $fecha_uso = DateTime::createFromFormat('d/m/Y', $fecha_uso);
-        $hora_entrega = DateTime::createFromFormat('h:i A', $hora_entrega);
-        $hora_devolucion = DateTime::createFromFormat('h:i A', $hora_devolucion);
-
-        $fecha_uso = $fecha_uso->format('Y-m-d');
-
-        $solicitudes = $this->solicitudes_model->get_solicitudes_by_date('solicitudes', $fecha_uso);
-
-        $ids_espacios_en_uso = array();
-
-        foreach ($solicitudes as $i => $solicitud){
-            //start1 <= end2 and start2 <= end1 to see if they intersect
-            $inicio_solicitud = DateTime::createFromFormat('H:i:s', $solicitud['hora_entrega']);
-            $fin_solicitud = DateTime::createFromFormat('H:i:s', $solicitud['hora_devolucion']);
-            if($hora_entrega <= $fin_solicitud and $inicio_solicitud <= $hora_devolucion){
-                $espacios = $this->solicitudes_model->get_espacios_by_solicitud('solicitudes_espacios_usos', $solicitud['id']);
-                foreach ($espacios as $j => $espacio){
-                    $ids_espacios_en_uso[] = $espacio['id_espacio'];
-                }
-            }
-        }
-
-        if(empty($ids_espacios_en_uso)){
-            $ids_espacios_en_uso[] = '0';
-        }
-
-        $ids_espacios_en_uso = array_unique($ids_espacios_en_uso);
-
-        $espacios_disponibles = $this->espacios_model->get_espacios_sin_usar($ids_espacios_en_uso);
-
         $usos_espacio = $this->usos_model->get_usos_sistema('usos');
         $espacios = $this->espacios_model->get_espacios_sistema('espacios');
 

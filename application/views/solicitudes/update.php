@@ -68,17 +68,17 @@ echo form_open('solicitudes/actualizar/{id_solicitud}', $attributes);
         <script>
             cantidad_clicks_nuevo_equipo = parseInt("<?php echo $len; ?>");
         </script>
-    <?php foreach ($select_nuevo_equipo as $i => $select){ ?>
-        <div id="div-nuevo-equipo-<?= $i; ?>">
-            <div>
-                <?php echo form_error('select_nuevo_equipo[' . $i . ']'); ?>
+        <?php foreach ($select_nuevo_equipo as $i => $select){ ?>
+            <div id="div-nuevo-equipo-<?= $i; ?>">
+                <div>
+                    <?php echo form_error('select_nuevo_equipo[' . $i . ']'); ?>
+                </div>
+                <select class="form-control" id="select_nuevo_equipo_<?= $i; ?>" name="select_nuevo_equipo[]">
+                    <option value="<?= $select; ?>"><?= $select; ?></option>
+                </select>
+                <button type="button" class="btn btn-danger" id="eliminar-equipo-<?= $i; ?>">Eliminar equipo</button>
             </div>
-            <select class="form-control" id="select_nuevo_equipo_<?= $i; ?>" name="select_nuevo_equipo[]">
-                <option value="<?= $select; ?>"><?= $select; ?></option>
-            </select>
-            <button type="button" class="btn btn-danger" id="eliminar-equipo-<?= $i; ?>">Eliminar equipo</button>
-        </div>
-    <?php } ?>
+        <?php } ?>
     <?php } ?>
 
 </div>
@@ -98,6 +98,8 @@ echo form_open('solicitudes/actualizar/{id_solicitud}', $attributes);
         <div id="div-nuevo-espacio-<?= $i; ?>">
             <div>
                 <?php echo form_error('select_nuevo_espacio[' . $i . ']'); ?>
+                <?php echo form_error('input_nuevo_espacio[' . $i . ']'); ?>
+                <?php echo form_error('input_otro_uso[' . $i . ']'); ?>
             </div>
             <select class="form-control" id="select_nuevo_espacio_<?= $i; ?>" name="select_nuevo_espacio[]">
                 <option value="<?= $select; ?>"><?= $select; ?></option>
@@ -136,6 +138,10 @@ echo form_open('solicitudes/actualizar/{id_solicitud}', $attributes);
 
     <?php foreach ($select_nuevo_servicio as $i => $select){ ?>
         <div id="div-nuevo-servicio-<?= $i; ?>">
+            <div>
+                <?php echo form_error('input_nuevo_servicio[' . $i . ']'); ?>
+            </div>
+
             <select class="form-control" id="select_nuevo_servicio_<?= $i; ?>" name="select_nuevo_servicio[]">
                 <option value="<?= $select; ?>"><?= $select; ?></option>
             </select>
@@ -150,7 +156,7 @@ echo form_open('solicitudes/actualizar/{id_solicitud}', $attributes);
 
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-primary">Crear solicitud</button>
+        <button type="submit" class="btn btn-primary">Actualizar solicitud</button>
     </div>
 </div>
 

@@ -7,7 +7,8 @@
  */
 ?>
 
-<span class="glyphicon glyphicon-envelope"></span> <?= $this->session->mensaje; ?>
+<span class="glyphicon glyphicon-envelope"></span><?= $this->session->mensaje; ?>
+<br>
 
 <div class="panel panel-default">
     <div class="panel-heading">Lista de solicitudes</div>
@@ -35,7 +36,7 @@
             <td>
                 <a href="<?= base_url('solicitudes/actualizar/{id}') ?>">Actualizar</a> /
                 <a href="<?= base_url('solicitudes/eliminar/{id}') ?>">Eliminar</a> /
-                <a href="<?= base_url('solicitudes/detalles/{id}') ?>">Ver Detalles</a>
+                <a href="<?= base_url('solicitudes/detalles/{id}') ?>">Detalles</a>
             </td>
         </tr>
         {/solicitudes}

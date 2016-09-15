@@ -90,55 +90,27 @@ class Solicitudes_model extends CI_Model {
         return $query->result_array();
     }
 
-    public function get_solicitudes_extended($table_with_foreign_ids,$table_with_data_of_the_ids,$only_active_sols){
-        if ($only_active_sols){
-            $this->db->select('*');
-            $this->db->from($table_with_data_of_the_ids);
-            $this->db->join($table_with_foreign_ids, $table_with_foreign_ids.'.id_solicitante='.$table_with_data_of_the_ids.'.id');
+    public function get_solicitudes_extended($active){
+        $this->db->from('usuarios');
+        $this->db->join('solicitudes', 'solicitudes.id_solicitante = usuarios.id');
+
+        if($active){
             $this->db->having('id_recibido', null);
-            $query = $this->db->get();
-            return $query->result_array();
-        }else{
-            $this->db->select('*');
-            $this->db->from($table_with_data_of_the_ids);
-            $this->db->join($table_with_foreign_ids, $table_with_foreign_ids.'.id_solicitante='.$table_with_data_of_the_ids.'.id');
-            $query = $this->db->get();
-            return $query->result_array();
         }
-
+        
+        $query = $this->db->get();
+        return $query->result_array();
     }
-
-    public function get_detalles($id){
-        $table_solicitudes = 'solicitudes';
-        $table_usuarios = 'usuarios';
-        $equipos_reservados = $this->equipos_model->get_equipos_solicitud($id);
-        $espacios_reservados = $this->espacios_model->get_espacios_solicitud($id);
-        $servicios_reservados = $this->servicios_model->get_servicios_solicitud($id);
-        $this->db->select('id_solicitante, fecha_solicitud, fecha_uso');
-        $this->db->from($table_solicitudes);
-        $this->db->where($table_solicitudes.'.id ='.$id);
-        $solicitud_unica = $this->db->get()->result_array();
-        $idsol = $solicitud_unica[0]['id_solicitante'];
-        $this->db->select('primer_nombre, segundo_nombre, primer_apellido, segundo_apellido');
-        $this->db->from($table_usuarios);
-        $this->db->where($table_usuarios.'.id ='.$idsol);
-        $usuario = $this->db->get()->result_array();
-        $data_array = array(
-            0 => $equipos_reservados,
-            1 => $espacios_reservados,
-            2 => $servicios_reservados,
-            3 => $usuario,
-            4 => $solicitud_unica);
-        return $data_array;
-    }
+    
     public function recibir_prestamo($id_sol, $id_admin, $obs){
-        $table_solicitudes = 'solicitudes';
         $data = array(
             'id_recibido' => $id_admin,
             'observaciones' => $obs
         );
+
         $this->db->where('id', $id_sol);
-        $this->db->update($table_solicitudes, $data);
-        return true;
+        $was_updated = $this->db->update('solicitudes', $data);
+
+        return $was_updated;
     }
 }

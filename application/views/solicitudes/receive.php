@@ -1,3 +1,6 @@
+<span class="glyphicon glyphicon-envelope"></span><?= $this->session->mensaje; ?>
+<br>
+
 <div class="panel panel-default">
     <div class="panel-heading">Lista de solicitudes</div>
     <div class="panel-body">
@@ -23,7 +26,7 @@
             <td>{fecha_solicitud}</td>
             <td>{fecha_uso}</td>
             <td>
-                <a href="<?= base_url('solicitudes/recibir/{id}') ?>">
+                <a href="<?= base_url('solicitudes/cerrar/{id}') ?>">
                     <span class="glyphicon glyphicon-file"></span>
                     Cerrar solicitud
                 </a>

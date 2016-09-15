@@ -7,38 +7,55 @@
  */
 ?>
 
+<span class="glyphicon glyphicon-envelope"></span><?= $this->session->mensaje; ?>
+
 <div class="panel panel-default">
     <div class="panel-heading">Detalles de la solicitud</div>
     <div class="container">
         <p><strong>Solicitante:</strong></p>
-        {usuario}
         {primer_nombre} {segundo_nombre} {primer_apellido} {segundo_apellido}
-        {/usuario}
         <hr>
         <p><strong>Fecha de solicitud:</strong></p>
-        {solicitud}
-        {fecha_solicitud}
-        {/solicitud}
+            {fecha_solicitud}
         <hr>
         <p><strong>Fecha de uso:</strong></p>
-        {solicitud}
-        {fecha_uso}
-        {/solicitud}
+            {fecha_uso}
         <hr>
+
+        <?php if(!empty($equipos)): ?>
         <p><strong>Equipos reservados:</strong></p>
-        {equipos}
-        nombre_equipo}
-        {/equipos}
+        <ul>
+            {equipos}
+                <li>{nombre_equipo}</li>
+            {/equipos}
+        </ul>
         <hr>
+        <?php endif; ?>
+
+        <?php if(!empty($espacios)): ?>
         <p><strong>Espacios reservados:</strong></p>
-        {espacios}
-        {nombre_espacio}
-        {/espacios}
+        <ul>
+            {espacios}
+            <li>{nombre_espacio}</li>
+            {/espacios}
+        </ul>
         <hr>
-        <p><strong>Servicios reservado:</strong></p>
-        {servicios}
-        {nombre_servicio}
-        {/servicios}
+        <?php endif; ?>
+
+        <?php if(!empty($servicios)): ?>
+        <p><strong>Servicios reservados:</strong></p>
+        <ul>
+            {servicios}
+            <li>{nombre_servicio}</li>
+            {/servicios}
+        </ul>
+        <?php endif; ?>
+
+        <div class="form-group">
+            <form action="<?= base_url('solicitudes/cerrar/{id}') ?>" method="post">
+                <button type="submit" class="btn btn-danger">Cerrar solicitud</button>
+            </form>
+        </div>
     </div>
 </div>
 <button class="btn-default"><a href="<?= base_url('') ?>">Volver</a></button>

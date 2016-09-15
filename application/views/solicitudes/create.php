@@ -91,6 +91,8 @@ echo form_open('solicitudes/crear', $attributes);
             <div id="div-nuevo-espacio-<?= $i; ?>">
                 <div>
                     <?php echo form_error('select_nuevo_espacio[' . $i . ']'); ?>
+                    <?php echo form_error('input_nuevo_espacio[' . $i . ']'); ?>
+                    <?php echo form_error('input_otro_uso[' . $i . ']'); ?>
                 </div>
                 <select class="form-control" id="select_nuevo_espacio_<?= $i; ?>" name="select_nuevo_espacio[]">
                     <option value="<?= $select; ?>"><?= $select; ?></option>
@@ -128,6 +130,10 @@ echo form_open('solicitudes/crear', $attributes);
         </script>
 
         <?php foreach ($select_nuevo_servicio as $i => $select){ ?>
+            <div>
+                <?php echo form_error('input_nuevo_servicio[' . $i . ']'); ?>
+            </div>
+        
             <div id="div-nuevo-servicio-<?= $i; ?>">
                 <select class="form-control" id="select_nuevo_servicio_<?= $i; ?>" name="select_nuevo_servicio[]">
                     <option value="<?= $select; ?>"><?= $select; ?></option>
