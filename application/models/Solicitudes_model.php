@@ -27,6 +27,11 @@ class Solicitudes_model extends CI_Model {
         return $deleted;
     }
 
+    public function delete_solicitud($table, $id){
+        $delete_id = $this->db->delete($table, array('id' => $id));
+        return $delete_id;
+    }
+
     public function get_solicitudes_by_date($table, $date){
         $this->db->from($table);
         $this->db->where('fecha_uso', $date);

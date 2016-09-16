@@ -523,8 +523,86 @@ class Solicitudes extends CI_Controller {
         }
     }
 
-    public function borrar($id){
+    public function eliminar($id){
 
+        //Lo primero es ver si es Administrador
+        $administrador = $this->session->administrador;
+        if($administrador){
+            
+            $solicitud = $this->solicitudes_model->get_solicitud($id);
+            if($solicitud){
+                $espacios = $this->solicitudes_model->get_espacios_by_solicitud('solicitudes_espacios_usos', $id);
+                $servicios = $this->solicitudes_model->get_servicios_by_solicitud('solicitudes_servicios', $id);
+
+                foreach($espacios as $k => $espacio){
+                    if($espacio['otro_espacio']){
+                        $this->espacios_model->delete_espacio('espacios', $espacio['id_espacio']);
+                    }
+
+                    if($espacio['otro_uso']){
+                        $this->usos_model->delete_uso('usos', $espacio['id_uso']);
+                    }
+                }
+
+                foreach($servicios as $k => $servicio){
+                    $this->servicios_model->delete_servicio('servicios', $servicio['id_servicio']);
+                }
+
+                $this->solicitudes_model->delete_auxiliares('solicitudes_equipos', $id);
+                $this->solicitudes_model->delete_auxiliares('solicitudes_espacios_usos', $id);
+                $this->solicitudes_model->delete_auxiliares('solicitudes_servicios', $id);
+                
+                $delete_id = $this->solicitudes_model->delete_solicitud('solicitudes', $id);
+                if($delete_id){
+                    $this->session->set_userdata('mensaje', 'La solicitud ha sido eliminada satisfactoriamente.');
+                    redirect('solicitudes/listar');
+                }else{
+                    $this->session->set_userdata('mensaje', 'No se pudo eliminar la solicitud, por favor intente nuevamente.');
+                    redirect('solicitudes/listar');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'La solicitud que intenta eliminar no existe.');
+                redirect('solicitudes/listar');
+            }
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
+
+    public function deshabilitar($id){
+
+        //Lo primero es ver si es Administrador
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $solicitud = $this->solicitudes_model->get_solicitud($id);
+            if($solicitud){
+                if($solicitud['habilitado']){
+                    $datos['habilitado'] = FALSE;
+
+                    $was_updated = $this->solicitudes_model->update_solicitud('solicitudes', $id, $datos);
+                    if($was_updated){
+                        $this->session->set_userdata('mensaje', 'La solicitud fue deshabilitada satisfactoriamente.');
+                        redirect('solicitudes/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo deshabilitar la solicitud, por favor intente nuevamente.');
+                        redirect('solicitudes/listar');
+                    }
+                }else{
+                    $this->session->set_userdata('mensaje', 'La solicitud ya se encuentra deshabilitada.');
+                    redirect('solicitudes/listar');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'La solicitud que intenta deshabilitar no existe.');
+                redirect('solicitudes/listar');
+            }
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
     }
 
     public function listar(){
