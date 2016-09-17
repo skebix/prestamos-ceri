@@ -13,11 +13,11 @@ class Autenticacion extends CI_Controller {
     }
 
     function index(){
-        //Prueba
+
         //Lo primero es ver si ya ingresó, no?
         $cedula = $this->session->cedula;
         if($cedula){
-            $this->session->set_userdata('mensaje', 'Ya se encuentra logueado en el sistema');
+            $this->session->set_userdata('mensaje', 'Ya ha ingresado al sistema.');
             redirect('inicio');
         }
 
@@ -36,10 +36,15 @@ class Autenticacion extends CI_Controller {
             $cedula = $this->input->post('cedula');
             $usuario = $this->usuarios_model->get_usuario($cedula);
 
-            $this->session->set_userdata($usuario);
+            if($usuario){
+                $this->session->set_userdata($usuario);
 
-            $this->session->set_userdata('mensaje', 'Acaba de ingresar al sistema');
-            redirect('inicio');
+                $this->session->set_userdata('mensaje', 'Acaba de ingresar al sistema.');
+                redirect('inicio');
+            }else{
+                $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente ingresar nuevamente.');
+                redirect('inicio');
+            }
         }
     }
 
@@ -55,8 +60,10 @@ class Autenticacion extends CI_Controller {
             $this->parser->parse('authentication/forgot_password', $data);
             $this->parser->parse('templates/footer', $data);
         }else{
-            //Si los datos tienen el formato correcto, debo crear un token temporal para cambio de contraseña
 
+            $email = $this->input->post('email');
+
+            //Si los datos tienen el formato correcto, debo crear un token temporal para cambio de contraseña
             $updated = false;
             while(!$updated){
                 //Acá genero el token de un sólo uso
@@ -66,12 +73,17 @@ class Autenticacion extends CI_Controller {
                 $data['token_temporal'] = $token_temporal;
 
                 //Tomo el email del formulario y busco ese usuario en la BD (va a existir, porque ya se validó con email_exist)
-                $email = $this->input->post('email');
-                $usuario = $this->usuarios_model->get_usuario_by_email($email);
-                $data['cedula'] = $usuario['cedula'];
 
-                //Actualizo el token en la BD
-                $updated = $this->usuarios_model->update_token($usuario['cedula'], $hashed_password);
+                $usuario = $this->usuarios_model->get_usuario_by_email($email);
+                if($usuario){
+                    $data['cedula'] = $usuario['cedula'];
+
+                    //Actualizo el token en la BD
+                    $updated = $this->usuarios_model->update_token($usuario['cedula'], $hashed_password);
+                }else{
+                    $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                    redirect('inicio');
+                }
             }
 
             $this->email->from('skebix@skebix.com.ve', 'PRESTAMOS-CERI');
@@ -87,7 +99,8 @@ class Autenticacion extends CI_Controller {
                 $this->session->set_userdata('mensaje', 'Correo enviado satisfactoriamente.');
                 redirect('inicio');
             }
-            $this->session->set_userdata('mensaje', 'Error al enviar el correo electr&oacute;nico.');
+            
+            $this->session->set_userdata('mensaje', 'Hubo un problema al enviar el correo electr&oacute;nico, por favor intente nuevamente.');
             redirect('inicio');
         }
     }
@@ -95,14 +108,18 @@ class Autenticacion extends CI_Controller {
     public function validar_token($cedula, $unhashed_token){
 
         $usuario = $this->usuarios_model->get_usuario($cedula);
+        if($usuario){
+            if($this->bcrypt->check_password($unhashed_token, $usuario['forgot_password_token'])){
+                $this->session->set_userdata('reset_password', true);
+                $this->session->set_userdata('cedula', $cedula);
 
-        if($this->bcrypt->check_password($unhashed_token, $usuario['forgot_password_token'])){
-            $this->session->set_userdata('reset_password', true);
-            $this->session->set_userdata('cedula', $cedula);
-
-            $this->reset_password();
+                $this->reset_password();
+            }else{
+                $this->session->set_userdata('mensaje', 'El token ya fue utilizado o es inv&aacute;lido.');
+                redirect('inicio');
+            }
         }else{
-            $this->session->set_userdata('mensaje', 'El token ya fue utilizado o es inv&aacute;lido.');
+            $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
             redirect('inicio');
         }
     }
@@ -125,12 +142,16 @@ class Autenticacion extends CI_Controller {
 
                 $raw_password = $this->input->post('password');
                 $data['hashed_password'] = $this->bcrypt->hash_password($raw_password);
-                $data2['forgot_password_token'] = null;
+                $data['forgot_password_token'] = null;
 
-                $updated_password = $this->usuarios_model->update_password($cedula, $data);
-                $updated_token = $this->usuarios_model->update_token($cedula, $data2);
-
-                $this->salir();
+                $was_updated = $this->usuarios_model->update_by_cedula('usuarios', $cedula, $data);
+                
+                if($was_updated){
+                    $this->salir();
+                }else{
+                    $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente ingresar nuevamente.');
+                    redirect('inicio');
+                }
             }
         }else{
             $this->session->set_userdata('mensaje', 'El token ya fue utilizado o es inv&aacute;lido.');

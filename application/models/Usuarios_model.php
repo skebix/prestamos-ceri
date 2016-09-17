@@ -56,6 +56,13 @@ class Usuarios_model extends CI_Model {
         return $update_id;
     }
 
+    public function update_by_cedula($table, $cedula, $datos){
+        $this->db->where('cedula', $cedula);
+        $was_updated = $this->db->update($table, $datos);
+
+        return $was_updated;
+    }
+    
     public function update_user($id, $usuario){
         $this->db->where('id', $id);
         $update_id = $this->db->update('usuarios', $usuario);

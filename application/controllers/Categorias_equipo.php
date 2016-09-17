@@ -13,7 +13,7 @@ class Categorias_equipo extends CI_Controller {
     }
 
     public function index(){
-        echo "Por diseñar";
+        $this->listar();
     }
 
     function crear(){
@@ -35,8 +35,7 @@ class Categorias_equipo extends CI_Controller {
                 //Si los datos tienen el formato correcto, debo registrar la nueva categoría en la BD
                 $datos['categoria'] = $this->input->post('categoria_equipo');
 
-                $table = 'categoria_equipo';
-                $was_inserted = $this->categoria_model->create_categoria($table, $datos);
+                $was_inserted = $this->categoria_model->create_categoria('categoria_equipo', $datos);
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_inserted){
@@ -45,7 +44,7 @@ class Categorias_equipo extends CI_Controller {
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el equipo
-                $this->session->set_userdata('mensaje', 'No se pudo crear su categor&iacute;a de equipo.');
+                $this->session->set_userdata('mensaje', 'No se pudo crear su categor&iacute;a de equipo. Por favor intente nuevamente.');
                 redirect('categorias-equipo/listar');
             }
         }else{
@@ -63,13 +62,18 @@ class Categorias_equipo extends CI_Controller {
 
             $data['title'] = 'Lista de Categor&iacute;as de equipo';
 
-            $table = 'categoria_equipo';
-            $categorias = $this->categoria_model->get_categorias($table);
-            $data['categorias'] = $categorias;
+            $categorias = $this->categoria_model->get_categorias('categoria_equipo');
 
-            $this->parser->parse('templates/header', $data);
-            $this->parser->parse('categorias_equipo/show', $data);
-            $this->parser->parse('templates/footer', $data);
+            if($categorias){
+                $data['categorias'] = $categorias;
+
+                $this->parser->parse('templates/header', $data);
+                $this->parser->parse('categorias_equipo/show', $data);
+                $this->parser->parse('templates/footer', $data);
+            }else{
+                $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                redirect('inicio');
+            }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
             $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
@@ -86,15 +90,18 @@ class Categorias_equipo extends CI_Controller {
             //Tomo los datos del equipo de la BD, para poder pre-llenar el formulario
             $data['title'] = 'Actualizar Categor&iacute;a de equipo';
 
-            $table = 'categoria_equipo';
-
-            $categoria = $this->categoria_model->get_categoria($table, $id);
-            $data['id'] = $categoria['id'];
-            $data['categoria'] = $categoria['categoria'];
+            $categoria = $this->categoria_model->get_categoria('categoria_equipo', $id);
+            if($categoria){
+                $data['id'] = $categoria['id'];
+                $data['categoria'] = $categoria['categoria'];
+            }else{
+                $this->session->set_userdata('mensaje', 'La categor&iacute;a que intenta actualizar no existe o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                redirect('inicio');
+            }
 
             $this->form_validation->set_rules('categoria_equipo', 'Categor&iacute;a de equipo', 'trim|required|callback__alpha_special|max_length[255]');
 
-            if (!$this->form_validation->run()){
+            if(!$this->form_validation->run()){
 
                 //Si no pasa las reglas de validación, mostramos el formulario
                 $this->parser->parse('templates/header', $data);
@@ -104,7 +111,7 @@ class Categorias_equipo extends CI_Controller {
                 $categoria['categoria'] = $this->input->post('categoria_equipo');
 
                 //Si los datos tienen el formato correcto, debo registrar al equipo en la BD
-                $was_updated = $this->categoria_model->update_categoria($table, $id, $categoria);
+                $was_updated = $this->categoria_model->update_categoria('categoria_equipo', $id, $categoria);
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_updated){
@@ -113,7 +120,7 @@ class Categorias_equipo extends CI_Controller {
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el equipo
-                $this->session->set_userdata('mensaje', 'No se pudo actualizar su categor&iacute;a de equipo.');
+                $this->session->set_userdata('mensaje', 'No se pudo actualizar su categor&iacute;a de equipo. Por favor intente nuevamente.');
                 redirect('categorias-equipo/listar');
             }
         }else{
