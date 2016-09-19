@@ -134,19 +134,93 @@ class Usos extends CI_Controller {
             redirect('inicio');
         }
     }
-
+    
     public function eliminar($id){
 
         //Lo primero es ver si es Administrador
         $administrador = $this->session->administrador;
         if($administrador){
-            $table = 'usos';
-            $delete_id = $this->usos_model->delete_uso($table, $id);
-            if($delete_id){
-                $this->session->set_userdata('mensaje', 'uso eliminado satisfactoriamente.');
+
+            $cantidad_solicitudes = $this->solicitudes_model->get_solicitudes_by_uso($id);
+            if($cantidad_solicitudes > 0){
+                $this->session->set_userdata('mensaje', 'Este uso no puede ser eliminado, est&aacute; siendo utilizado por ' . $cantidad_solicitudes . ' solicitudes. Elimine las solicitudes primero, o deshabilite el uso en lugar de eliminarlo.');
                 redirect('usos/listar');
             }else{
-                $this->session->set_userdata('mensaje', 'No se pudo eliminar su uso.');
+                $delete_id = $this->usos_model->delete_uso('usos', $id);
+                if($delete_id){
+                    $this->session->set_userdata('mensaje', 'Uso eliminado satisfactoriamente.');
+                    redirect('usos/listar');
+                }else{
+                    $this->session->set_userdata('mensaje', 'No se pudo eliminar su uso, por favor intente nuevamente');
+                    redirect('usos/listar');
+                }
+            }
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
+
+    public function deshabilitar($id){
+
+        //Lo primero es ver si es Administrador
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $uso = $this->usos_model->get_uso('usos', $id);
+            if($uso){
+                if($uso['habilitado']){
+                    $datos['habilitado'] = FALSE;
+
+                    $was_updated = $this->usos_model->update_uso('usos', $id, $datos);
+                    if($was_updated){
+                        $this->session->set_userdata('mensaje', 'El uso fue deshabilitado satisfactoriamente.');
+                        redirect('usos/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo deshabilitar el uso, por favor intente nuevamente.');
+                        redirect('usos/listar');
+                    }
+                }else{
+                    $this->session->set_userdata('mensaje', 'El uso ya se encuentra deshabilitado.');
+                    redirect('usos/listar');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'El uso que intenta deshabilitar no existe.');
+                redirect('usos/listar');
+            }
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
+
+    public function habilitar($id){
+
+        //Lo primero es ver si es Administrador
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $uso = $this->usos_model->get_uso('usos', $id);
+            if($uso){
+                if(!$uso['habilitado']){
+                    $datos['habilitado'] = TRUE;
+
+                    $was_updated = $this->usos_model->update_uso('usos', $id, $datos);
+                    if($was_updated){
+                        $this->session->set_userdata('mensaje', 'El uso fue habilitado satisfactoriamente.');
+                        redirect('usos/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo habilitar el uso, por favor intente nuevamente.');
+                        redirect('usos/listar');
+                    }
+                }else{
+                    $this->session->set_userdata('mensaje', 'El uso ya se encuentra habilitado.');
+                    redirect('usos/listar');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'El uso que intenta habilitar no existe.');
                 redirect('usos/listar');
             }
         }else{

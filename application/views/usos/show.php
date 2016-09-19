@@ -22,6 +22,7 @@
             <th>ID</th>
             <th>Nombre uso</th>
             <th>Otro uso?</th>
+            <th>Habilitado</th>
             <th>Actualizar</th>
             <th>Eliminar</th>
         </tr>
@@ -32,8 +33,14 @@
                 <th scope="row"><?= $uso['id'] ?></th>
                 <td><?= $uso['uso'] ?></td>
                 <td><?= ($uso['otro_uso'])? "S&iacute;": "No"; ?></td>
+                <td><?= ($uso['habilitado'])? "S&iacute;": "No"; ?></td>
                 <td><a href="<?= base_url('usos/actualizar/' . $uso['id']) ?>">Actualizar uso</a></td>
                 <td><a href="<?= base_url('usos/eliminar/' . $uso['id']) ?>">Eliminar uso</a></td>
+                <?php if($uso['habilitado']){ ?>
+                    <td><a href="<?= base_url('usos/deshabilitar/' . $uso['id']) ?>">Deshabilitar</a></td>
+                <?php }else{ ?>
+                    <td><a href="<?= base_url('usos/habilitar/' . $uso['id']) ?>">Habilitar</a></td>
+                <?php }; ?>
             </tr>
         <?php endforeach; ?>
         </tbody>

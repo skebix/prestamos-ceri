@@ -142,4 +142,12 @@ class Solicitudes_model extends CI_Model {
         $query = $this->db->get();
         return $query->num_rows();
     }
+
+    public function get_solicitudes_by_uso($id_uso){
+        $this->db->from('solicitudes_espacios_usos');
+        $this->db->where('id_uso', $id_uso);
+
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
 }
