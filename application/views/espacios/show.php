@@ -22,8 +22,10 @@
             <th>ID</th>
             <th>Nombre espacio</th>
             <th>Otro espacio?</th>
+            <th>Habilitado</th>
             <th>Actualizar</th>
             <th>Eliminar</th>
+            <th>Habilitar y Deshabilitar</th>
         </tr>
         </thead>
         <tbody>
@@ -32,8 +34,14 @@
             <th scope="row"><?= $espacio['id'] ?></th>
             <td><?= $espacio['nombre_espacio'] ?></td>
             <td><?= ($espacio['otro_espacio'])? "S&iacute;": "No"; ?></td>
+            <td><?= ($espacio['habilitado'])? "S&iacute;": "No"; ?></td>
             <td><a href="<?= base_url('espacios/actualizar/' . $espacio['id']) ?>">Actualizar espacio</a></td>
             <td><a href="<?= base_url('espacios/eliminar/' . $espacio['id']) ?>">Eliminar espacio</a></td>
+            <?php if($espacio['habilitado']){ ?>
+                <td><a href="<?= base_url('espacios/deshabilitar/' . $espacio['id']) ?>">Deshabilitar</a></td>
+            <?php }else{ ?>
+                <td><a href="<?= base_url('espacios/habilitar/' . $espacio['id']) ?>">Habilitar</a></td>
+            <?php }; ?>
         </tr>
         <?php endforeach; ?>
         </tbody>

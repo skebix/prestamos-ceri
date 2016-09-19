@@ -99,7 +99,7 @@ class Espacios extends CI_Controller {
 
                 $data['atributos_otro_espacio'] = $atributos_otro_espacio;
             }else{
-                $this->session->set_userdata('mensaje', 'El equipo que intenta actualizar no existe o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                $this->session->set_userdata('mensaje', 'El espacio que intenta actualizar no existe o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                 redirect('inicio');
             }
 
@@ -135,18 +135,93 @@ class Espacios extends CI_Controller {
         }
     }
 
+
     public function eliminar($id){
 
         //Lo primero es ver si es Administrador
         $administrador = $this->session->administrador;
         if($administrador){
-            $table = 'espacios';
-            $delete_id = $this->espacios_model->delete_espacio($table, $id);
-            if($delete_id){
-                $this->session->set_userdata('mensaje', 'Espacio eliminado satisfactoriamente.');
+
+            $cantidad_solicitudes = $this->solicitudes_model->get_solicitudes_by_espacio($id);
+            if($cantidad_solicitudes > 0){
+                $this->session->set_userdata('mensaje', 'Este espacio no puede ser eliminado, est&aacute; siendo utilizado por ' . $cantidad_solicitudes . ' solicitudes. Elimine las solicitudes primero, o deshabilite el espacio en lugar de eliminarlo.');
                 redirect('espacios/listar');
             }else{
-                $this->session->set_userdata('mensaje', 'No se pudo eliminar su espacio.');
+                $delete_id = $this->espacios_model->delete_espacio('espacios', $id);
+                if($delete_id){
+                    $this->session->set_userdata('mensaje', 'espacio eliminado satisfactoriamente.');
+                    redirect('espacios/listar');
+                }else{
+                    $this->session->set_userdata('mensaje', 'No se pudo eliminar su espacio, por favor intente nuevamente');
+                    redirect('espacios/listar');
+                }
+            }
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
+
+    public function deshabilitar($id){
+
+        //Lo primero es ver si es Administrador
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $espacio = $this->espacios_model->get_espacio('espacios', $id);
+            if($espacio){
+                if($espacio['habilitado']){
+                    $datos['habilitado'] = FALSE;
+
+                    $was_updated = $this->espacios_model->update_espacio('espacios', $id, $datos);
+                    if($was_updated){
+                        $this->session->set_userdata('mensaje', 'El espacio fue deshabilitado satisfactoriamente.');
+                        redirect('espacios/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo deshabilitar el espacio, por favor intente nuevamente.');
+                        redirect('espacios/listar');
+                    }
+                }else{
+                    $this->session->set_userdata('mensaje', 'El espacio ya se encuentra deshabilitado.');
+                    redirect('espacios/listar');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'El espacio que intenta deshabilitar no existe.');
+                redirect('espacios/listar');
+            }
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
+
+    public function habilitar($id){
+
+        //Lo primero es ver si es Administrador
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $espacio = $this->espacios_model->get_espacio('espacios', $id);
+            if($espacio){
+                if(!$espacio['habilitado']){
+                    $datos['habilitado'] = TRUE;
+
+                    $was_updated = $this->espacios_model->update_espacio('espacios', $id, $datos);
+                    if($was_updated){
+                        $this->session->set_userdata('mensaje', 'El espacio fue habilitado satisfactoriamente.');
+                        redirect('espacios/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo habilitar el espacio, por favor intente nuevamente.');
+                        redirect('espacios/listar');
+                    }
+                }else{
+                    $this->session->set_userdata('mensaje', 'El espacio ya se encuentra habilitado.');
+                    redirect('espacios/listar');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'El espacio que intenta habilitar no existe.');
                 redirect('espacios/listar');
             }
         }else{
