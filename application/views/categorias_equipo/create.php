@@ -1,34 +1,35 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: skebix
- * Date: 08/04/2016
- * Time: 09:55 AM
- */
-
-$attributes = array('class' => 'form-horizontal');
+$attributes = array();
 echo form_open('categorias-equipo/crear', $attributes);
 ?>
-
-<?= $this->session->mensaje; ?><br><br>
-
-<div class="form-group">
-    <label for="inputCategoriasEquipo" class="col-sm-2 control-label">Categor&iacute;a de equipo</label>
-    <div class="col-sm-10">
-        <?php echo form_error('categoria_equipo'); ?>
-        <input type="text" class="form-control" id="inputCategoriasEquipo" name="categoria_equipo" value="<?php echo set_value('categoria_equipo'); ?>" placeholder="Categor&iacute;a equipo">
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-0">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Escriba la nueva categor&iacute;a</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form">
+                        <fieldset>
+                            <div class="form-group">
+                                <label for="inputCategoriasEquipo" class="control-label">Categor&iacute;a de equipo</label>
+                                <?php echo form_error('categoria_equipo'); ?>
+                                <input type="text" class="form-control" id="inputCategoriasEquipo" name="categoria_equipo" value="<?php echo set_value('categoria_equipo'); ?>" placeholder="Categor&iacute;a equipo">
+                            </div>
+                            <div class="button">
+                                <button type="submit" class="btn btn-lg btn-primary btn-block">A&ntilde;adir categor&iacute;a</button>
+                            </div>
+                            <br>
+                        </fieldset>
+                    </form>
+                    <a class="logout-button" href="<?= base_url() ?>">
+                        <button type="button" class="btn btn-lg btn-primary btn-block">
+                            Volver al home
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
-<div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-primary">A&ntilde;adir categor&iacute;a</button>
-    </div>
-</div>
-</form>
-
-<a class="logout-button" href="<?= base_url() ?>">
-    <button type="button" class="btn btn-primary">
-        Volver al home
-    </button>
-</a>

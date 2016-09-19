@@ -28,9 +28,10 @@ class Autenticacion extends CI_Controller {
 
         if (!$this->form_validation->run()) {
             //Si no pasa las reglas de validación, mostramos el formulario
-            $this->parser->parse('templates/header', $data);
+            $this->session->set_userdata('mensaje', 'Por favor inicie sesión para continuar');
+            $this->parser->parse('templates/header_basic', $data);
             $this->parser->parse('authentication/login_form', $data);
-            $this->parser->parse('templates/footer', $data);
+            $this->parser->parse('templates/footer_basic', $data);
         }else{
             //Si los datos tienen el formato correcto, agregar los datos a la sesión
             $cedula = $this->input->post('cedula');
@@ -51,9 +52,9 @@ class Autenticacion extends CI_Controller {
         if(!$this->form_validation->run()){
 
             //Si no pasa las reglas de validación, mostramos el formulario
-            $this->parser->parse('templates/header', $data);
+            $this->parser->parse('templates/header_basic', $data);
             $this->parser->parse('authentication/forgot_password', $data);
-            $this->parser->parse('templates/footer', $data);
+            $this->parser->parse('templates/footer_basic', $data);
         }else{
             //Si los datos tienen el formato correcto, debo crear un token temporal para cambio de contraseña
 
@@ -117,9 +118,9 @@ class Autenticacion extends CI_Controller {
             if(!$this->form_validation->run()){
                 $data['title'] = 'Nueva contrase&ntilde;a';
 
-                $this->parser->parse('templates/header', $data);
+                $this->parser->parse('templates/header_basic', $data);
                 $this->parser->parse('authentication/reset_password', $data);
-                $this->parser->parse('templates/footer', $data);
+                $this->parser->parse('templates/footer_basic', $data);
             }else{
                 $cedula = $this->session->cedula;
 
