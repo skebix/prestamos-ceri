@@ -12,17 +12,18 @@
 <div class="panel panel-default">
 
     <div class="panel-heading">Detalles de la solicitud</div>
-    <div class="container">
-        <?php if(!empty($id_recibido)): ?>
-            <div class="alert alert-danger alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <strong>Esta solicitud se encuentra cerrada.</strong>
-                <br>
-                <p><strong>Observaciones:</strong></p>
-                <p>{observaciones}</p>
-            </div>
-        <?php endif; ?>
 
+    <?php if(!empty($id_recibido)): ?>
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Esta solicitud se encuentra cerrada.</strong>
+            <br>
+            <p><strong>Observaciones:</strong></p>
+            <p>{observaciones}</p>
+        </div>
+    <?php endif; ?>
+
+    <div class="container">
         <p><strong>Solicitante:</strong></p>
         {primer_nombre} {segundo_nombre} {primer_apellido} {segundo_apellido}
         <hr>

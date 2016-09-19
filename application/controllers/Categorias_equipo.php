@@ -135,13 +135,87 @@ class Categorias_equipo extends CI_Controller {
         //Lo primero es ver si es Administrador
         $administrador = $this->session->administrador;
         if($administrador){
-            $table = 'categoria_equipo';
-            $delete_id = $this->categoria_model->delete_categoria($table, $id);
-            if($delete_id){
-                $this->session->set_userdata('mensaje', 'Categor&iacute;a de equipo eliminada satisfactoriamente.');
+
+            $cantidad_equipos = $this->equipos_model->get_equipos_by_categoria($id);
+            if($cantidad_equipos > 0){
+                $this->session->set_userdata('mensaje', 'Esta categor&iacute;a no puede ser eliminada, est&aacute; siendo utilizada por ' . $cantidad_equipos . ' equipos. Elimine los equipos primero, o deshabilite la categor&iacute;a en lugar de eliminarla.');
                 redirect('categorias-equipo/listar');
             }else{
-                $this->session->set_userdata('mensaje', 'No se pudo eliminar su categor&iacute;a de equipo.');
+                $delete_id = $this->categoria_model->delete_categoria('categoria_equipo', $id);
+                if($delete_id){
+                    $this->session->set_userdata('mensaje', 'Categor&iacute;a de equipo eliminada satisfactoriamente.');
+                    redirect('categorias-equipo/listar');
+                }else{
+                    $this->session->set_userdata('mensaje', 'No se pudo eliminar su categor&iacute;a de equipo, por favor intente nuevamente');
+                    redirect('categorias-equipo/listar');
+                }
+            }
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
+
+    public function deshabilitar($id){
+
+        //Lo primero es ver si es Administrador
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $categoria_equipo = $this->categoria_model->get_categoria('categoria_equipo', $id);
+            if($categoria_equipo){
+                if($categoria_equipo['habilitado']){
+                    $datos['habilitado'] = FALSE;
+
+                    $was_updated = $this->categoria_model->update_categoria('categoria_equipo', $id, $datos);
+                    if($was_updated){
+                        $this->session->set_userdata('mensaje', 'La categor&iacute;a de equipo fue deshabilitada satisfactoriamente.');
+                        redirect('categorias-equipo/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo deshabilitar la categor&iacute; de equipo, por favor intente nuevamente.');
+                        redirect('categorias-equipo/listar');
+                    }
+                }else{
+                    $this->session->set_userdata('mensaje', 'La categor&iacute; de equipo ya se encuentra deshabilitada.');
+                    redirect('categorias-equipo/listar');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'La categor&iacute; de equipo que intenta deshabilitar no existe.');
+                redirect('categorias-equipo/listar');
+            }
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
+
+    public function habilitar($id){
+
+        //Lo primero es ver si es Administrador
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $categoria_equipo = $this->categoria_model->get_categoria('categoria_equipo', $id);
+            if($categoria_equipo){
+                if(!$categoria_equipo['habilitado']){
+                    $datos['habilitado'] = TRUE;
+
+                    $was_updated = $this->categoria_model->update_categoria('categoria_equipo', $id, $datos);
+                    if($was_updated){
+                        $this->session->set_userdata('mensaje', 'La categor&iacute;a de equipo fue habilitada satisfactoriamente.');
+                        redirect('categorias-equipo/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo habilitar la categor&iacute; de equipo, por favor intente nuevamente.');
+                        redirect('categorias-equipo/listar');
+                    }
+                }else{
+                    $this->session->set_userdata('mensaje', 'La categor&iacute; de equipo ya se encuentra habilitada.');
+                    redirect('categorias-equipo/listar');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'La categor&iacute; de equipo que intenta habilitar no existe.');
                 redirect('categorias-equipo/listar');
             }
         }else{

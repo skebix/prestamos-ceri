@@ -6,6 +6,10 @@
  * Time: 09:57 AM
  */
 ?>
+
+<span class="glyphicon glyphicon-envelope"></span><?= $this->session->mensaje; ?>
+<br>
+
 <div class="panel panel-default">
     <div class="panel-heading">{title}</div>
     <div class="dataTable_wrapper">
@@ -14,19 +18,29 @@
                 <tr>
                     <th>ID</th>
                     <th>Categor&iacute;a de equipo</th>
+                    <th>Habilitado</th>
                     <th>Actualizar</th>
                     <th>Eliminar</th>
+                    <th>Habilitar y Deshabilitar</th>
                 </tr>
             </thead>
             <tbody>
-                {categorias}
+                <?php foreach($categorias as $k => $categoria): ?>
                 <tr class="odd gradeX">
-                    <th scope="row">{id}</th>
-                    <td>{categoria}</td>
-                    <td><a href="<?= base_url('categorias-equipo/actualizar/{id}') ?>">Actualizar categor&iacute;a</a></td>
-                    <td><a href="<?= base_url('categorias-equipo/eliminar/{id}') ?>">Eliminar categor&iacute;a</a></td>
+                    <th scope="row"><?= $categoria['id']; ?></th>
+                    <td><?= $categoria['categoria']; ?></td>
+                    <td><?= ($categoria['habilitado'])? 'S&iacute': 'No'; ?></td>
+                    <td><a href="<?= base_url('categorias-equipo/actualizar/' . $categoria['id']) ?>">Actualizar categor&iacute;a</a></td>
+                    <td><a href="<?= base_url('categorias-equipo/eliminar/' . $categoria['id']) ?>">Eliminar categor&iacute;a</a></td>
+                    <td>
+                        <?php if($categoria['habilitado']){ ?>
+                            <a href="<?= base_url('categorias-equipo/deshabilitar/' . $categoria['id']) ?>">Deshabilitar categor&iacute;a</a>
+                        <?php }else{ ?>
+                            <a href="<?= base_url('categorias-equipo/habilitar/' . $categoria['id']) ?>">Habilitar categor&iacute;a</a>
+                        <?php }; ?>
+                    </td>
                 </tr>
-                {/categorias}
+                <?php endforeach; ?>
             </tbody>
         </table>
     </div>
