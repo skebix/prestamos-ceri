@@ -126,4 +126,12 @@ class Solicitudes_model extends CI_Model {
         $query = $this->db->get();
         return $query->num_rows();
     }
+
+    public function get_solicitudes_by_servicio($id_servicio){
+        $this->db->from('solicitudes_servicios');
+        $this->db->where('id_equipo', $id_servicio);
+
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
 }

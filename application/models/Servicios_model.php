@@ -16,7 +16,7 @@ class Servicios_model extends CI_Model {
     }
 
     public function get_servicios($table){
-        $this->db->select($table . '.id, ' . $table . '.nombre_servicio, categoria_servicio.categoria');
+        $this->db->select($table . '.id, ' . $table . '.nombre_servicio, ' . $table . '.habilitado, categoria_servicio.categoria');
         $this->db->from($table);
         $this->db->join('categoria_servicio', 'servicios.id_categoria_servicio = categoria_servicio.id');
         $query = $this->db->get();

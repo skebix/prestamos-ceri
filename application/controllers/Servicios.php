@@ -158,13 +158,87 @@ class Servicios extends CI_Controller {
         //Lo primero es ver si es Administrador
         $administrador = $this->session->administrador;
         if($administrador){
-            $table = 'servicios';
-            $delete_id = $this->servicios_model->delete_servicio($table, $id);
-            if($delete_id){
-                $this->session->set_userdata('mensaje', 'El servicio ha sido eliminado satisfactoriamente.');
+
+            $cantidad_solicitudes = $this->solicitudes_model->get_solicitudes_by_servicio($id);
+            if($cantidad_solicitudes > 0){
+                $this->session->set_userdata('mensaje', 'Este servicio no puede ser eliminado, est&aacute; siendo utilizado por ' . $cantidad_solicitudes . ' solicitudes. Elimine las solicitudes primero, o deshabilite el servicio en lugar de eliminarlo.');
                 redirect('servicios/listar');
             }else{
-                $this->session->set_userdata('mensaje', 'No se pudo eliminar el servicio, por favor intente nuevamente.');
+                $delete_id = $this->servicios_model->delete_servicio('servicios', $id);
+                if($delete_id){
+                    $this->session->set_userdata('mensaje', 'servicio eliminado satisfactoriamente.');
+                    redirect('servicios/listar');
+                }else{
+                    $this->session->set_userdata('mensaje', 'No se pudo eliminar su servicio, por favor intente nuevamente');
+                    redirect('servicios/listar');
+                }
+            }
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
+
+    public function deshabilitar($id){
+
+        //Lo primero es ver si es Administrador
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $servicio = $this->servicios_model->get_servicio($id);
+            if($servicio){
+                if($servicio['habilitado']){
+                    $datos['habilitado'] = FALSE;
+
+                    $was_updated = $this->servicios_model->update_servicio('servicios', $id, $datos);
+                    if($was_updated){
+                        $this->session->set_userdata('mensaje', 'El servicio fue deshabilitado satisfactoriamente.');
+                        redirect('servicios/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo deshabilitar el servicio, por favor intente nuevamente.');
+                        redirect('servicios/listar');
+                    }
+                }else{
+                    $this->session->set_userdata('mensaje', 'El servicio ya se encuentra deshabilitado.');
+                    redirect('servicios/listar');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'El servicio que intenta deshabilitar no existe.');
+                redirect('servicios/listar');
+            }
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
+
+    public function habilitar($id){
+
+        //Lo primero es ver si es Administrador
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $servicio = $this->servicios_model->get_servicio($id);
+            if($servicio){
+                if(!$servicio['habilitado']){
+                    $datos['habilitado'] = TRUE;
+
+                    $was_updated = $this->servicios_model->update_servicio('servicios', $id, $datos);
+                    if($was_updated){
+                        $this->session->set_userdata('mensaje', 'El servicio fue habilitado satisfactoriamente.');
+                        redirect('servicios/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo habilitar el servicio, por favor intente nuevamente.');
+                        redirect('servicios/listar');
+                    }
+                }else{
+                    $this->session->set_userdata('mensaje', 'El servicio ya se encuentra habilitado.');
+                    redirect('servicios/listar');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'El servicio que intenta habilitar no existe.');
                 redirect('servicios/listar');
             }
         }else{

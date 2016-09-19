@@ -23,6 +23,7 @@
             <th>ID</th>
             <th>Nombre de Equipo</th>
             <th>Categor&iacute;a de Equipo</th>
+            <th>Habilitado</th>
             <th>Actualizar</th>
             <th>Eliminar</th>
             <th>Habilitar y Deshabilitar</th>
@@ -34,6 +35,7 @@
             <th scope="row"><?= $equipo['id'] ?></th>
             <td><?= $equipo['nombre_equipo'] ?></td>
             <td><?= $equipo['categoria'] ?></td>
+            <td><?= ($equipo['habilitado'])? 'S&iacute': 'No'; ?></td>
             <td><a href="<?= base_url('equipos/actualizar/' . $equipo['id']) ?>">Actualizar</a></td>
             <td><a href="<?= base_url('equipos/eliminar/' . $equipo['id']) ?>">Eliminar</a></td>
             <?php if($equipo['habilitado']){ ?>
