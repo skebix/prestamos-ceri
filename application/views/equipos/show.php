@@ -25,18 +25,24 @@
             <th>Categor&iacute;a de Equipo</th>
             <th>Actualizar</th>
             <th>Eliminar</th>
+            <th>Habilitar y Deshabilitar</th>
         </tr>
         </thead>
         <tbody>
-        {equipos}
+        <?php foreach($equipos as $k => $equipo): ?>
         <tr>
-            <th scope="row">{id}</th>
-            <td>{nombre_equipo}</td>
-            <td>{categoria}</td>
-            <td><a href="<?= base_url('equipos/actualizar/{id}') ?>">Actualizar</a></td>
-            <td><a href="<?= base_url('equipos/eliminar/{id}') ?>">Eliminar</a></td>
+            <th scope="row"><?= $equipo['id'] ?></th>
+            <td><?= $equipo['nombre_equipo'] ?></td>
+            <td><?= $equipo['categoria'] ?></td>
+            <td><a href="<?= base_url('equipos/actualizar/' . $equipo['id']) ?>">Actualizar</a></td>
+            <td><a href="<?= base_url('equipos/eliminar/' . $equipo['id']) ?>">Eliminar</a></td>
+            <?php if($equipo['habilitado']){ ?>
+                <td><a href="<?= base_url('equipos/deshabilitar/' . $equipo['id']) ?>">Deshabilitar</a></td>
+            <?php }else{ ?>
+                <td><a href="<?= base_url('equipos/habilitar/' . $equipo['id']) ?>">Habilitar</a></td>
+            <?php }; ?>
         </tr>
-        {/equipos}
+        <?php endforeach; ?>
         </tbody>
     </table>
 </div>

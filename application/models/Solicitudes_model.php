@@ -118,4 +118,12 @@ class Solicitudes_model extends CI_Model {
 
         return $was_updated;
     }
+
+    public function get_solicitudes_by_equipo($id_equipo){
+        $this->db->from('solicitudes_equipos');
+        $this->db->where('id_equipo', $id_equipo);
+
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
 }

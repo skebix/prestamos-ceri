@@ -21,7 +21,7 @@ class Equipos_model extends CI_Model {
     }
     
     public function get_equipos($table){
-        $this->db->select($table . '.id, ' . $table . '.nombre_equipo, categoria_equipo.categoria');
+        $this->db->select($table . '.id, ' . $table . '.nombre_equipo, ' . $table . '.habilitado, categoria_equipo.categoria');
         $this->db->from($table);
         $this->db->join('categoria_equipo', 'equipos.id_categoria_equipo = categoria_equipo.id');
         $query = $this->db->get();

@@ -158,13 +158,87 @@ class Equipos extends CI_Controller {
         //Lo primero es ver si es Administrador
         $administrador = $this->session->administrador;
         if($administrador){
-            $table = 'equipos';
-            $delete_id = $this->equipos_model->delete_equipo($table, $id);
-            if($delete_id){
-                $this->session->set_userdata('mensaje', 'El equipo ha sido eliminado satisfactoriamente.');
+
+            $cantidad_solicitudes = $this->solicitudes_model->get_solicitudes_by_equipo($id);
+            if($cantidad_solicitudes > 0){
+                $this->session->set_userdata('mensaje', 'Este equipo no puede ser eliminado, est&aacute; siendo utilizado por ' . $cantidad_solicitudes . ' solicitudes. Elimine las solicitudes primero, o deshabilite el equipo en lugar de eliminarlo.');
                 redirect('equipos/listar');
             }else{
-                $this->session->set_userdata('mensaje', 'No se pudo eliminar el equipo, por favor intente nuevamente.');
+                $delete_id = $this->equipos_model->delete_equipo('equipos', $id);
+                if($delete_id){
+                    $this->session->set_userdata('mensaje', 'Equipo eliminado satisfactoriamente.');
+                    redirect('equipos/listar');
+                }else{
+                    $this->session->set_userdata('mensaje', 'No se pudo eliminar su equipo, por favor intente nuevamente');
+                    redirect('equipos/listar');
+                }
+            }
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
+
+    public function deshabilitar($id){
+
+        //Lo primero es ver si es Administrador
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $equipo = $this->equipos_model->get_equipo($id);
+            if($equipo){
+                if($equipo['habilitado']){
+                    $datos['habilitado'] = FALSE;
+
+                    $was_updated = $this->equipos_model->update_equipo('equipos', $id, $datos);
+                    if($was_updated){
+                        $this->session->set_userdata('mensaje', 'El equipo fue deshabilitado satisfactoriamente.');
+                        redirect('equipos/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo deshabilitar el equipo, por favor intente nuevamente.');
+                        redirect('equipos/listar');
+                    }
+                }else{
+                    $this->session->set_userdata('mensaje', 'El equipo ya se encuentra deshabilitado.');
+                    redirect('equipos/listar');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'El equipo que intenta deshabilitar no existe.');
+                redirect('equipos/listar');
+            }
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
+
+    public function habilitar($id){
+
+        //Lo primero es ver si es Administrador
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $equipo = $this->equipos_model->get_equipo($id);
+            if($equipo){
+                if(!$equipo['habilitado']){
+                    $datos['habilitado'] = TRUE;
+
+                    $was_updated = $this->equipos_model->update_equipo('equipos', $id, $datos);
+                    if($was_updated){
+                        $this->session->set_userdata('mensaje', 'El equipo fue habilitado satisfactoriamente.');
+                        redirect('equipos/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo habilitar el equipo, por favor intente nuevamente.');
+                        redirect('equipos/listar');
+                    }
+                }else{
+                    $this->session->set_userdata('mensaje', 'El equipo ya se encuentra habilitado.');
+                    redirect('equipos/listar');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'El equipo que intenta habilitar no existe.');
                 redirect('equipos/listar');
             }
         }else{
