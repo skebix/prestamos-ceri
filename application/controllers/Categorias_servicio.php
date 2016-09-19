@@ -136,13 +136,87 @@ class Categorias_servicio extends CI_Controller {
         //Lo primero es ver si es Administrador
         $administrador = $this->session->administrador;
         if($administrador){
-            $table = 'categoria_servicio';
-            $delete_id = $this->categoria_model->delete_categoria($table, $id);
-            if($delete_id){
-                $this->session->set_userdata('mensaje', 'Categor&iacute;a de servicio eliminada satisfactoriamente.');
+
+            $cantidad_servicios = $this->servicios_model->get_servicios_by_categoria($id);
+            if($cantidad_servicios > 0){
+                $this->session->set_userdata('mensaje', 'Esta categor&iacute;a no puede ser eliminada, est&aacute; siendo utilizada por ' . $cantidad_servicios . ' servicios. Elimine los servicios primero, o deshabilite la categor&iacute;a en lugar de eliminarla.');
                 redirect('categorias-servicio/listar');
             }else{
-                $this->session->set_userdata('mensaje', 'No se pudo eliminar su categor&iacute;a de servicio.');
+                $delete_id = $this->categoria_model->delete_categoria('categoria_servicio', $id);
+                if($delete_id){
+                    $this->session->set_userdata('mensaje', 'Categor&iacute;a de servicio eliminada satisfactoriamente.');
+                    redirect('categorias-servicio/listar');
+                }else{
+                    $this->session->set_userdata('mensaje', 'No se pudo eliminar su categor&iacute;a de servicio, por favor intente nuevamente');
+                    redirect('categorias-servicio/listar');
+                }
+            }
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
+
+    public function deshabilitar($id){
+
+        //Lo primero es ver si es Administrador
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $categoria_servicio = $this->categoria_model->get_categoria('categoria_servicio', $id);
+            if($categoria_servicio){
+                if($categoria_servicio['habilitado']){
+                    $datos['habilitado'] = FALSE;
+
+                    $was_updated = $this->categoria_model->update_categoria('categoria_servicio', $id, $datos);
+                    if($was_updated){
+                        $this->session->set_userdata('mensaje', 'La categor&iacute;a de servicio fue deshabilitada satisfactoriamente.');
+                        redirect('categorias-servicio/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo deshabilitar la categor&iacute; de servicio, por favor intente nuevamente.');
+                        redirect('categorias-servicio/listar');
+                    }
+                }else{
+                    $this->session->set_userdata('mensaje', 'La categor&iacute; de servicio ya se encuentra deshabilitada.');
+                    redirect('categorias-servicio/listar');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'La categor&iacute; de servicio que intenta deshabilitar no existe.');
+                redirect('categorias-servicio/listar');
+            }
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
+
+    public function habilitar($id){
+
+        //Lo primero es ver si es Administrador
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $categoria_servicio = $this->categoria_model->get_categoria('categoria_servicio', $id);
+            if($categoria_servicio){
+                if(!$categoria_servicio['habilitado']){
+                    $datos['habilitado'] = TRUE;
+
+                    $was_updated = $this->categoria_model->update_categoria('categoria_servicio', $id, $datos);
+                    if($was_updated){
+                        $this->session->set_userdata('mensaje', 'La categor&iacute;a de servicio fue habilitada satisfactoriamente.');
+                        redirect('categorias-servicio/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo habilitar la categor&iacute; de servicio, por favor intente nuevamente.');
+                        redirect('categorias-servicio/listar');
+                    }
+                }else{
+                    $this->session->set_userdata('mensaje', 'La categor&iacute; de servicio ya se encuentra habilitada.');
+                    redirect('categorias-servicio/listar');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'La categor&iacute; de servicio que intenta habilitar no existe.');
                 redirect('categorias-servicio/listar');
             }
         }else{

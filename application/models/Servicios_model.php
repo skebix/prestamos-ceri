@@ -57,4 +57,12 @@ class Servicios_model extends CI_Model {
         $query = $this->db->get();
         return $query->result_array();
     }
+
+    public function get_servicios_by_categoria($id_categoria_servicio){
+        $this->db->from('servicios');
+        $this->db->where('id_categoria_servicio', $id_categoria_servicio);
+
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
 }
