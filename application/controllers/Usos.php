@@ -13,7 +13,7 @@ class Usos extends CI_Controller {
     }
 
     public function index(){
-        echo "Por diseñar";
+        $this->listar();
     }
 
     function crear(){
@@ -25,7 +25,7 @@ class Usos extends CI_Controller {
 
             $this->form_validation->set_rules('uso', 'Nombre de uso', 'trim|required|callback__alpha_special|max_length[255]');
 
-            if (!$this->form_validation->run()) {
+            if(!$this->form_validation->run()){
 
                 //Si no pasa las reglas de validación, mostramos el formulario
                 $this->parser->parse('templates/header', $data);
@@ -35,8 +35,7 @@ class Usos extends CI_Controller {
                 //Si los datos tienen el formato correcto, debo registrar la nueva categoría en la BD
                 $datos['uso'] = $this->input->post('uso');
 
-                $table = 'usos';
-                $was_inserted = $this->usos_model->create_uso($table, $datos);
+                $was_inserted = $this->usos_model->create_uso('usos', $datos);
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_inserted){
@@ -45,7 +44,7 @@ class Usos extends CI_Controller {
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el servicio
-                $this->session->set_userdata('mensaje', 'No se pudo crear su uso.');
+                $this->session->set_userdata('mensaje', 'No se pudo crear su uso, por favor intente nuevamente');
                 redirect('usos/listar');
             }
         }else{
@@ -63,13 +62,17 @@ class Usos extends CI_Controller {
 
             $data['title'] = 'Lista de usos';
 
-            $table = 'usos';
-            $usos = $this->usos_model->get_usos($table);
-            $data['usos'] = $usos;
+            $usos = $this->usos_model->get_usos('usos');
+            if($usos){
+                $data['usos'] = $usos;
 
-            $this->parser->parse('templates/header', $data);
-            $this->parser->parse('usos/show', $data);
-            $this->parser->parse('templates/footer', $data);
+                $this->parser->parse('templates/header', $data);
+                $this->parser->parse('usos/show', $data);
+                $this->parser->parse('templates/footer', $data);
+            }else{
+                $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                redirect('inicio');
+            }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
             $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
@@ -86,16 +89,19 @@ class Usos extends CI_Controller {
             //Tomo los datos del servicio de la BD, para poder pre-llenar el formulario
             $data['title'] = 'Actualizar uso';
 
-            $table = 'usos';
+            $uso = $this->usos_model->get_uso('usos', $id);
+            if($uso){
+                $data = array_merge($data, $uso);
 
-            $uso = $this->usos_model->get_uso($table, $id);
-            $data = array_merge($data, $uso);
+                $atributos_otro_uso = array(
+                    'class'       => 'checkbox',
+                );
 
-            $atributos_otro_uso = array(
-                'class'       => 'checkbox',
-            );
-
-            $data['atributos_otro_uso'] = $atributos_otro_uso;
+                $data['atributos_otro_uso'] = $atributos_otro_uso;
+            }else{
+                $this->session->set_userdata('mensaje', 'El uso que intenta actualizar no existe, o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                redirect('inicio');
+            }
 
             $this->form_validation->set_rules('uso', 'Nombre del uso', 'trim|required|callback__alpha_special|max_length[255]');
 
@@ -110,7 +116,7 @@ class Usos extends CI_Controller {
                 $uso['otro_uso'] = ($this->input->post('otro_uso')) ? $this->input->post('otro_uso') : FALSE;
 
                 //Si los datos tienen el formato correcto, debo registrar al servicio en la BD
-                $was_updated = $this->usos_model->update_uso($table, $id, $uso);
+                $was_updated = $this->usos_model->update_uso('usos', $id, $uso);
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_updated){
@@ -119,7 +125,7 @@ class Usos extends CI_Controller {
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el servicio
-                $this->session->set_userdata('mensaje', 'No se pudo actualizar su uso.');
+                $this->session->set_userdata('mensaje', 'No se pudo actualizar su uso, por favor intente nuevamente.');
                 redirect('usos/listar');
             }
         }else{
