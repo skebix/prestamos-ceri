@@ -13,7 +13,7 @@ class Categorias_servicio extends CI_Controller {
     }
 
     public function index(){
-        echo "Por diseñar";
+        $this->listar();
     }
 
     function crear(){
@@ -35,8 +35,7 @@ class Categorias_servicio extends CI_Controller {
                 //Si los datos tienen el formato correcto, debo registrar la nueva categoría en la BD
                 $datos['categoria'] = $this->input->post('categoria_servicio');
 
-                $table = 'categoria_servicio';
-                $was_inserted = $this->categoria_model->create_categoria($table, $datos);
+                $was_inserted = $this->categoria_model->create_categoria('categoria_servicio', $datos);
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_inserted){
@@ -45,7 +44,7 @@ class Categorias_servicio extends CI_Controller {
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el servicio
-                $this->session->set_userdata('mensaje', 'No se pudo crear su categor&iacute;a de servicio.');
+                $this->session->set_userdata('mensaje', 'No se pudo crear su categor&iacute;a de servicio. Por favor intente nuevamente.');
                 redirect('categorias-servicio/listar');
             }
         }else{
@@ -63,13 +62,18 @@ class Categorias_servicio extends CI_Controller {
 
             $data['title'] = 'Lista de Categor&iacute;as de servicio';
 
-            $table = 'categoria_servicio';
-            $categorias = $this->categoria_model->get_categorias($table);
-            $data['categorias'] = $categorias;
+            $categorias = $this->categoria_model->get_categorias('categoria_servicio');
 
-            $this->parser->parse('templates/header', $data);
-            $this->parser->parse('categorias_servicio/show', $data);
-            $this->parser->parse('templates/footer', $data);
+            if($categorias){
+                $data['categorias'] = $categorias;
+
+                $this->parser->parse('templates/header', $data);
+                $this->parser->parse('categorias_servicio/show', $data);
+                $this->parser->parse('templates/footer', $data);
+            }else{
+                $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                redirect('inicio');
+            }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
             $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
@@ -86,11 +90,15 @@ class Categorias_servicio extends CI_Controller {
             //Tomo los datos del servicio de la BD, para poder pre-llenar el formulario
             $data['title'] = 'Actualizar Categor&iacute;a de servicio';
 
-            $table = 'categoria_servicio';
+            $categoria = $this->categoria_model->get_categoria('categoria_servicio', $id);
 
-            $categoria = $this->categoria_model->get_categoria($table, $id);
-            $data['id'] = $categoria['id'];
-            $data['categoria'] = $categoria['categoria'];
+            if($categoria){
+                $data['id'] = $categoria['id'];
+                $data['categoria'] = $categoria['categoria'];
+            }else{
+                $this->session->set_userdata('mensaje', 'La categoría que intenta actualizar no existe, o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                redirect('inicio');
+            }
 
             $this->form_validation->set_rules('categoria_servicio', 'Categor&iacute;a de servicio', 'trim|required|callback__alpha_special|max_length[255]');
 
@@ -104,7 +112,7 @@ class Categorias_servicio extends CI_Controller {
                 $categoria['categoria'] = $this->input->post('categoria_servicio');
 
                 //Si los datos tienen el formato correcto, debo registrar al servicio en la BD
-                $was_updated = $this->categoria_model->update_categoria($table, $id, $categoria);
+                $was_updated = $this->categoria_model->update_categoria('categoria_servicio', $id, $categoria);
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_updated){
@@ -113,7 +121,7 @@ class Categorias_servicio extends CI_Controller {
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el servicio
-                $this->session->set_userdata('mensaje', 'No se pudo actualizar su categor&iacute;a de servicio.');
+                $this->session->set_userdata('mensaje', 'No se pudo actualizar su categor&iacute;a de servicio. Por favor intente nuevamente.');
                 redirect('categorias-servicio/listar');
             }
         }else{

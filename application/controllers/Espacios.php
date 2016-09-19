@@ -13,7 +13,7 @@ class Espacios extends CI_Controller {
     }
 
     public function index(){
-        echo "Por diseñar";
+        $this->listar();
     }
 
     function crear(){
@@ -35,8 +35,7 @@ class Espacios extends CI_Controller {
                 //Si los datos tienen el formato correcto, debo registrar la nueva categoría en la BD
                 $datos['nombre_espacio'] = $this->input->post('espacio');
 
-                $table = 'espacios';
-                $was_inserted = $this->espacios_model->create_espacio($table, $datos);
+                $was_inserted = $this->espacios_model->create_espacio('espacios', $datos);
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_inserted){
@@ -45,7 +44,7 @@ class Espacios extends CI_Controller {
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el servicio
-                $this->session->set_userdata('mensaje', 'No se pudo crear su espacio.');
+                $this->session->set_userdata('mensaje', 'No se pudo crear su espacio, por favor intente nuevamnte.');
                 redirect('espacios/listar');
             }
         }else{
@@ -63,13 +62,17 @@ class Espacios extends CI_Controller {
 
             $data['title'] = 'Lista de Espacios';
 
-            $table = 'espacios';
-            $espacios = $this->espacios_model->get_espacios($table);
-            $data['espacios'] = $espacios;
+            $espacios = $this->espacios_model->get_espacios('espacios');
+            if($espacios){
+                $data['espacios'] = $espacios;
 
-            $this->parser->parse('templates/header', $data);
-            $this->parser->parse('espacios/show', $data);
-            $this->parser->parse('templates/footer', $data);
+                $this->parser->parse('templates/header', $data);
+                $this->parser->parse('espacios/show', $data);
+                $this->parser->parse('templates/footer', $data);
+            }else{
+                $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                redirect('inicio');
+            }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
             $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
@@ -86,16 +89,19 @@ class Espacios extends CI_Controller {
             //Tomo los datos del servicio de la BD, para poder pre-llenar el formulario
             $data['title'] = 'Actualizar Espacio';
 
-            $table = 'espacios';
+            $espacio = $this->espacios_model->get_espacio('espacios', $id);
+            if($espacio){
+                $data = array_merge($data, $espacio);
 
-            $espacio = $this->espacios_model->get_espacio($table, $id);
-            $data = array_merge($data, $espacio);
+                $atributos_otro_espacio = array(
+                    'class'       => 'checkbox',
+                );
 
-            $atributos_otro_espacio = array(
-                'class'       => 'checkbox',
-            );
-
-            $data['atributos_otro_espacio'] = $atributos_otro_espacio;
+                $data['atributos_otro_espacio'] = $atributos_otro_espacio;
+            }else{
+                $this->session->set_userdata('mensaje', 'El equipo que intenta actualizar no existe o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                redirect('inicio');
+            }
 
             $this->form_validation->set_rules('espacio', 'Nombre del espacio', 'trim|required|callback__alpha_special|max_length[255]');
 
@@ -110,7 +116,7 @@ class Espacios extends CI_Controller {
                 $espacio['otro_espacio'] = ($this->input->post('otro_espacio')) ? $this->input->post('otro_espacio') : FALSE;
 
                 //Si los datos tienen el formato correcto, debo registrar al servicio en la BD
-                $was_updated = $this->espacios_model->update_espacio($table, $id, $espacio);
+                $was_updated = $this->espacios_model->update_espacio('espacios', $id, $espacio);
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_updated){
@@ -119,7 +125,7 @@ class Espacios extends CI_Controller {
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el servicio
-                $this->session->set_userdata('mensaje', 'No se pudo actualizar su espacio.');
+                $this->session->set_userdata('mensaje', 'No se pudo actualizar su espacio, por favor intente nuevamente.');
                 redirect('espacios/listar');
             }
         }else{

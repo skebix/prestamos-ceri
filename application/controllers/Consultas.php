@@ -21,9 +21,9 @@ class Consultas extends CI_Controller {
 
         $data['title'] = 'Consultar disponibilidad';
 
-        $this->form_validation->set_rules('fecha_uso', 'fecha de uso', 'required');
-        $this->form_validation->set_rules('hora_entrega', 'hora de entrega', 'required');
-        $this->form_validation->set_rules('hora_devolucion', 'hora de devoluci&oacute;n', 'required');
+        $this->form_validation->set_rules('fecha_uso', 'fecha de uso', 'required|callback__formato_fecha');
+        $this->form_validation->set_rules('hora_entrega', 'hora de entrega', 'required|callback__formato_hora');
+        $this->form_validation->set_rules('hora_devolucion', 'hora de devoluci&oacute;n', 'required|callback__formato_hora');
 
         if (!$this->form_validation->run()){
 
@@ -85,6 +85,18 @@ class Consultas extends CI_Controller {
             $this->parser->parse('consultas/available', $data);
             $this->parser->parse('templates/footer', $data);
         }
+    }
+
+    public function _formato_fecha($str){
+        $this->form_validation->set_message('_formato_fecha', 'El campo {field} no contiene una fecha en el formato DD/MM/AAAA.');
+
+        return DateTime::createFromFormat('d/m/Y', $str)? true: false;
+    }
+
+    public function _formato_hora($str){
+        $this->form_validation->set_message('_formato_hora', 'El campo {field} no contiene una hora en el formato HH:MM AM.');
+
+        return DateTime::createFromFormat('h:i A', $str)? true: false;
     }
 }
 

@@ -13,7 +13,7 @@ class Servicios extends CI_Controller {
     }
 
     public function index(){
-        echo "Por diseñar";
+        $this->listar();
     }
 
     function crear(){
@@ -23,9 +23,13 @@ class Servicios extends CI_Controller {
 
             $data['title'] = 'Nuevo servicio';
 
-            $table = 'categoria_servicio';
-            $categorias_servicio = $this->categoria_model->get_categorias($table);
-            $data['categorias_servicio'] = $categorias_servicio;
+            $categorias_servicio = $this->categoria_model->get_categorias('categoria_servicio');
+            if($categorias_servicio){
+                $data['categorias_servicio'] = $categorias_servicio;
+            }else {
+                $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                redirect('inicio');
+            }
 
             $this->form_validation->set_rules('nombre_servicio', 'Categor&iacute;a de servicio', 'trim|required|callback__alpha_special|max_length[255]');
 
@@ -40,8 +44,7 @@ class Servicios extends CI_Controller {
                 $datos['id_categoria_servicio'] = $this->input->post('id_categoria_servicio');
                 $datos['nombre_servicio'] = $this->input->post('nombre_servicio');
 
-                $table = 'servicios';
-                $was_inserted = $this->servicios_model->create_servicio($table, $datos);
+                $was_inserted = $this->servicios_model->create_servicio('servicios', $datos);
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_inserted){
@@ -68,13 +71,17 @@ class Servicios extends CI_Controller {
 
             $data['title'] = 'Listado de servicios';
 
-            $table = 'servicios';
-            $servicios = $this->servicios_model->get_servicios($table);
-            $data['servicios'] = $servicios;
+            $servicios = $this->servicios_model->get_servicios('servicios');
+            if($servicios){
+                $data['servicios'] = $servicios;
 
-            $this->parser->parse('templates/header', $data);
-            $this->parser->parse('servicios/show', $data);
-            $this->parser->parse('templates/footer', $data);
+                $this->parser->parse('templates/header', $data);
+                $this->parser->parse('servicios/show', $data);
+                $this->parser->parse('templates/footer', $data);
+            }else{
+                $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                redirect('inicio');
+            }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
             $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
@@ -91,17 +98,26 @@ class Servicios extends CI_Controller {
             //Tomo los datos del servicio de la BD, para poder pre-llenar el formulario
             $data['title'] = 'Actualizar servicio';
 
-            $table = 'categoria_servicio';
-            $categorias_servicio = $this->categoria_model->get_categorias($table);
-            $data['categorias_servicio'] = array_column($categorias_servicio, 'categoria', 'id');
+            $categorias_servicio = $this->categoria_model->get_categorias('categoria_servicio');
+            if($categorias_servicio){
+                $data['categorias_servicio'] = array_column($categorias_servicio, 'categoria', 'id');
 
-            $servicio = $this->servicios_model->get_servicio($id);
-            $data = array_merge($data, $servicio);
-            $data['categoria_servicio_selected'] = $servicio['id_categoria_servicio'];
+                $servicio = $this->servicios_model->get_servicio($id);
+                if($servicio){
+                    $data = array_merge($data, $servicio);
+                    $data['categoria_servicio_selected'] = $servicio['id_categoria_servicio'];
 
-            $atributos_categoria_servicio = array('class' => 'form-control col-sm-2',);
+                    $atributos_categoria_servicio = array('class' => 'form-control col-sm-2',);
 
-            $data['atributos_categoria_servicio'] = $atributos_categoria_servicio;
+                    $data['atributos_categoria_servicio'] = $atributos_categoria_servicio;
+                }else{
+                    $this->session->set_userdata('mensaje', 'El servicio que intenta actualizar no existe o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                    redirect('inicio');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                redirect('inicio');
+            }
 
             $this->form_validation->set_rules('nombre_servicio', 'Nombre servicio', 'trim|required|callback__alpha_special|max_length[255]');
 
@@ -117,9 +133,8 @@ class Servicios extends CI_Controller {
 
                 $servicio['nombre_servicio'] = $this->input->post('nombre_servicio');
                 $servicio['id_categoria_servicio'] = $this->input->post('categoria_servicio');
-
-                $table = 'servicios';
-                $was_updated = $this->servicios_model->update_servicio($table, $id, $servicio);
+                
+                $was_updated = $this->servicios_model->update_servicio('servicios', $id, $servicio);
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_updated){

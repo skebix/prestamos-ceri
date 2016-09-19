@@ -13,7 +13,7 @@ class Equipos extends CI_Controller {
     }
 
     public function index(){
-        echo "Por diseñar";
+        $this->listar();
     }
 
     function crear(){
@@ -23,9 +23,13 @@ class Equipos extends CI_Controller {
 
             $data['title'] = 'Nuevo equipo';
 
-            $table = 'categoria_equipo';
-            $categorias_equipo = $this->categoria_model->get_categorias($table);
-            $data['categorias_equipo'] = $categorias_equipo;
+            $categorias_equipo = $this->categoria_model->get_categorias('categoria_equipo');
+            if($categorias_equipo){
+                $data['categorias_equipo'] = $categorias_equipo;
+            }else{
+                $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                redirect('inicio');
+            }
 
             $this->form_validation->set_rules('nombre_equipo', 'Nombre de equipo', 'trim|required|callback__alpha_special|max_length[255]');
 
@@ -40,8 +44,7 @@ class Equipos extends CI_Controller {
                 $datos['id_categoria_equipo'] = $this->input->post('id_categoria_equipo');
                 $datos['nombre_equipo'] = $this->input->post('nombre_equipo');
 
-                $table = 'equipos';
-                $was_inserted = $this->equipos_model->create_equipo($table, $datos);
+                $was_inserted = $this->equipos_model->create_equipo('equipos', $datos);
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_inserted){
@@ -68,13 +71,17 @@ class Equipos extends CI_Controller {
 
             $data['title'] = 'Listado de Equipos';
 
-            $table = 'equipos';
-            $equipos = $this->equipos_model->get_equipos($table);
-            $data['equipos'] = $equipos;
+            $equipos = $this->equipos_model->get_equipos('equipos');
+            if($equipos){
+                $data['equipos'] = $equipos;
 
-            $this->parser->parse('templates/header', $data);
-            $this->parser->parse('equipos/show', $data);
-            $this->parser->parse('templates/footer', $data);
+                $this->parser->parse('templates/header', $data);
+                $this->parser->parse('equipos/show', $data);
+                $this->parser->parse('templates/footer', $data);
+            }else{
+                $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                redirect('inicio');
+            }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
             $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
@@ -91,21 +98,30 @@ class Equipos extends CI_Controller {
             //Tomo los datos del equipo de la BD, para poder pre-llenar el formulario
             $data['title'] = 'Actualizar Equipo';
 
-            $table = 'categoria_equipo';
-            $categorias_equipo = $this->categoria_model->get_categorias($table);
-            $data['categorias_equipo'] = array_column($categorias_equipo, 'categoria', 'id');
+            $categorias_equipo = $this->categoria_model->get_categorias('categoria_equipo');
+            if($categorias_equipo){
+                $data['categorias_equipo'] = array_column($categorias_equipo, 'categoria', 'id');
 
-            $equipo = $this->equipos_model->get_equipo($id);
-            $data = array_merge($data, $equipo);
-            $data['categoria_equipo_selected'] = $equipo['id_categoria_equipo'];
+                $equipo = $this->equipos_model->get_equipo($id);
+                if($equipo){
+                    $data = array_merge($data, $equipo);
+                    $data['categoria_equipo_selected'] = $equipo['id_categoria_equipo'];
 
-            $atributos_categoria_equipo = array('class' => 'form-control col-sm-2',);
+                    $atributos_categoria_equipo = array('class' => 'form-control col-sm-2',);
 
-            $data['atributos_categoria_equipo'] = $atributos_categoria_equipo;
+                    $data['atributos_categoria_equipo'] = $atributos_categoria_equipo;
+                }else{
+                    $this->session->set_userdata('mensaje', 'El equipo que intenta actualizar no existe o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                    redirect('inicio');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                redirect('inicio');
+            }
 
             $this->form_validation->set_rules('nombre_equipo', 'Nombre equipo', 'trim|required|callback__alpha_special|max_length[255]');
 
-            if (!$this->form_validation->run()){
+            if(!$this->form_validation->run()){
 
                 //Si no pasa las reglas de validación, mostramos el formulario
                 $this->parser->parse('templates/header', $data);
@@ -117,9 +133,8 @@ class Equipos extends CI_Controller {
 
                 $equipo['nombre_equipo'] = $this->input->post('nombre_equipo');
                 $equipo['id_categoria_equipo'] = $this->input->post('categoria_equipo');
-
-                $table = 'equipos';
-                $was_updated = $this->equipos_model->update_equipo($table, $id, $equipo);
+                
+                $was_updated = $this->equipos_model->update_equipo('equipos', $id, $equipo);
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_updated){
