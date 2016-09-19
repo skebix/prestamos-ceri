@@ -13,7 +13,7 @@ class Solicitudes extends CI_Controller {
     }
 
     public function index(){
-        echo "Fase de pruebas de solicitudes: crear / actualizar/ borrar";
+        $this->listar();
     }
 
     public function crear(){
@@ -22,69 +22,85 @@ class Solicitudes extends CI_Controller {
         if($administrador){
 
             $usuarios = $this->usuarios_model->get_usuarios();
+            if($usuarios){
 
-            $data['title'] = 'Nueva solicitud';
-            $data['usuarios'] = $usuarios;
+                $data['title'] = 'Nueva solicitud';
+                $data['usuarios'] = $usuarios;
 
-            $select_nuevo_espacio = $this->input->post('select_nuevo_espacio');
-            $select_usos_espacio = $this->input->post('select_usos_espacio');
+                $select_nuevo_espacio = $this->input->post('select_nuevo_espacio');
+                $select_usos_espacio = $this->input->post('select_usos_espacio');
 
-            $select_nuevo_equipo = $this->input->post('select_nuevo_equipo');
-            $select_nuevo_servicio = $this->input->post('select_nuevo_servicio');
+                $select_nuevo_equipo = $this->input->post('select_nuevo_equipo');
+                $select_nuevo_servicio = $this->input->post('select_nuevo_servicio');
 
-            $input_nuevo_espacio = $this->input->post('input_nuevo_espacio');
-            $input_otro_uso = $this->input->post('input_otro_uso');
+                $input_nuevo_espacio = $this->input->post('input_nuevo_espacio');
+                $input_otro_uso = $this->input->post('input_otro_uso');
 
-            if($this->input->post()){
-                $data = array_merge($this->input->post(), $data);
-            }
+                if($this->input->post()){
+                    $data = array_merge($this->input->post(), $data);
+                }
 
-            $otro_espacio = $this->espacios_model->get_espacio_by_name('espacios', 'Otro (especifique)');
-            $otro_uso = $this->usos_model->get_uso_by_name('usos', 'Otro (especifique)');
+                $otro_espacio = $this->espacios_model->get_espacio_by_name('espacios', 'Otro (especifique)');
+                if($otro_espacio){
 
-            $indices_espacios = array();
-            if(isset($select_nuevo_espacio)){
-                foreach($select_nuevo_espacio as $k => $v){
-                    if($v == $otro_espacio['id']){
-                        $indices_espacios[] = $k;
+                    $otro_uso = $this->usos_model->get_uso_by_name('usos', 'Otro (especifique)');
+                    if($otro_uso){
+
+                        $indices_espacios = array();
+                        if(isset($select_nuevo_espacio)){
+                            foreach($select_nuevo_espacio as $k => $v){
+                                if($v == $otro_espacio['id']){
+                                    $indices_espacios[] = $k;
+                                }
+                            }
+                        }
+
+                        $viejos_espacios = $input_nuevo_espacio;
+                        if(isset($viejos_espacios)){
+                            foreach($viejos_espacios as $k => $v){
+                                $data['input_nuevo_espacio_' . $indices_espacios[$k]] = $v;
+                                $this->form_validation->set_rules('input_nuevo_espacio[' . $indices_espacios[$k] . ']', 'nombre nuevo espacio', 'required');
+                            }
+                        }
+
+                        $indices_usos = array();
+                        if(isset($select_usos_espacio)){
+                            foreach($select_usos_espacio as $k => $v){
+                                if($v == $otro_uso['id']){
+                                    $indices_usos[] = $k;
+                                }
+                            }
+                        }
+
+                        $viejos_usos = $input_otro_uso;
+                        if(isset($viejos_usos)){
+                            foreach($viejos_usos as $k => $v){
+                                $data['input_otro_uso_' . $indices_usos[$k]] = $v;
+                                $this->form_validation->set_rules('input_otro_uso[' . $indices_usos[$k] . ']', 'uso del espacio', 'required');
+                            }
+                        }
+                    }else{
+                        $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                        redirect('inicio');
                     }
+                }else{
+                    $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                    redirect('inicio');
                 }
+            }else{
+                $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                redirect('inicio');
             }
 
-            $viejos_espacios = $input_nuevo_espacio;
-            if(isset($viejos_espacios)){
-                foreach($viejos_espacios as $k => $v){
-                    $data['input_nuevo_espacio_' . $indices_espacios[$k]] = $v;
-                    $this->form_validation->set_rules('input_nuevo_espacio[' . $indices_espacios[$k] . ']', 'nombre nuevo espacio', 'required');
-                }
-            }
-
-            $indices_usos = array();
-            if(isset($select_usos_espacio)){
-                foreach($select_usos_espacio as $k => $v){
-                    if($v == $otro_uso['id']){
-                        $indices_usos[] = $k;
-                    }
-                }
-            }
-
-            $viejos_usos = $input_otro_uso;
-            if(isset($viejos_usos)){
-                foreach($viejos_usos as $k => $v){
-                    $data['input_otro_uso_' . $indices_usos[$k]] = $v;
-                    $this->form_validation->set_rules('input_otro_uso[' . $indices_usos[$k] . ']', 'uso del espacio', 'required');
-                }
-            }
-
-            $this->form_validation->set_rules('fecha_uso', 'Fecha de uso', 'required');
-            $this->form_validation->set_rules('hora_entrega', 'Hora de entrega', 'required');
-            $this->form_validation->set_rules('hora_devolucion', 'Hora de devoluci&oacute;n', 'required');
+            $this->form_validation->set_rules('fecha_uso', 'Fecha de uso', 'required|callback__formato_fecha');
+            $this->form_validation->set_rules('hora_entrega', 'Hora de entrega', 'required|callback__formato_hora');
+            $this->form_validation->set_rules('hora_devolucion', 'Hora de devoluci&oacute;n', 'required|callback__formato_hora');
 
             $fecha_uso = $this->input->post('fecha_uso');
             $hora_entrega = $this->input->post('hora_entrega');
             $hora_devolucion = $this->input->post('hora_devolucion');
 
-            if(!empty($fecha_uso) && !empty($hora_entrega) && !empty($hora_devolucion)){
+            if($this->_formato_fecha($fecha_uso) && $this->_formato_hora($hora_entrega) && $this->_formato_hora($hora_devolucion)){
                 if(!empty($select_nuevo_equipo)){
                     foreach($select_nuevo_equipo as $k => $v){
                         $this->form_validation->set_rules('select_nuevo_equipo[' . $k . ']', 'Equipo', 'callback__equipo_ya_reservado');
@@ -127,9 +143,7 @@ class Solicitudes extends CI_Controller {
                 $hora_devolucion = DateTime::createFromFormat('h:i A', $hora_devolucion);
                 $datos['hora_devolucion'] = $hora_devolucion->format('H:i:s');
 
-                $table = 'solicitudes';
-                $id_solicitud = $this->solicitudes_model->create_solicitud($table, $datos);
-
+                $id_solicitud = $this->solicitudes_model->create_solicitud('solicitudes', $datos);
                 if($id_solicitud){
 
                     if(isset($select_nuevo_equipo)){
@@ -137,7 +151,7 @@ class Solicitudes extends CI_Controller {
                             $datos = array();
                             $datos['id_equipo'] = $v;
                             $datos['id_solicitud'] = $id_solicitud;
-                            $insert_id = $this->solicitudes_model->insert_auxiliares('solicitudes_equipos', $datos);
+                            $this->solicitudes_model->insert_auxiliares('solicitudes_equipos', $datos);
                         }
                     }
 
@@ -179,7 +193,7 @@ class Solicitudes extends CI_Controller {
                             $datos = array();
                             $datos['id_servicio'] = $id_servicio;
                             $datos['id_solicitud'] = $id_solicitud;
-                            $insert_id = $this->solicitudes_model->insert_auxiliares('solicitudes_servicios', $datos);
+                            $this->solicitudes_model->insert_auxiliares('solicitudes_servicios', $datos);
                         }
                     }
 
@@ -209,7 +223,6 @@ class Solicitudes extends CI_Controller {
             $data['id_solicitud'] = $id;
 
             $solicitud = $this->solicitudes_model->get_solicitud($id);
-
             if(isset($solicitud)){
                 $equipos = $this->solicitudes_model->get_equipos_by_solicitud('solicitudes_equipos', $id);
                 $espacios = $this->solicitudes_model->get_espacios_by_solicitud('solicitudes_espacios_usos', $id);
@@ -219,7 +232,6 @@ class Solicitudes extends CI_Controller {
 
                 $otro_espacio = $this->espacios_model->get_espacio_by_name('espacios', 'Otro (especifique)');
                 $otro_uso = $this->usos_model->get_uso_by_name('usos', 'Otro (especifique)');
-                $otro_servicio = $this->servicios_model->get_servicio_by_name('servicios', 'Otro (especifique)');
 
                 $data['usuarios'] = $usuarios;
 
@@ -239,6 +251,11 @@ class Solicitudes extends CI_Controller {
                     $input_otro_uso = $this->input->post('input_otro_uso');
                     $input_nuevo_servicio = $this->input->post('input_nuevo_servicio');
                 }else{
+
+                    $fecha_uso = '';
+                    $hora_entrega = '';
+                    $hora_devolucion = '';
+
                     $select_nuevo_equipo = array();
                     foreach($equipos as $k => $equipo){
                         $select_nuevo_equipo[] = $equipo['id_equipo'];
@@ -319,11 +336,11 @@ class Solicitudes extends CI_Controller {
                     }
                 }
 
-                $this->form_validation->set_rules('fecha_uso', 'Fecha de uso', 'required');
-                $this->form_validation->set_rules('hora_entrega', 'Hora de entrega', 'required');
-                $this->form_validation->set_rules('hora_devolucion', 'Hora de devoluci&oacute;n', 'required');
+                $this->form_validation->set_rules('fecha_uso', 'Fecha de uso', 'required|callback__formato_fecha');
+                $this->form_validation->set_rules('hora_entrega', 'Hora de entrega', 'required|callback__formato_hora');
+                $this->form_validation->set_rules('hora_devolucion', 'Hora de devoluci&oacute;n', 'required|callback__formato_hora');
 
-                if(!empty($fecha_uso) && !empty($hora_entrega) && !empty($hora_devolucion)){
+                if($this->_formato_fecha($fecha_uso) && $this->_formato_hora($hora_entrega) && $this->_formato_hora($hora_devolucion)){
                     if(!empty($select_nuevo_equipo)){
                         foreach($select_nuevo_equipo as $k => $v){
                             $this->form_validation->set_rules('select_nuevo_equipo[' . $k . ']', 'Equipo', 'callback__equipo_reservado_actualizar');
@@ -369,8 +386,7 @@ class Solicitudes extends CI_Controller {
                     $hora_devolucion = DateTime::createFromFormat('h:i A', $hora_devolucion);
                     $datos['hora_devolucion'] = $hora_devolucion->format('H:i:s');
 
-                    $table = 'solicitudes';
-                    $updated = $this->solicitudes_model->update_solicitud($table, $id ,$datos);
+                    $updated = $this->solicitudes_model->update_solicitud('solicitudes', $id ,$datos);
 
                     if($updated){
 
@@ -453,7 +469,7 @@ class Solicitudes extends CI_Controller {
                     redirect('solicitudes/listar');
                 }
             }else{
-                $this->session->set_userdata('mensaje', 'La solicitud que intenta actualizar no existe.');
+                $this->session->set_userdata('mensaje', 'La solicitud que intenta actualizar no existe o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                 redirect('solicitudes/listar');
             }
         }else{
@@ -869,5 +885,17 @@ class Solicitudes extends CI_Controller {
         }
 
         return true;
+    }
+
+    public function _formato_fecha($str){
+        $this->form_validation->set_message('_formato_fecha', 'El campo {field} no contiene una fecha en el formato DD/MM/AAAA.');
+
+        return DateTime::createFromFormat('d/m/Y', $str)? true: false;
+    }
+
+    public function _formato_hora($str){
+        $this->form_validation->set_message('_formato_hora', 'El campo {field} no contiene una hora en el formato HH:MM AM.');
+
+        return DateTime::createFromFormat('h:i A', $str)? true: false;
     }
 }

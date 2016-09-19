@@ -13,16 +13,20 @@ class Usuarios extends CI_Controller {
     }
 
     public function index(){
-        echo "Por diseñar";
+        $this->listar();
     }
 
     function registro(){
 
         $data['title'] = 'Registro';
 
-        $table = 'categoria_usuario';
-        $categorias_usuario = $this->categoria_model->get_categorias($table);
-        $data['categorias_usuario'] = $categorias_usuario;
+        $categorias_usuario = $this->categoria_model->get_categorias('categoria_usuario');
+        if($categorias_usuario){
+            $data['categorias_usuario'] = $categorias_usuario;
+        }else{
+            $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+            redirect('inicio');
+        }
 
         $this->form_validation->set_rules('primer_nombre', 'Primer nombre', 'trim|required|callback__alpha_space|max_length[255]');
         $this->form_validation->set_rules('segundo_nombre', 'Segundo nombre', 'trim|required|callback__alpha_space|max_length[255]');
@@ -39,7 +43,7 @@ class Usuarios extends CI_Controller {
         $this->form_validation->set_rules('facebook', 'Facebook', 'trim|min_length[5]|callback__valid_facebook_username');
         $this->form_validation->set_rules('instagram', 'Instagram', 'trim|max_length[30]|callback__valid_instagram_username');
 
-        if (!$this->form_validation->run()) {
+        if(!$this->form_validation->run()){
 
             //Si el que intenta crear la cuenta es un Administrador, le doy opciones para crear nuevos administradores.
             $administrador = $this->session->administrador;
@@ -74,6 +78,7 @@ class Usuarios extends CI_Controller {
             $password = $this->bcrypt->hash_password($raw_password);
             $usuario['hashed_password'] = $password;
             $usuario['administrador'] = ($this->input->post('administrador')) ? $this->input->post('administrador') : FALSE;
+
             $was_inserted = $this->usuarios_model->create_user($usuario);
 
             //Si lo guardó correctamente, redirigir al inicio con éxito
@@ -97,11 +102,16 @@ class Usuarios extends CI_Controller {
             $data['title'] = 'Lista de Usuarios';
 
             $usuarios = $this->usuarios_model->get_usuarios();
-            $data['usuarios'] = $usuarios;
+            if($usuarios){
+                $data['usuarios'] = $usuarios;
 
-            $this->parser->parse('templates/header', $data);
-            $this->parser->parse('usuarios/show', $data);
-            $this->parser->parse('templates/footer', $data);
+                $this->parser->parse('templates/header', $data);
+                $this->parser->parse('usuarios/show', $data);
+                $this->parser->parse('templates/footer', $data);
+            }else{
+                $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                redirect('inicio');
+            }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
             $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
@@ -117,18 +127,26 @@ class Usuarios extends CI_Controller {
         if($administrador || ($cedula === $cedula_sesion)){
             $data['title'] = 'Detalles del Usuario';
 
-            $table = 'categoria_usuario';
-
             $usuario = $this->usuarios_model->get_usuario($cedula);
-            $categoria = $this->categoria_model->get_categoria($table, $usuario['id_categoria_usuario']);
+            if($usuario){
 
-            $data['tipo_usuario'] = ($usuario['administrador']) ? 'Administrador' : 'Regular';
-            $data['categoria'] = $categoria['categoria'];
-            $data = array_merge($data, $usuario);
+                $categoria = $this->categoria_model->get_categoria('categoria_usuario', $usuario['id_categoria_usuario']);
+                if($categoria){
+                    $data['tipo_usuario'] = ($usuario['administrador']) ? 'Administrador' : 'Regular';
+                    $data['categoria'] = $categoria['categoria'];
+                    $data = array_merge($data, $usuario);
 
-            $this->parser->parse('templates/header', $data);
-            $this->parser->parse('usuarios/details', $data);
-            $this->parser->parse('templates/footer', $data);
+                    $this->parser->parse('templates/header', $data);
+                    $this->parser->parse('usuarios/details', $data);
+                    $this->parser->parse('templates/footer', $data);
+                }else{
+                    $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                    redirect('inicio');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'El usuario que intenta visualizar no existe, o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                redirect('inicio');
+            }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
             $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
@@ -145,45 +163,53 @@ class Usuarios extends CI_Controller {
 
             //Tomo los datos del usuario de la BD, para poder pre-llenar el formulario
             $data['title'] = 'Actualizar Usuario';
-            $data['id_solicitud'] = $id;
-
-            $table = 'categoria_usuario';
-            $categorias_usuario = $this->categoria_model->get_categorias($table);
-            $data['categorias_usuario'] = array_column($categorias_usuario, 'categoria', 'id');
 
             $usuario = $this->usuarios_model->get_usuario_by_id($id);
-            $data['categoria_usuario_selected'] = $usuario['id_categoria_usuario'];
+            if($usuario){
+                $categorias_usuario = $this->categoria_model->get_categorias('categoria_usuario');
+                if($categorias_usuario){
+                    $data['categorias_usuario'] = array_column($categorias_usuario, 'categoria', 'id');
 
-            $data = array_merge($data, $usuario);
-            $data['codigo_area_selected'] = substr($data['telefono'], 0, 4);
-            $data['telefono'] = substr($data['telefono'], -7);
+                    $data['categoria_usuario_selected'] = $usuario['id_categoria_usuario'];
 
-            $codigo_area = array(
-                '0212'  => '0212',
-                '0412'  => '0412',
-                '0414'  => '0414',
-                '0416'  => '0416',
-                '0424'  => '0424',
-                '0426'  => '0426',
-            );
+                    $data = array_merge($data, $usuario);
+                    $data['codigo_area_selected'] = substr($data['telefono'], 0, 4);
+                    $data['telefono'] = substr($data['telefono'], -7);
 
-            $atributos_codigo_area = array(
-                'class'       => 'form-control col-sm-2',
-            );
+                    $codigo_area = array(
+                        '0212'  => '0212',
+                        '0412'  => '0412',
+                        '0414'  => '0414',
+                        '0416'  => '0416',
+                        '0424'  => '0424',
+                        '0426'  => '0426',
+                    );
 
-            $atributos_categorias_usuario = array(
-                'class'       => 'form-control col-sm-10',
-            );
+                    $atributos_codigo_area = array(
+                        'class'       => 'form-control col-sm-2',
+                    );
 
-            $atributos_administrador = array(
-                'class'       => 'checkbox',
-            );
+                    $atributos_categorias_usuario = array(
+                        'class'       => 'form-control col-sm-10',
+                    );
 
-            $data['codigo_area'] = $codigo_area;
-            $data['atributos_codigo_area'] = $atributos_codigo_area;
-            $data['atributos_categorias_usuario'] = $atributos_categorias_usuario;
-            $data['administrador_actualizar'] = $usuario['administrador'];
-            $data['atributos_administrador'] = $atributos_administrador;
+                    $atributos_administrador = array(
+                        'class'       => 'checkbox',
+                    );
+
+                    $data['codigo_area'] = $codigo_area;
+                    $data['atributos_codigo_area'] = $atributos_codigo_area;
+                    $data['atributos_categorias_usuario'] = $atributos_categorias_usuario;
+                    $data['administrador_actualizar'] = $usuario['administrador'];
+                    $data['atributos_administrador'] = $atributos_administrador;
+                }else{
+                    $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                    redirect('inicio');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'El usuario que intenta actualizar no existe o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                redirect('inicio');
+            }
 
             $this->form_validation->set_rules('primer_nombre', 'Primer nombre', 'trim|required|callback__alpha_space|max_length[255]');
             $this->form_validation->set_rules('segundo_nombre', 'Segundo nombre', 'trim|required|callback__alpha_space|max_length[255]');
