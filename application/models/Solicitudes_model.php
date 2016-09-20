@@ -40,6 +40,14 @@ class Solicitudes_model extends CI_Model {
         return $query->result_array();
     }
 
+    public function get_solicitudes_by_usuario($table, $usuario){
+        $this->db->from($table);
+        $this->db->where('id_solicitante', $usuario);
+        $query = $this->db->get();
+
+        return $query->result_array();
+    }
+
     public function get_equipos_by_solicitud($table, $id_solicitud){
         $this->db->from($table);
         $this->db->where('id_solicitud', $id_solicitud);

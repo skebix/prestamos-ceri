@@ -65,11 +65,19 @@ class Equipos_model extends CI_Model {
         return $query->result_array();
     }
 
-    public function get_equipos_by_categoria($id_categoria_equipo){
+    public function get_amount_equipos_by_categoria($id_categoria_equipo){
         $this->db->from('equipos');
         $this->db->where('id_categoria_equipo', $id_categoria_equipo);
 
         $query = $this->db->get();
         return $query->num_rows();
+    }
+    
+    public function get_equipos_by_categoria($id_categoria_equipo){
+        $this->db->from('equipos');
+        $this->db->where('id_categoria_equipo', $id_categoria_equipo);
+
+        $query = $this->db->get();
+        return $query->result_array();
     }
 }

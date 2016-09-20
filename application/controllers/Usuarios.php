@@ -274,19 +274,113 @@ class Usuarios extends CI_Controller {
         }
     }
 
-    public function eliminar($cedula){
+    public function eliminar($id){
 
-        //Lo primero es ver si es Administrador, o si el que intenta borrarlo es el mismo usuario
-        $cedula_sesion = $this->session->cedula;
+        //Lo primero es ver si es Administrador
         $administrador = $this->session->administrador;
-        if($administrador || ($cedula === $cedula_sesion)){
-
-            $delete_id = $this->usuarios_model->delete_user($cedula);
-            if($delete_id){
-                $this->session->set_userdata('mensaje', 'El usuario ha sido eliminado satisfactoriamente.');
+        if($administrador){
+            
+            $solicitudes = $this->solicitudes_model->get_solicitudes_by_usuario('solicitudes', $id);
+            $cantidad_solicitudes = count($solicitudes);
+            if($cantidad_solicitudes > 0){
+                $this->session->set_userdata('mensaje', 'Este usuario no puede ser eliminado, posee ' . $cantidad_solicitudes . ' solicitudes. Elimine las solicitudes primero, o deshabilite el usuario en lugar de eliminarlo.');
                 redirect('usuarios/listar');
             }else{
-                $this->session->set_userdata('mensaje', 'No se pudo eliminar el usuario, por favor intente de nuevo.');
+                $usuario = $this->usuarios_model->get_usuario_by_id($id);
+                if($usuario){
+                    $delete_id = $this->usuarios_model->delete_user($id);
+                    if($delete_id){
+                        $this->session->set_userdata('mensaje', 'Usuario eliminado satisfactoriamente.');
+                        redirect('usuarios/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo eliminar su usuario, por favor intente nuevamente');
+                        redirect('usuarios/listar');
+                    }
+                }else{
+                    $this->session->set_userdata('mensaje', 'El usuario que intenta eliminar no existe.');
+                    redirect('usuarios/listar');
+                }
+            }
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
+
+    public function deshabilitar($id){
+
+        //Lo primero es ver si es Administrador
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $usuario = $this->usuarios_model->get_usuario_by_id($id);
+            if($usuario){
+                if($usuario['habilitado']){
+                    $datos['habilitado'] = FALSE;
+
+                    $was_updated = $this->usuarios_model->update_user($id, $datos);
+
+                    $solicitudes = $this->solicitudes_model->get_solicitudes_by_usuario('solicitudes', $usuario['id']);
+                    foreach($solicitudes as $k => $solicitud){
+                        $this->solicitudes_model->update_solicitud('solicitudes', $solicitud['id'], $datos);
+                    }
+
+                    if($was_updated){
+                        $this->session->set_userdata('mensaje', 'El usuario fue deshabilitado satisfactoriamente. Recuerde que al deshabilitar un usuario, tambi&eacute;n est&aacute; deshabilitando sus solicitudes.');
+                        redirect('usuarios/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo deshabilitar el usuario, por favor intente nuevamente.');
+                        redirect('usuarios/listar');
+                    }
+                }else{
+                    $this->session->set_userdata('mensaje', 'El usuario ya se encuentra deshabilitado.');
+                    redirect('usuarios/listar');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'El usuario que intenta deshabilitar no existe.');
+                redirect('usuarios/listar');
+            }
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
+
+    public function habilitar($id){
+
+        //Lo primero es ver si es Administrador
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $usuario = $this->usuarios_model->get_usuario_by_id($id);
+            if($usuario){
+                if(!$usuario['habilitado']){
+                    $datos['habilitado'] = TRUE;
+
+                    $was_updated = $this->usuarios_model->update_user($id, $datos);
+
+                    $solicitudes = $this->solicitudes_model->get_solicitudes_by_usuario('solicitudes', $usuario['id']);
+                    foreach($solicitudes as $k => $solicitud){
+                        $this->solicitudes_model->update_solicitud('solicitudes', $solicitud['id'], $datos);
+                    }
+
+                    $this->categoria_model->update_categoria('categoria_usuario', $usuario['id_categoria_usuario'], $datos);
+
+                    if($was_updated){
+                        $this->session->set_userdata('mensaje', 'El usuario fue habilitado satisfactoriamente. Recuerde que al habilitar un usuario, tambi&eacute;n est&aacute; habilitando sus solicitudes.');
+                        redirect('usuarios/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo habilitar el usuario, por favor intente nuevamente.');
+                        redirect('usuarios/listar');
+                    }
+                }else{
+                    $this->session->set_userdata('mensaje', 'El usuario ya se encuentra habilitado.');
+                    redirect('usuarios/listar');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'El usuario que intenta habilitar no existe.');
                 redirect('usuarios/listar');
             }
         }else{

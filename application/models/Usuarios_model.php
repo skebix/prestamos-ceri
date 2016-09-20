@@ -39,8 +39,8 @@ class Usuarios_model extends CI_Model {
         return $insert_id;
     }
 
-    public function delete_user($cedula){
-        $delete_id = $this->db->delete('usuarios', array('cedula' => $cedula));
+    public function delete_user($id){
+        $delete_id = $this->db->delete('usuarios', array('id' => $id));
         return $delete_id;
     }
 
@@ -67,5 +67,21 @@ class Usuarios_model extends CI_Model {
         $this->db->where('id', $id);
         $update_id = $this->db->update('usuarios', $usuario);
         return $update_id;
+    }
+
+    public function get_amount_usuarios_by_categoria($id_categoria_usuario){
+        $this->db->from('usuarios');
+        $this->db->where('id_categoria_usuario', $id_categoria_usuario);
+
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function get_usuarios_by_categoria($id_categoria_usuario){
+        $this->db->from('usuarios');
+        $this->db->where('id_categoria_usuario', $id_categoria_usuario);
+
+        $query = $this->db->get();
+        return $query->result_array();
     }
 }

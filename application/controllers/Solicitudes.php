@@ -550,6 +550,10 @@ class Solicitudes extends CI_Controller {
                 $espacios = $this->solicitudes_model->get_espacios_by_solicitud('solicitudes_espacios_usos', $id);
                 $servicios = $this->solicitudes_model->get_servicios_by_solicitud('solicitudes_servicios', $id);
 
+                $this->solicitudes_model->delete_auxiliares('solicitudes_equipos', $id);
+                $this->solicitudes_model->delete_auxiliares('solicitudes_espacios_usos', $id);
+                $this->solicitudes_model->delete_auxiliares('solicitudes_servicios', $id);
+
                 foreach($espacios as $k => $espacio){
                     if($espacio['otro_espacio']){
                         $this->espacios_model->delete_espacio('espacios', $espacio['id_espacio']);
@@ -563,10 +567,6 @@ class Solicitudes extends CI_Controller {
                 foreach($servicios as $k => $servicio){
                     $this->servicios_model->delete_servicio('servicios', $servicio['id_servicio']);
                 }
-
-                $this->solicitudes_model->delete_auxiliares('solicitudes_equipos', $id);
-                $this->solicitudes_model->delete_auxiliares('solicitudes_espacios_usos', $id);
-                $this->solicitudes_model->delete_auxiliares('solicitudes_servicios', $id);
                 
                 $delete_id = $this->solicitudes_model->delete_solicitud('solicitudes', $id);
                 if($delete_id){
@@ -612,6 +612,44 @@ class Solicitudes extends CI_Controller {
                 }
             }else{
                 $this->session->set_userdata('mensaje', 'La solicitud que intenta deshabilitar no existe.');
+                redirect('solicitudes/listar');
+            }
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
+
+    public function habilitar($id){
+
+        //Lo primero es ver si es Administrador
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $solicitud = $this->solicitudes_model->get_solicitud($id);
+            if($solicitud){
+                if(!$solicitud['habilitado']){
+                    $datos['habilitado'] = TRUE;
+
+                    $was_updated = $this->solicitudes_model->update_solicitud('solicitudes', $id, $datos);
+
+                    $usuario = $this->usuarios_model->get_usuario_by_id($solicitud['id_solicitante']);
+                    $this->categoria_model->update_categoria('categoria_usuario', $usuario['id_categoria_usuario'], $datos);
+
+                    if($was_updated){
+                        $this->session->set_userdata('mensaje', 'La solicitud fue habilitada satisfactoriamente.');
+                        redirect('solicitudes/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo habilitar la solicitud, por favor intente nuevamente.');
+                        redirect('solicitudes/listar');
+                    }
+                }else{
+                    $this->session->set_userdata('mensaje', 'La solicitud ya se encuentra habilitada.');
+                    redirect('solicitudes/listar');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'La solicitud que intenta habilitar no existe.');
                 redirect('solicitudes/listar');
             }
         }else{

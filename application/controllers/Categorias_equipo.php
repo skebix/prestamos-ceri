@@ -136,17 +136,23 @@ class Categorias_equipo extends CI_Controller {
         $administrador = $this->session->administrador;
         if($administrador){
 
-            $cantidad_equipos = $this->equipos_model->get_equipos_by_categoria($id);
+            $cantidad_equipos = $this->equipos_model->get_amount_equipos_by_categoria($id);
             if($cantidad_equipos > 0){
                 $this->session->set_userdata('mensaje', 'Esta categor&iacute;a no puede ser eliminada, est&aacute; siendo utilizada por ' . $cantidad_equipos . ' equipos. Elimine los equipos primero, o deshabilite la categor&iacute;a en lugar de eliminarla.');
                 redirect('categorias-equipo/listar');
             }else{
-                $delete_id = $this->categoria_model->delete_categoria('categoria_equipo', $id);
-                if($delete_id){
-                    $this->session->set_userdata('mensaje', 'Categor&iacute;a de equipo eliminada satisfactoriamente.');
-                    redirect('categorias-equipo/listar');
+                $categoria_equipo = $this->categoria_model->get_categoria('categoria_equipo', $id);
+                if($categoria_equipo){
+                    $delete_id = $this->categoria_model->delete_categoria('categoria_equipo', $id);
+                    if($delete_id){
+                        $this->session->set_userdata('mensaje', 'Categor&iacute;a de equipo eliminada satisfactoriamente.');
+                        redirect('categorias-equipo/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo eliminar su categor&iacute;a de equipo, por favor intente nuevamente');
+                        redirect('categorias-equipo/listar');
+                    }
                 }else{
-                    $this->session->set_userdata('mensaje', 'No se pudo eliminar su categor&iacute;a de equipo, por favor intente nuevamente');
+                    $this->session->set_userdata('mensaje', 'La categor&iacute;a de equipo que intenta eliminar no existe.');
                     redirect('categorias-equipo/listar');
                 }
             }
@@ -170,18 +176,23 @@ class Categorias_equipo extends CI_Controller {
 
                     $was_updated = $this->categoria_model->update_categoria('categoria_equipo', $id, $datos);
                     if($was_updated){
-                        $this->session->set_userdata('mensaje', 'La categor&iacute;a de equipo fue deshabilitada satisfactoriamente.');
+                        $equipos = $this->equipos_model->get_equipos_by_categoria($id);
+                        foreach($equipos as $k => $equipo){
+                            $this->equipos_model->update_equipo('equipos', $equipo['id'], $datos);
+                        }
+
+                        $this->session->set_userdata('mensaje', 'La categor&iacute;a de equipo fue deshabilitada satisfactoriamente. Recuerde que al deshabilitar una categor&iacute;a, tambi&eacute;n est&aacute; deshabilitando los equipos de la misma.');
                         redirect('categorias-equipo/listar');
                     }else{
                         $this->session->set_userdata('mensaje', 'No se pudo deshabilitar la categor&iacute; de equipo, por favor intente nuevamente.');
                         redirect('categorias-equipo/listar');
                     }
                 }else{
-                    $this->session->set_userdata('mensaje', 'La categor&iacute; de equipo ya se encuentra deshabilitada.');
+                    $this->session->set_userdata('mensaje', 'La categor&iacute;a de equipo ya se encuentra deshabilitada.');
                     redirect('categorias-equipo/listar');
                 }
             }else{
-                $this->session->set_userdata('mensaje', 'La categor&iacute; de equipo que intenta deshabilitar no existe.');
+                $this->session->set_userdata('mensaje', 'La categor&iacute;a de equipo que intenta deshabilitar no existe.');
                 redirect('categorias-equipo/listar');
             }
         }else{
@@ -204,7 +215,12 @@ class Categorias_equipo extends CI_Controller {
 
                     $was_updated = $this->categoria_model->update_categoria('categoria_equipo', $id, $datos);
                     if($was_updated){
-                        $this->session->set_userdata('mensaje', 'La categor&iacute;a de equipo fue habilitada satisfactoriamente.');
+                        $equipos = $this->equipos_model->get_equipos_by_categoria($id);
+                        foreach($equipos as $k => $equipo){
+                            $this->equipos_model->update_equipo('equipos', $equipo['id'], $datos);
+                        }
+
+                        $this->session->set_userdata('mensaje', 'La categor&iacute;a de equipo fue habilitada satisfactoriamente. Recuerde que al habilitar una categor&iacute;a, tambi&eacute;n est&aacute; habilitando los equipos pertenencientes a la misma.');
                         redirect('categorias-equipo/listar');
                     }else{
                         $this->session->set_userdata('mensaje', 'No se pudo habilitar la categor&iacute; de equipo, por favor intente nuevamente.');

@@ -164,12 +164,18 @@ class Servicios extends CI_Controller {
                 $this->session->set_userdata('mensaje', 'Este servicio no puede ser eliminado, est&aacute; siendo utilizado por ' . $cantidad_solicitudes . ' solicitudes. Elimine las solicitudes primero, o deshabilite el servicio en lugar de eliminarlo.');
                 redirect('servicios/listar');
             }else{
-                $delete_id = $this->servicios_model->delete_servicio('servicios', $id);
-                if($delete_id){
-                    $this->session->set_userdata('mensaje', 'servicio eliminado satisfactoriamente.');
-                    redirect('servicios/listar');
+                $servicio = $this->servicios_model->get_servicio($id);
+                if($servicio){
+                    $delete_id = $this->servicios_model->delete_servicio('servicios', $id);
+                    if($delete_id){
+                        $this->session->set_userdata('mensaje', 'servicio eliminado satisfactoriamente.');
+                        redirect('servicios/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo eliminar su servicio, por favor intente nuevamente');
+                        redirect('servicios/listar');
+                    }
                 }else{
-                    $this->session->set_userdata('mensaje', 'No se pudo eliminar su servicio, por favor intente nuevamente');
+                    $this->session->set_userdata('mensaje', 'El servicio que intenta eliminar no existe.');
                     redirect('servicios/listar');
                 }
             }
@@ -227,8 +233,9 @@ class Servicios extends CI_Controller {
 
                     $was_updated = $this->servicios_model->update_servicio('servicios', $id, $datos);
                     if($was_updated){
-                        $this->session->set_userdata('mensaje', 'El servicio fue habilitado satisfactoriamente.');
-                        redirect('servicios/listar');
+                        $this->categoria_model->update_categoria('categoria_servicio', $servicio['id_categoria_servicio'], $datos);
+
+                        $this->session->set_userdata('mensaje', 'El servicio fue habilitado satisfactoriamente. Recuerde que al habilitar el servicio, tambi&eacute;n se habilita la categor&iacute;a a la que pertenece.');
                     }else{
                         $this->session->set_userdata('mensaje', 'No se pudo habilitar el servicio, por favor intente nuevamente.');
                         redirect('servicios/listar');

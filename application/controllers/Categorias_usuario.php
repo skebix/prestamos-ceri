@@ -134,13 +134,114 @@ class Categorias_usuario extends CI_Controller {
         //Lo primero es ver si es Administrador
         $administrador = $this->session->administrador;
         if($administrador){
-            $table = 'categoria_usuario';
-            $delete_id = $this->categoria_model->delete_categoria($table, $id);
-            if($delete_id){
-                $this->session->set_userdata('mensaje', 'Categor&iacute;a de usuario eliminada satisfactoriamente.');
+
+            $cantidad_usuarios = $this->usuarios_model->get_amount_usuarios_by_categoria($id);
+            if($cantidad_usuarios > 0){
+                $this->session->set_userdata('mensaje', 'Esta categor&iacute;a no puede ser eliminada, est&aacute; siendo utilizada por ' . $cantidad_usuarios . ' usuarios. Elimine los usuarios primero, o deshabilite la categor&iacute;a en lugar de eliminarla.');
                 redirect('categorias-usuario/listar');
             }else{
-                $this->session->set_userdata('mensaje', 'No se pudo eliminar su categor&iacute;a de usuario.');
+                $categoria_usuario = $this->categoria_model->get_categoria('categoria_usuario', $id);
+                if($categoria_usuario){
+                    $delete_id = $this->categoria_model->delete_categoria('categoria_usuario', $id);
+                    if($delete_id){
+                        $this->session->set_userdata('mensaje', 'Categor&iacute;a de usuario eliminada satisfactoriamente.');
+                        redirect('categorias-usuario/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo eliminar su categor&iacute;a de usuario, por favor intente nuevamente');
+                        redirect('categorias-usuario/listar');
+                    }
+                }else{
+                    $this->session->set_userdata('mensaje', 'La categor&iacute;a de usuario que intenta eliminar no existe.');
+                    redirect('categorias-usuario/listar');
+                }
+            }
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
+
+    public function deshabilitar($id){
+
+        //Lo primero es ver si es Administrador
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $categoria_usuario = $this->categoria_model->get_categoria('categoria_usuario', $id);
+            if($categoria_usuario){
+                if($categoria_usuario['habilitado']){
+                    $datos['habilitado'] = FALSE;
+
+                    $was_updated = $this->categoria_model->update_categoria('categoria_usuario', $id, $datos);
+
+                    $usuarios = $this->usuarios_model->get_usuarios_by_categoria($id);
+                    foreach($usuarios as $k => $usuario){
+                        $this->usuarios_model->update_user($usuario['id'], $datos);
+
+                        $solicitudes = $this->solicitudes_model->get_solicitudes_by_usuario('solicitudes', $usuario['id']);
+                        foreach($solicitudes as $k => $solicitud){
+                            $this->solicitudes_model->update_solicitud('solicitudes', $solicitud['id'], $datos);
+                        }
+                    }
+
+                    if($was_updated){
+                        $this->session->set_userdata('mensaje', 'La categor&iacute;a de usuario fue deshabilitada satisfactoriamente. Recuerde que al deshabilitar una categor&iacute;a, tambi&eacute;n est&aacute; deshabilitando los usuarios de la misma y sus solicitudes.');
+                        redirect('categorias-usuario/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo deshabilitar la categor&iacute; de usuario, por favor intente nuevamente.');
+                        redirect('categorias-usuario/listar');
+                    }
+                }else{
+                    $this->session->set_userdata('mensaje', 'La categor&iacute;a de usuario ya se encuentra deshabilitada.');
+                    redirect('categorias-usuario/listar');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'La categor&iacute;a de usuario que intenta deshabilitar no existe.');
+                redirect('categorias-usuario/listar');
+            }
+        }else{
+            //Si llegué a este punto es porque no ha ingresado, o no es Administrador
+            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            redirect('inicio');
+        }
+    }
+
+    public function habilitar($id){
+
+        //Lo primero es ver si es Administrador
+        $administrador = $this->session->administrador;
+        if($administrador){
+
+            $categoria_usuario = $this->categoria_model->get_categoria('categoria_usuario', $id);
+            if($categoria_usuario){
+                if(!$categoria_usuario['habilitado']){
+                    $datos['habilitado'] = TRUE;
+
+                    $was_updated = $this->categoria_model->update_categoria('categoria_usuario', $id, $datos);
+                    if($was_updated){
+                        $usuarios = $this->usuarios_model->get_usuarios_by_categoria($id);
+                        foreach($usuarios as $k => $usuario){
+                            $this->usuarios_model->update_user($usuario['id'], $datos);
+
+                            $solicitudes = $this->solicitudes_model->get_solicitudes_by_usuario('solicitudes', $usuario['id']);
+                            foreach($solicitudes as $k => $solicitud){
+                                $this->solicitudes_model->update_solicitud('solicitudes', $solicitud['id'], $datos);
+                            }
+                        }
+
+                        $this->session->set_userdata('mensaje', 'La categor&iacute;a de usuario fue habilitada satisfactoriamente. Recuerde que al habilitar una categor&iacute;a, tambi&eacute;n est&aacute; habilitando los usuarios pertenencientes a la misma y sus solicitudes.');
+                        redirect('categorias-usuario/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo habilitar la categor&iacute; de usuario, por favor intente nuevamente.');
+                        redirect('categorias-usuario/listar');
+                    }
+                }else{
+                    $this->session->set_userdata('mensaje', 'La categor&iacute;a de usuario ya se encuentra habilitada.');
+                    redirect('categorias-usuario/listar');
+                }
+            }else{
+                $this->session->set_userdata('mensaje', 'La categor&iacute; de usuario que intenta habilitar no existe.');
                 redirect('categorias-usuario/listar');
             }
         }else{

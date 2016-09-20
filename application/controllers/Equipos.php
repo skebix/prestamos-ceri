@@ -164,12 +164,18 @@ class Equipos extends CI_Controller {
                 $this->session->set_userdata('mensaje', 'Este equipo no puede ser eliminado, est&aacute; siendo utilizado por ' . $cantidad_solicitudes . ' solicitudes. Elimine las solicitudes primero, o deshabilite el equipo en lugar de eliminarlo.');
                 redirect('equipos/listar');
             }else{
-                $delete_id = $this->equipos_model->delete_equipo('equipos', $id);
-                if($delete_id){
-                    $this->session->set_userdata('mensaje', 'Equipo eliminado satisfactoriamente.');
-                    redirect('equipos/listar');
+                $equipo = $this->equipos_model->get_equipo($id);
+                if($equipo){
+                    $delete_id = $this->equipos_model->delete_equipo('equipos', $id);
+                    if($delete_id){
+                        $this->session->set_userdata('mensaje', 'Equipo eliminado satisfactoriamente.');
+                        redirect('equipos/listar');
+                    }else{
+                        $this->session->set_userdata('mensaje', 'No se pudo eliminar su equipo, por favor intente nuevamente');
+                        redirect('equipos/listar');
+                    }
                 }else{
-                    $this->session->set_userdata('mensaje', 'No se pudo eliminar su equipo, por favor intente nuevamente');
+                    $this->session->set_userdata('mensaje', 'El equipo que intenta eliminar no existe.');
                     redirect('equipos/listar');
                 }
             }
@@ -227,7 +233,9 @@ class Equipos extends CI_Controller {
 
                     $was_updated = $this->equipos_model->update_equipo('equipos', $id, $datos);
                     if($was_updated){
-                        $this->session->set_userdata('mensaje', 'El equipo fue habilitado satisfactoriamente.');
+                        $this->categoria_model->update_categoria('categoria_equipo', $equipo['id_categoria_equipo'], $datos);
+
+                        $this->session->set_userdata('mensaje', 'El equipo fue habilitado satisfactoriamente. Recuerde que al habilitar el equipo, tambi&eacute;n se habilita la categor&iacute;a a la que pertenece.');
                         redirect('equipos/listar');
                     }else{
                         $this->session->set_userdata('mensaje', 'No se pudo habilitar el equipo, por favor intente nuevamente.');
