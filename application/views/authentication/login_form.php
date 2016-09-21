@@ -26,11 +26,9 @@ echo form_open('autenticacion', $attributes);
                                 <button type="submit" class="btn btn-lg btn-primary btn-block">Ingresar</button>
                             </div>
                             <br>
-                            <div class="button">
-                                <a href="<?= base_url('autenticacion/forgot-password') ?>">
-                                    <button type="button" class="btn btn-lg btn-primary btn-block">Olvid&oacute; su contrase&ntilde;a</button>
-                                </a>
-                            </div>
+                            <p class="text-center">Si ha olvidado su contrase&ntilde;a, haga click
+                                <a href="<?= base_url('autenticacion/forgot-password') ?>"> aqu&iacute;.</a>
+                            </p>
                         </fieldset>
                     </form>
                 </div>

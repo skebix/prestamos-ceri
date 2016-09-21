@@ -1,5 +1,6 @@
             </div>
         </div>
+        <div class="footer-stripe"></div>
         <footer class="page-footer">
             <div class="container text-center">
                 <p><br></p>
@@ -10,7 +11,7 @@
             </div>
             <div class="footer-copyright">
                 <div class="container">
-                    © 2016 Andrés Hevia & Nestor Naranjo
+                    © 2016 CERI-PRES
                 </div>
             </div>
         </footer>

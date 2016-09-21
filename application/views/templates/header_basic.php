@@ -11,6 +11,8 @@
 
     <title>CERI-PRES</title>
 
+    <!-- Personalized css -->
+    <link href="<?= css_url(); ?>style.css" rel="stylesheet" rel="stylesheet">
     <!-- Bootstrap Core CSS -->
     <link href="<?= assets_url(); ?>bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" rel="stylesheet">
 
@@ -32,6 +34,9 @@
 
 </head>
 <body>
-<div class="container-fluid text-center">
-    <h1>Bienvenido al Sistema de gesti&oacute;n de reservas CERI-PRES</h1>
+<div class="container-fluid header-basic-top">
+    <h1>
+    <img class="header-logo" src="<?= assets_url(); ?>img\logoceri1.jpg">
+    CERI-PRES</h1>
 </div>
+<div class="header-stripe"></div>

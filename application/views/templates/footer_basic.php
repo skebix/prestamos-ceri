@@ -1,19 +1,20 @@
-
-<footer class="page-footer">
+<div class="footer-stripe"></div>
+<footer class="page-footer footer-basic-bottom">
     <div class="container text-center">
         <p><br></p>
-        <p class="text-muted">
+        <div class="col-md-1"> <img class="header-logo" src="<?= assets_url(); ?>img\logoceri1.jpg"></div>
+        <div class="col-md-8">
             Ciudad Universitaria, Centro de Experimentaci&oacuten de Recursos Instruccionales, Edificio Trasbordo, Escuela de Educaci&oacuten, piso 3 Parroquia San Pedro, Caracas, Venezuela.
             +58(212)-6052877 y +58(212)-6052979
-            ucv.ee.ceri@gmail.com 2016</p>
+            ucv.ee.ceri@gmail.com 2016
+        </div>
     </div>
     <div class="footer-copyright">
         <div class="container">
-            © 2016 Andrés Hevia & Nestor Naranjo
+            © 2016 CERI-PRES
         </div>
     </div>
 </footer>
-
 <!-- jQuery -->
 <script src="<?= assets_url(); ?>bower_components/jquery/dist/jquery.min.js"></script>
 
