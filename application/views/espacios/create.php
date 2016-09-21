@@ -10,8 +10,6 @@ $attributes = array('class' => 'form-horizontal');
 echo form_open('espacios/crear', $attributes);
 ?>
 
-<?= $this->session->mensaje; ?><br><br>
-
     <div class="form-group">
         <label for="inputEspacios" class="col-sm-2 control-label">Nombre del espacio</label>
         <div class="col-sm-10">

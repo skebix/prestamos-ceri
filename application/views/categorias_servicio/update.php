@@ -11,8 +11,6 @@ echo form_open('categorias-servicio/actualizar/{id}', $attributes);
 
 ?>
 
-<?= $this->session->mensaje; ?><br><br>
-
 <div class="form-group">
     <label for="inputCategoriasServicio" class="col-sm-2 control-label">Categor&iacute;a de servicio</label>
     <div class="col-sm-10">

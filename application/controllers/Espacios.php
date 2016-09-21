@@ -39,17 +39,17 @@ class Espacios extends CI_Controller {
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_inserted){
-                    $this->session->set_flashdata('mensaje', 'El espacio fue creado satisfactoriamente.');
+                    $this->session->set_flashdata('success', 'El espacio fue creado satisfactoriamente.');
                     redirect('espacios/listar');
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el servicio
-                $this->session->set_flashdata('mensaje', 'No se pudo crear su espacio, por favor intente nuevamnte.');
+                $this->session->set_flashdata('danger', 'No se pudo crear su espacio, por favor intente nuevamnte.');
                 redirect('espacios/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -70,12 +70,12 @@ class Espacios extends CI_Controller {
                 $this->parser->parse('espacios/show', $data);
                 $this->parser->parse('templates/footer', $data);
             }else{
-                $this->session->set_flashdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                 redirect('inicio');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -99,7 +99,7 @@ class Espacios extends CI_Controller {
 
                 $data['atributos_otro_espacio'] = $atributos_otro_espacio;
             }else{
-                $this->session->set_flashdata('mensaje', 'El espacio que intenta actualizar no existe o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'El espacio que intenta actualizar no existe o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                 redirect('inicio');
             }
 
@@ -120,17 +120,17 @@ class Espacios extends CI_Controller {
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_updated){
-                    $this->session->set_flashdata('mensaje', 'El espacio fue actualizado satisfactoriamente.');
+                    $this->session->set_flashdata('success', 'El espacio fue actualizado satisfactoriamente.');
                     redirect('espacios/listar');
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el servicio
-                $this->session->set_flashdata('mensaje', 'No se pudo actualizar su espacio, por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'No se pudo actualizar su espacio, por favor intente nuevamente.');
                 redirect('espacios/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -144,21 +144,21 @@ class Espacios extends CI_Controller {
 
             $cantidad_solicitudes = $this->solicitudes_model->get_solicitudes_by_espacio($id);
             if($cantidad_solicitudes > 0){
-                $this->session->set_flashdata('mensaje', 'Este espacio no puede ser eliminado, est&aacute; siendo utilizado por ' . $cantidad_solicitudes . ' solicitudes. Elimine las solicitudes primero, o deshabilite el espacio en lugar de eliminarlo.');
+                $this->session->set_flashdata('warning', 'Este espacio no puede ser eliminado, est&aacute; siendo utilizado por ' . $cantidad_solicitudes . ' solicitudes. Elimine las solicitudes primero, o deshabilite el espacio en lugar de eliminarlo.');
                 redirect('espacios/listar');
             }else{
                 $delete_id = $this->espacios_model->delete_espacio('espacios', $id);
                 if($delete_id){
-                    $this->session->set_flashdata('mensaje', 'espacio eliminado satisfactoriamente.');
+                    $this->session->set_flashdata('success', 'espacio eliminado satisfactoriamente.');
                     redirect('espacios/listar');
                 }else{
-                    $this->session->set_flashdata('mensaje', 'No se pudo eliminar su espacio, por favor intente nuevamente');
+                    $this->session->set_flashdata('danger', 'No se pudo eliminar su espacio, por favor intente nuevamente');
                     redirect('espacios/listar');
                 }
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -176,23 +176,23 @@ class Espacios extends CI_Controller {
 
                     $was_updated = $this->espacios_model->update_espacio('espacios', $id, $datos);
                     if($was_updated){
-                        $this->session->set_flashdata('mensaje', 'El espacio fue deshabilitado satisfactoriamente.');
+                        $this->session->set_flashdata('success', 'El espacio fue deshabilitado satisfactoriamente.');
                         redirect('espacios/listar');
                     }else{
-                        $this->session->set_flashdata('mensaje', 'No se pudo deshabilitar el espacio, por favor intente nuevamente.');
+                        $this->session->set_flashdata('danger', 'No se pudo deshabilitar el espacio, por favor intente nuevamente.');
                         redirect('espacios/listar');
                     }
                 }else{
-                    $this->session->set_flashdata('mensaje', 'El espacio ya se encuentra deshabilitado.');
+                    $this->session->set_flashdata('warning', 'El espacio ya se encuentra deshabilitado.');
                     redirect('espacios/listar');
                 }
             }else{
-                $this->session->set_flashdata('mensaje', 'El espacio que intenta deshabilitar no existe.');
+                $this->session->set_flashdata('warning', 'El espacio que intenta deshabilitar no existe.');
                 redirect('espacios/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -210,23 +210,23 @@ class Espacios extends CI_Controller {
 
                     $was_updated = $this->espacios_model->update_espacio('espacios', $id, $datos);
                     if($was_updated){
-                        $this->session->set_flashdata('mensaje', 'El espacio fue habilitado satisfactoriamente.');
+                        $this->session->set_flashdata('success', 'El espacio fue habilitado satisfactoriamente.');
                         redirect('espacios/listar');
                     }else{
-                        $this->session->set_flashdata('mensaje', 'No se pudo habilitar el espacio, por favor intente nuevamente.');
+                        $this->session->set_flashdata('danger', 'No se pudo habilitar el espacio, por favor intente nuevamente.');
                         redirect('espacios/listar');
                     }
                 }else{
-                    $this->session->set_flashdata('mensaje', 'El espacio ya se encuentra habilitado.');
+                    $this->session->set_flashdata('warning', 'El espacio ya se encuentra habilitado.');
                     redirect('espacios/listar');
                 }
             }else{
-                $this->session->set_flashdata('mensaje', 'El espacio que intenta habilitar no existe.');
+                $this->session->set_flashdata('warning', 'El espacio que intenta habilitar no existe.');
                 redirect('espacios/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }

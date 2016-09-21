@@ -10,7 +10,7 @@ $attributes = array('class' => 'form-horizontal');
 echo form_open('usos/crear', $attributes);
 ?>
 
-<?= $this->session->mensaje; ?><br><br>
+<br>
 
 <div class="form-group">
     <label for="inputUsos" class="col-sm-2 control-label">Nombre del uso</label>

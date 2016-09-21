@@ -11,7 +11,7 @@ echo form_open('servicios/crear', $attributes);
 
 ?>
 
-<?= $this->session->mensaje; ?><br><br>
+<br>
 
 <div class="form-group">
     <label for="inputNombreServicio" class="col-sm-2 control-label">Nombre servicio</label>

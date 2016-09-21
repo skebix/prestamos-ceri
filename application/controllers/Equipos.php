@@ -27,7 +27,7 @@ class Equipos extends CI_Controller {
             if($categorias_equipo){
                 $data['categorias_equipo'] = $categorias_equipo;
             }else{
-                $this->session->set_flashdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                 redirect('inicio');
             }
 
@@ -48,17 +48,17 @@ class Equipos extends CI_Controller {
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_inserted){
-                    $this->session->set_flashdata('mensaje', 'El equipo fue a&ntilde;adido satisfactoriamente.');
+                    $this->session->set_flashdata('success', 'El equipo fue a&ntilde;adido satisfactoriamente.');
                     redirect('equipos/listar');
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el equipo
-                $this->session->set_flashdata('mensaje', 'No se pudo agregar el equipo, por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'No se pudo agregar el equipo, por favor intente nuevamente.');
                 redirect('equipos/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -79,12 +79,12 @@ class Equipos extends CI_Controller {
                 $this->parser->parse('equipos/show', $data);
                 $this->parser->parse('templates/footer', $data);
             }else{
-                $this->session->set_flashdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                 redirect('inicio');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -111,11 +111,11 @@ class Equipos extends CI_Controller {
 
                     $data['atributos_categoria_equipo'] = $atributos_categoria_equipo;
                 }else{
-                    $this->session->set_flashdata('mensaje', 'El equipo que intenta actualizar no existe o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                    $this->session->set_flashdata('danger', 'El equipo que intenta actualizar no existe o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                     redirect('inicio');
                 }
             }else{
-                $this->session->set_flashdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                 redirect('inicio');
             }
 
@@ -138,17 +138,17 @@ class Equipos extends CI_Controller {
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_updated){
-                    $this->session->set_flashdata('mensaje', 'El equipo fue modificado satisfactoriamente.');
+                    $this->session->set_flashdata('success', 'El equipo fue modificado satisfactoriamente.');
                     redirect('equipos/listar');
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el equipo
-                $this->session->set_flashdata('mensaje', 'No se pudo modificar el equipo, por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'No se pudo modificar el equipo, por favor intente nuevamente.');
                 redirect('equipos/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -161,27 +161,27 @@ class Equipos extends CI_Controller {
 
             $cantidad_solicitudes = $this->solicitudes_model->get_solicitudes_by_equipo($id);
             if($cantidad_solicitudes > 0){
-                $this->session->set_flashdata('mensaje', 'Este equipo no puede ser eliminado, est&aacute; siendo utilizado por ' . $cantidad_solicitudes . ' solicitudes. Elimine las solicitudes primero, o deshabilite el equipo en lugar de eliminarlo.');
+                $this->session->set_flashdata('warning', 'Este equipo no puede ser eliminado, est&aacute; siendo utilizado por ' . $cantidad_solicitudes . ' solicitudes. Elimine las solicitudes primero, o deshabilite el equipo en lugar de eliminarlo.');
                 redirect('equipos/listar');
             }else{
                 $equipo = $this->equipos_model->get_equipo($id);
                 if($equipo){
                     $delete_id = $this->equipos_model->delete_equipo('equipos', $id);
                     if($delete_id){
-                        $this->session->set_flashdata('mensaje', 'Equipo eliminado satisfactoriamente.');
+                        $this->session->set_flashdata('success', 'Equipo eliminado satisfactoriamente.');
                         redirect('equipos/listar');
                     }else{
-                        $this->session->set_flashdata('mensaje', 'No se pudo eliminar su equipo, por favor intente nuevamente');
+                        $this->session->set_flashdata('danger', 'No se pudo eliminar su equipo, por favor intente nuevamente');
                         redirect('equipos/listar');
                     }
                 }else{
-                    $this->session->set_flashdata('mensaje', 'El equipo que intenta eliminar no existe.');
+                    $this->session->set_flashdata('warning', 'El equipo que intenta eliminar no existe.');
                     redirect('equipos/listar');
                 }
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -199,23 +199,23 @@ class Equipos extends CI_Controller {
 
                     $was_updated = $this->equipos_model->update_equipo('equipos', $id, $datos);
                     if($was_updated){
-                        $this->session->set_flashdata('mensaje', 'El equipo fue deshabilitado satisfactoriamente.');
+                        $this->session->set_flashdata('success', 'El equipo fue deshabilitado satisfactoriamente.');
                         redirect('equipos/listar');
                     }else{
-                        $this->session->set_flashdata('mensaje', 'No se pudo deshabilitar el equipo, por favor intente nuevamente.');
+                        $this->session->set_flashdata('danger', 'No se pudo deshabilitar el equipo, por favor intente nuevamente.');
                         redirect('equipos/listar');
                     }
                 }else{
-                    $this->session->set_flashdata('mensaje', 'El equipo ya se encuentra deshabilitado.');
+                    $this->session->set_flashdata('warning', 'El equipo ya se encuentra deshabilitado.');
                     redirect('equipos/listar');
                 }
             }else{
-                $this->session->set_flashdata('mensaje', 'El equipo que intenta deshabilitar no existe.');
+                $this->session->set_flashdata('warning', 'El equipo que intenta deshabilitar no existe.');
                 redirect('equipos/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -235,23 +235,23 @@ class Equipos extends CI_Controller {
                     if($was_updated){
                         $this->categoria_model->update_categoria('categoria_equipo', $equipo['id_categoria_equipo'], $datos);
 
-                        $this->session->set_flashdata('mensaje', 'El equipo fue habilitado satisfactoriamente. Recuerde que al habilitar el equipo, tambi&eacute;n se habilita la categor&iacute;a a la que pertenece.');
+                        $this->session->set_flashdata('success', 'El equipo fue habilitado satisfactoriamente. Recuerde que al habilitar el equipo, tambi&eacute;n se habilita la categor&iacute;a a la que pertenece.');
                         redirect('equipos/listar');
                     }else{
-                        $this->session->set_flashdata('mensaje', 'No se pudo habilitar el equipo, por favor intente nuevamente.');
+                        $this->session->set_flashdata('danger', 'No se pudo habilitar el equipo, por favor intente nuevamente.');
                         redirect('equipos/listar');
                     }
                 }else{
-                    $this->session->set_flashdata('mensaje', 'El equipo ya se encuentra habilitado.');
+                    $this->session->set_flashdata('warning', 'El equipo ya se encuentra habilitado.');
                     redirect('equipos/listar');
                 }
             }else{
-                $this->session->set_flashdata('mensaje', 'El equipo que intenta habilitar no existe.');
+                $this->session->set_flashdata('warning', 'El equipo que intenta habilitar no existe.');
                 redirect('equipos/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }

@@ -1,15 +1,12 @@
-<?php
-$attributes = array();
-echo form_open('autenticacion', $attributes);
-?>
 <div class="container">
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title text-center">Por favor ingrese sus datos para continuar</h3>
+                    <h3 class="panel-title">Por favor ingrese sus datos para continuar</h3>
                 </div>
                 <div class="panel-body">
+
                     <?php if($this->session->flashdata('success')): ?>
                         <div class="alert alert-success">
                             <a href="#" class="close" data-dismiss="alert">&times;</a>
@@ -37,7 +34,8 @@ echo form_open('autenticacion', $attributes);
                             <strong><?php echo $this->session->flashdata('danger'); ?></strong>
                         </div>
                     <?php endif;  ?>
-                    <form role="form">
+
+                    <form role="form" action="<?= base_url('autenticacion') ?>" method="post">
                         <fieldset>
                             <div class="form-group">
                                 <label for="inputCedula" class="control-label">C&eacute;dula</label>

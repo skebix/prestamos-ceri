@@ -25,7 +25,7 @@ class Categorias_equipo extends CI_Controller {
 
             $this->form_validation->set_rules('categoria_equipo', 'Categor&iacute;a de equipo', 'trim|required|callback__alpha_special|max_length[255]');
 
-            if (!$this->form_validation->run()) {
+            if(!$this->form_validation->run()){
 
                 //Si no pasa las reglas de validación, mostramos el formulario
                 $this->parser->parse('templates/header', $data);
@@ -39,17 +39,17 @@ class Categorias_equipo extends CI_Controller {
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_inserted){
-                    $this->session->set_flashdata('mensaje', 'Categor&iacute;a de equipo creada satisfactoriamente.');
+                    $this->session->set_flashdata('success', 'Categor&iacute;a de equipo creada satisfactoriamente.');
                     redirect('categorias-equipo/listar');
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el equipo
-                $this->session->set_flashdata('mensaje', 'No se pudo crear su categor&iacute;a de equipo. Por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'No se pudo crear su categor&iacute;a de equipo. Por favor intente nuevamente.');
                 redirect('categorias-equipo/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -71,12 +71,12 @@ class Categorias_equipo extends CI_Controller {
                 $this->parser->parse('categorias_equipo/show', $data);
                 $this->parser->parse('templates/footer', $data);
             }else{
-                $this->session->set_flashdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                 redirect('inicio');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -95,7 +95,7 @@ class Categorias_equipo extends CI_Controller {
                 $data['id'] = $categoria['id'];
                 $data['categoria'] = $categoria['categoria'];
             }else{
-                $this->session->set_flashdata('mensaje', 'La categor&iacute;a que intenta actualizar no existe o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'La categor&iacute;a que intenta actualizar no existe o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                 redirect('inicio');
             }
 
@@ -115,17 +115,17 @@ class Categorias_equipo extends CI_Controller {
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_updated){
-                    $this->session->set_flashdata('mensaje', 'Categor&iacute;a de equipo actualizada satisfactoriamente.');
+                    $this->session->set_flashdata('success', 'Categor&iacute;a de equipo actualizada satisfactoriamente.');
                     redirect('categorias-equipo/listar');
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el equipo
-                $this->session->set_flashdata('mensaje', 'No se pudo actualizar su categor&iacute;a de equipo. Por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'No se pudo actualizar su categor&iacute;a de equipo. Por favor intente nuevamente.');
                 redirect('categorias-equipo/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -138,27 +138,27 @@ class Categorias_equipo extends CI_Controller {
 
             $cantidad_equipos = $this->equipos_model->get_amount_equipos_by_categoria($id);
             if($cantidad_equipos > 0){
-                $this->session->set_flashdata('mensaje', 'Esta categor&iacute;a no puede ser eliminada, est&aacute; siendo utilizada por ' . $cantidad_equipos . ' equipos. Elimine los equipos primero, o deshabilite la categor&iacute;a en lugar de eliminarla.');
+                $this->session->set_flashdata('warning', 'Esta categor&iacute;a no puede ser eliminada, est&aacute; siendo utilizada por ' . $cantidad_equipos . ' equipos. Elimine los equipos primero, o deshabilite la categor&iacute;a en lugar de eliminarla.');
                 redirect('categorias-equipo/listar');
             }else{
                 $categoria_equipo = $this->categoria_model->get_categoria('categoria_equipo', $id);
                 if($categoria_equipo){
                     $delete_id = $this->categoria_model->delete_categoria('categoria_equipo', $id);
                     if($delete_id){
-                        $this->session->set_flashdata('mensaje', 'Categor&iacute;a de equipo eliminada satisfactoriamente.');
+                        $this->session->set_flashdata('success', 'Categor&iacute;a de equipo eliminada satisfactoriamente.');
                         redirect('categorias-equipo/listar');
                     }else{
-                        $this->session->set_flashdata('mensaje', 'No se pudo eliminar su categor&iacute;a de equipo, por favor intente nuevamente');
+                        $this->session->set_flashdata('danger', 'No se pudo eliminar su categor&iacute;a de equipo, por favor intente nuevamente');
                         redirect('categorias-equipo/listar');
                     }
                 }else{
-                    $this->session->set_flashdata('mensaje', 'La categor&iacute;a de equipo que intenta eliminar no existe.');
+                    $this->session->set_flashdata('danger', 'La categor&iacute;a de equipo que intenta eliminar no existe.');
                     redirect('categorias-equipo/listar');
                 }
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -181,23 +181,23 @@ class Categorias_equipo extends CI_Controller {
                             $this->equipos_model->update_equipo('equipos', $equipo['id'], $datos);
                         }
 
-                        $this->session->set_flashdata('mensaje', 'La categor&iacute;a de equipo fue deshabilitada satisfactoriamente. Recuerde que al deshabilitar una categor&iacute;a, tambi&eacute;n est&aacute; deshabilitando los equipos de la misma.');
+                        $this->session->set_flashdata('success', 'La categor&iacute;a de equipo fue deshabilitada satisfactoriamente. Recuerde que al deshabilitar una categor&iacute;a, tambi&eacute;n est&aacute; deshabilitando los equipos de la misma.');
                         redirect('categorias-equipo/listar');
                     }else{
-                        $this->session->set_flashdata('mensaje', 'No se pudo deshabilitar la categor&iacute; de equipo, por favor intente nuevamente.');
+                        $this->session->set_flashdata('danger', 'No se pudo deshabilitar la categor&iacute; de equipo, por favor intente nuevamente.');
                         redirect('categorias-equipo/listar');
                     }
                 }else{
-                    $this->session->set_flashdata('mensaje', 'La categor&iacute;a de equipo ya se encuentra deshabilitada.');
+                    $this->session->set_flashdata('warning', 'La categor&iacute;a de equipo ya se encuentra deshabilitada.');
                     redirect('categorias-equipo/listar');
                 }
             }else{
-                $this->session->set_flashdata('mensaje', 'La categor&iacute;a de equipo que intenta deshabilitar no existe.');
+                $this->session->set_flashdata('warning', 'La categor&iacute;a de equipo que intenta deshabilitar no existe.');
                 redirect('categorias-equipo/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -220,23 +220,23 @@ class Categorias_equipo extends CI_Controller {
                             $this->equipos_model->update_equipo('equipos', $equipo['id'], $datos);
                         }
 
-                        $this->session->set_flashdata('mensaje', 'La categor&iacute;a de equipo fue habilitada satisfactoriamente. Recuerde que al habilitar una categor&iacute;a, tambi&eacute;n est&aacute; habilitando los equipos pertenencientes a la misma.');
+                        $this->session->set_flashdata('success', 'La categor&iacute;a de equipo fue habilitada satisfactoriamente. Recuerde que al habilitar una categor&iacute;a, tambi&eacute;n est&aacute; habilitando los equipos pertenencientes a la misma.');
                         redirect('categorias-equipo/listar');
                     }else{
-                        $this->session->set_flashdata('mensaje', 'No se pudo habilitar la categor&iacute; de equipo, por favor intente nuevamente.');
+                        $this->session->set_flashdata('danger', 'No se pudo habilitar la categor&iacute; de equipo, por favor intente nuevamente.');
                         redirect('categorias-equipo/listar');
                     }
                 }else{
-                    $this->session->set_flashdata('mensaje', 'La categor&iacute; de equipo ya se encuentra habilitada.');
+                    $this->session->set_flashdata('warning', 'La categor&iacute; de equipo ya se encuentra habilitada.');
                     redirect('categorias-equipo/listar');
                 }
             }else{
-                $this->session->set_flashdata('mensaje', 'La categor&iacute; de equipo que intenta habilitar no existe.');
+                $this->session->set_flashdata('warning', 'La categor&iacute; de equipo que intenta habilitar no existe.');
                 redirect('categorias-equipo/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }

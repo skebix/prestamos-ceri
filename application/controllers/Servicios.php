@@ -27,7 +27,7 @@ class Servicios extends CI_Controller {
             if($categorias_servicio){
                 $data['categorias_servicio'] = $categorias_servicio;
             }else {
-                $this->session->set_flashdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                 redirect('inicio');
             }
 
@@ -48,17 +48,17 @@ class Servicios extends CI_Controller {
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_inserted){
-                    $this->session->set_flashdata('mensaje', 'El servicio fue a&ntilde;adido satisfactoriamente.');
+                    $this->session->set_flashdata('success', 'El servicio fue a&ntilde;adido satisfactoriamente.');
                     redirect('servicios/listar');
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el servicio
-                $this->session->set_flashdata('mensaje', 'No se pudo agregar el servicio, por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'No se pudo agregar el servicio, por favor intente nuevamente.');
                 redirect('servicios/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -79,12 +79,12 @@ class Servicios extends CI_Controller {
                 $this->parser->parse('servicios/show', $data);
                 $this->parser->parse('templates/footer', $data);
             }else{
-                $this->session->set_flashdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                 redirect('inicio');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -111,11 +111,11 @@ class Servicios extends CI_Controller {
 
                     $data['atributos_categoria_servicio'] = $atributos_categoria_servicio;
                 }else{
-                    $this->session->set_flashdata('mensaje', 'El servicio que intenta actualizar no existe o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                    $this->session->set_flashdata('danger', 'El servicio que intenta actualizar no existe o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                     redirect('inicio');
                 }
             }else{
-                $this->session->set_flashdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                 redirect('inicio');
             }
 
@@ -138,17 +138,17 @@ class Servicios extends CI_Controller {
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_updated){
-                    $this->session->set_flashdata('mensaje', 'El servicio fue modificado satisfactoriamente.');
+                    $this->session->set_flashdata('success', 'El servicio fue modificado satisfactoriamente.');
                     redirect('servicios/listar');
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el servicio
-                $this->session->set_flashdata('mensaje', 'No se pudo modificar el servicio, por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'No se pudo modificar el servicio, por favor intente nuevamente.');
                 redirect('servicios/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -161,27 +161,27 @@ class Servicios extends CI_Controller {
 
             $cantidad_solicitudes = $this->solicitudes_model->get_solicitudes_by_servicio($id);
             if($cantidad_solicitudes > 0){
-                $this->session->set_flashdata('mensaje', 'Este servicio no puede ser eliminado, est&aacute; siendo utilizado por ' . $cantidad_solicitudes . ' solicitudes. Elimine las solicitudes primero, o deshabilite el servicio en lugar de eliminarlo.');
+                $this->session->set_flashdata('warning', 'Este servicio no puede ser eliminado, est&aacute; siendo utilizado por ' . $cantidad_solicitudes . ' solicitudes. Elimine las solicitudes primero, o deshabilite el servicio en lugar de eliminarlo.');
                 redirect('servicios/listar');
             }else{
                 $servicio = $this->servicios_model->get_servicio($id);
                 if($servicio){
                     $delete_id = $this->servicios_model->delete_servicio('servicios', $id);
                     if($delete_id){
-                        $this->session->set_flashdata('mensaje', 'servicio eliminado satisfactoriamente.');
+                        $this->session->set_flashdata('success', 'El servicio fue eliminado satisfactoriamente.');
                         redirect('servicios/listar');
                     }else{
-                        $this->session->set_flashdata('mensaje', 'No se pudo eliminar su servicio, por favor intente nuevamente');
+                        $this->session->set_flashdata('danger', 'No se pudo eliminar su servicio, por favor intente nuevamente');
                         redirect('servicios/listar');
                     }
                 }else{
-                    $this->session->set_flashdata('mensaje', 'El servicio que intenta eliminar no existe.');
+                    $this->session->set_flashdata('warning', 'El servicio que intenta eliminar no existe.');
                     redirect('servicios/listar');
                 }
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -199,23 +199,23 @@ class Servicios extends CI_Controller {
 
                     $was_updated = $this->servicios_model->update_servicio('servicios', $id, $datos);
                     if($was_updated){
-                        $this->session->set_flashdata('mensaje', 'El servicio fue deshabilitado satisfactoriamente.');
+                        $this->session->set_flashdata('success', 'El servicio fue deshabilitado satisfactoriamente.');
                         redirect('servicios/listar');
                     }else{
-                        $this->session->set_flashdata('mensaje', 'No se pudo deshabilitar el servicio, por favor intente nuevamente.');
+                        $this->session->set_flashdata('danger', 'No se pudo deshabilitar el servicio, por favor intente nuevamente.');
                         redirect('servicios/listar');
                     }
                 }else{
-                    $this->session->set_flashdata('mensaje', 'El servicio ya se encuentra deshabilitado.');
+                    $this->session->set_flashdata('warning', 'El servicio ya se encuentra deshabilitado.');
                     redirect('servicios/listar');
                 }
             }else{
-                $this->session->set_flashdata('mensaje', 'El servicio que intenta deshabilitar no existe.');
+                $this->session->set_flashdata('warning', 'El servicio que intenta deshabilitar no existe.');
                 redirect('servicios/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -235,23 +235,23 @@ class Servicios extends CI_Controller {
                     if($was_updated){
                         $this->categoria_model->update_categoria('categoria_servicio', $servicio['id_categoria_servicio'], $datos);
 
-                        $this->session->set_flashdata('mensaje', 'El servicio fue habilitado satisfactoriamente. Recuerde que al habilitar el servicio, tambi&eacute;n se habilita la categor&iacute;a a la que pertenece.');
+                        $this->session->set_flashdata('success', 'El servicio fue habilitado satisfactoriamente. Recuerde que al habilitar el servicio, tambi&eacute;n se habilita la categor&iacute;a a la que pertenece.');
                         redirect('servicios/listar');
                     }else{
-                        $this->session->set_flashdata('mensaje', 'No se pudo habilitar el servicio, por favor intente nuevamente.');
+                        $this->session->set_flashdata('danger', 'No se pudo habilitar el servicio, por favor intente nuevamente.');
                         redirect('servicios/listar');
                     }
                 }else{
-                    $this->session->set_flashdata('mensaje', 'El servicio ya se encuentra habilitado.');
+                    $this->session->set_flashdata('warning', 'El servicio ya se encuentra habilitado.');
                     redirect('servicios/listar');
                 }
             }else{
-                $this->session->set_flashdata('mensaje', 'El servicio que intenta habilitar no existe.');
+                $this->session->set_flashdata('warning', 'El servicio que intenta habilitar no existe.');
                 redirect('servicios/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }

@@ -39,17 +39,17 @@ class Categorias_usuario extends CI_Controller {
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_inserted){
-                    $this->session->set_flashdata('mensaje', 'Categor&iacute;a de usuario creada satisfactoriamente.');
+                    $this->session->set_flashdata('success', 'Categor&iacute;a de usuario creada satisfactoriamente.');
                     redirect('categorias-usuario/listar');
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el usuario
-                $this->session->set_flashdata('mensaje', 'No se pudo crear su categor&iacute;a de usuario. Por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'No se pudo crear su categor&iacute;a de usuario. Por favor intente nuevamente.');
                 redirect('categorias-usuario/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -70,12 +70,12 @@ class Categorias_usuario extends CI_Controller {
                 $this->parser->parse('categorias_usuario/show', $data);
                 $this->parser->parse('templates/footer', $data);
             }else{
-                $this->session->set_flashdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                 redirect('inicio');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -94,7 +94,7 @@ class Categorias_usuario extends CI_Controller {
                 $data['id'] = $categoria['id'];
                 $data['categoria'] = $categoria['categoria'];
             }else{
-                $this->session->set_flashdata('mensaje', 'La categor&iacute;a que intenta actualizar no existe o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'La categor&iacute;a que intenta actualizar no existe o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                 redirect('inicio');
             }
 
@@ -114,17 +114,17 @@ class Categorias_usuario extends CI_Controller {
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_updated){
-                    $this->session->set_flashdata('mensaje', 'Categor&iacute;a de usuario actualizada satisfactoriamente.');
+                    $this->session->set_flashdata('success', 'Categor&iacute;a de usuario actualizada satisfactoriamente.');
                     redirect('categorias-usuario/listar');
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el usuario
-                $this->session->set_flashdata('mensaje', 'No se pudo actualizar su categor&iacute;a de usuario. Por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'No se pudo actualizar su categor&iacute;a de usuario. Por favor intente nuevamente.');
                 redirect('categorias-usuario/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -137,27 +137,27 @@ class Categorias_usuario extends CI_Controller {
 
             $cantidad_usuarios = $this->usuarios_model->get_amount_usuarios_by_categoria($id);
             if($cantidad_usuarios > 0){
-                $this->session->set_flashdata('mensaje', 'Esta categor&iacute;a no puede ser eliminada, est&aacute; siendo utilizada por ' . $cantidad_usuarios . ' usuarios. Elimine los usuarios primero, o deshabilite la categor&iacute;a en lugar de eliminarla.');
+                $this->session->set_flashdata('warning', 'Esta categor&iacute;a no puede ser eliminada, est&aacute; siendo utilizada por ' . $cantidad_usuarios . ' usuarios. Elimine los usuarios primero, o deshabilite la categor&iacute;a en lugar de eliminarla.');
                 redirect('categorias-usuario/listar');
             }else{
                 $categoria_usuario = $this->categoria_model->get_categoria('categoria_usuario', $id);
                 if($categoria_usuario){
                     $delete_id = $this->categoria_model->delete_categoria('categoria_usuario', $id);
                     if($delete_id){
-                        $this->session->set_flashdata('mensaje', 'Categor&iacute;a de usuario eliminada satisfactoriamente.');
+                        $this->session->set_flashdata('success', 'Categor&iacute;a de usuario eliminada satisfactoriamente.');
                         redirect('categorias-usuario/listar');
                     }else{
-                        $this->session->set_flashdata('mensaje', 'No se pudo eliminar su categor&iacute;a de usuario, por favor intente nuevamente');
+                        $this->session->set_flashdata('danger', 'No se pudo eliminar su categor&iacute;a de usuario, por favor intente nuevamente');
                         redirect('categorias-usuario/listar');
                     }
                 }else{
-                    $this->session->set_flashdata('mensaje', 'La categor&iacute;a de usuario que intenta eliminar no existe.');
+                    $this->session->set_flashdata('warning', 'La categor&iacute;a de usuario que intenta eliminar no existe.');
                     redirect('categorias-usuario/listar');
                 }
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -186,23 +186,23 @@ class Categorias_usuario extends CI_Controller {
                     }
 
                     if($was_updated){
-                        $this->session->set_flashdata('mensaje', 'La categor&iacute;a de usuario fue deshabilitada satisfactoriamente. Recuerde que al deshabilitar una categor&iacute;a, tambi&eacute;n est&aacute; deshabilitando los usuarios de la misma y sus solicitudes.');
+                        $this->session->set_flashdata('success', 'La categor&iacute;a de usuario fue deshabilitada satisfactoriamente. Recuerde que al deshabilitar una categor&iacute;a, tambi&eacute;n est&aacute; deshabilitando los usuarios de la misma y sus solicitudes.');
                         redirect('categorias-usuario/listar');
                     }else{
-                        $this->session->set_flashdata('mensaje', 'No se pudo deshabilitar la categor&iacute; de usuario, por favor intente nuevamente.');
+                        $this->session->set_flashdata('danger', 'No se pudo deshabilitar la categor&iacute; de usuario, por favor intente nuevamente.');
                         redirect('categorias-usuario/listar');
                     }
                 }else{
-                    $this->session->set_flashdata('mensaje', 'La categor&iacute;a de usuario ya se encuentra deshabilitada.');
+                    $this->session->set_flashdata('warning', 'La categor&iacute;a de usuario ya se encuentra deshabilitada.');
                     redirect('categorias-usuario/listar');
                 }
             }else{
-                $this->session->set_flashdata('mensaje', 'La categor&iacute;a de usuario que intenta deshabilitar no existe.');
+                $this->session->set_flashdata('warning', 'La categor&iacute;a de usuario que intenta deshabilitar no existe.');
                 redirect('categorias-usuario/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -230,23 +230,23 @@ class Categorias_usuario extends CI_Controller {
                             }
                         }
 
-                        $this->session->set_flashdata('mensaje', 'La categor&iacute;a de usuario fue habilitada satisfactoriamente. Recuerde que al habilitar una categor&iacute;a, tambi&eacute;n est&aacute; habilitando los usuarios pertenencientes a la misma y sus solicitudes.');
+                        $this->session->set_flashdata('success', 'La categor&iacute;a de usuario fue habilitada satisfactoriamente. Recuerde que al habilitar una categor&iacute;a, tambi&eacute;n est&aacute; habilitando los usuarios pertenencientes a la misma y sus solicitudes.');
                         redirect('categorias-usuario/listar');
                     }else{
-                        $this->session->set_flashdata('mensaje', 'No se pudo habilitar la categor&iacute; de usuario, por favor intente nuevamente.');
+                        $this->session->set_flashdata('danger', 'No se pudo habilitar la categor&iacute; de usuario, por favor intente nuevamente.');
                         redirect('categorias-usuario/listar');
                     }
                 }else{
-                    $this->session->set_flashdata('mensaje', 'La categor&iacute;a de usuario ya se encuentra habilitada.');
+                    $this->session->set_flashdata('warning', 'La categor&iacute;a de usuario ya se encuentra habilitada.');
                     redirect('categorias-usuario/listar');
                 }
             }else{
-                $this->session->set_flashdata('mensaje', 'La categor&iacute; de usuario que intenta habilitar no existe.');
+                $this->session->set_flashdata('warning', 'La categor&iacute; de usuario que intenta habilitar no existe.');
                 redirect('categorias-usuario/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }

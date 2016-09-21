@@ -11,7 +11,7 @@ echo form_open('usuarios/registro', $attributes);
 
 ?>
 
-<span class="glyphicon glyphicon-envelope"></span> <?= $this->session->mensaje; ?><br><br>
+<br>
 
 <form class="form-horizontal">
     <fieldset>

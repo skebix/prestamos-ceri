@@ -80,15 +80,15 @@ class Solicitudes extends CI_Controller {
                             }
                         }
                     }else{
-                        $this->session->set_flashdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                        $this->session->set_flashdata('danger', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                         redirect('inicio');
                     }
                 }else{
-                    $this->session->set_flashdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                    $this->session->set_flashdata('danger', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                     redirect('inicio');
                 }
             }else{
-                $this->session->set_flashdata('mensaje', 'No existen usuarios registrados, o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'No existen usuarios registrados, o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                 redirect('inicio');
             }
 
@@ -197,17 +197,17 @@ class Solicitudes extends CI_Controller {
                         }
                     }
 
-                    $this->session->set_flashdata('mensaje', 'La solicitud fue creada satisfactoriamente.');
+                    $this->session->set_flashdata('success', 'La solicitud fue creada satisfactoriamente.');
                     redirect('solicitudes/detalles/' . $id_solicitud);
                 }
 
                 //Si llegué a este punto es porque no pudo guardar la solicitud
-                $this->session->set_flashdata('mensaje', 'No se pudo crear la solicitud, por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'No se pudo crear la solicitud, por favor intente nuevamente.');
                 redirect('solicitudes/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -460,21 +460,21 @@ class Solicitudes extends CI_Controller {
                             }
                         }
 
-                        $this->session->set_flashdata('mensaje', 'La solicitud fue actualizada satisfactoriamente.');
+                        $this->session->set_flashdata('success', 'La solicitud fue actualizada satisfactoriamente.');
                         redirect('solicitudes/detalles/' . $id_solicitud);
                     }
 
                     //Si llegué a este punto es porque no pudo guardar la solicitud
-                    $this->session->set_flashdata('mensaje', 'No se pudo crear la solicitud, por favor intente nuevamente.');
+                    $this->session->set_flashdata('danger', 'No se pudo crear la solicitud, por favor intente nuevamente.');
                     redirect('solicitudes/listar');
                 }
             }else{
-                $this->session->set_flashdata('mensaje', 'La solicitud que intenta actualizar no existe o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                $this->session->set_flashdata('danger', 'La solicitud que intenta actualizar no existe o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                 redirect('solicitudes/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -516,12 +516,12 @@ class Solicitudes extends CI_Controller {
 
                     //Si lo actualizó correctamente, redirigir con éxito
                     if($was_updated){
-                        $this->session->set_flashdata('mensaje', 'La solicitud fue cerrada satisfactoriamente.');
+                        $this->session->set_flashdata('success', 'La solicitud fue cerrada satisfactoriamente.');
                         redirect('solicitudes/recibir');
                     }
 
                     //Si llegué a este punto es porque no pudo cerrar la solicitud
-                    $this->session->set_flashdata('mensaje', 'No se pudo cerrar la solicitud, por favor intente nuevamente.');
+                    $this->session->set_flashdata('danger', 'No se pudo cerrar la solicitud, por favor intente nuevamente.');
                     redirect('solicitudes/cerrar/' . $solicitud['id']);
                 }
 
@@ -529,12 +529,12 @@ class Solicitudes extends CI_Controller {
                 $this->parser->parse('solicitudes/confirm', $data);
                 $this->parser->parse('templates/footer', $data);
             }else{
-                $this->session->set_flashdata('mensaje', 'La solicitud que intenta cerrar no existe.');
+                $this->session->set_flashdata('warning', 'La solicitud que intenta cerrar no existe.');
                 redirect('solicitudes/recibir');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -570,19 +570,19 @@ class Solicitudes extends CI_Controller {
                 
                 $delete_id = $this->solicitudes_model->delete_solicitud('solicitudes', $id);
                 if($delete_id){
-                    $this->session->set_flashdata('mensaje', 'La solicitud ha sido eliminada satisfactoriamente.');
+                    $this->session->set_flashdata('success', 'La solicitud ha sido eliminada satisfactoriamente.');
                     redirect('solicitudes/listar');
                 }else{
-                    $this->session->set_flashdata('mensaje', 'No se pudo eliminar la solicitud, por favor intente nuevamente.');
+                    $this->session->set_flashdata('danger', 'No se pudo eliminar la solicitud, por favor intente nuevamente.');
                     redirect('solicitudes/listar');
                 }
             }else{
-                $this->session->set_flashdata('mensaje', 'La solicitud que intenta eliminar no existe.');
+                $this->session->set_flashdata('warning', 'La solicitud que intenta eliminar no existe.');
                 redirect('solicitudes/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -600,23 +600,23 @@ class Solicitudes extends CI_Controller {
 
                     $was_updated = $this->solicitudes_model->update_solicitud('solicitudes', $id, $datos);
                     if($was_updated){
-                        $this->session->set_flashdata('mensaje', 'La solicitud fue deshabilitada satisfactoriamente.');
+                        $this->session->set_flashdata('success', 'La solicitud fue deshabilitada satisfactoriamente.');
                         redirect('solicitudes/listar');
                     }else{
-                        $this->session->set_flashdata('mensaje', 'No se pudo deshabilitar la solicitud, por favor intente nuevamente.');
+                        $this->session->set_flashdata('danger', 'No se pudo deshabilitar la solicitud, por favor intente nuevamente.');
                         redirect('solicitudes/listar');
                     }
                 }else{
-                    $this->session->set_flashdata('mensaje', 'La solicitud ya se encuentra deshabilitada.');
+                    $this->session->set_flashdata('warning', 'La solicitud ya se encuentra deshabilitada.');
                     redirect('solicitudes/listar');
                 }
             }else{
-                $this->session->set_flashdata('mensaje', 'La solicitud que intenta deshabilitar no existe.');
+                $this->session->set_flashdata('warning', 'La solicitud que intenta deshabilitar no existe.');
                 redirect('solicitudes/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -638,23 +638,23 @@ class Solicitudes extends CI_Controller {
                     $this->categoria_model->update_categoria('categoria_usuario', $usuario['id_categoria_usuario'], $datos);
 
                     if($was_updated){
-                        $this->session->set_flashdata('mensaje', 'La solicitud fue habilitada satisfactoriamente.');
+                        $this->session->set_flashdata('success', 'La solicitud fue habilitada satisfactoriamente.');
                         redirect('solicitudes/listar');
                     }else{
-                        $this->session->set_flashdata('mensaje', 'No se pudo habilitar la solicitud, por favor intente nuevamente.');
+                        $this->session->set_flashdata('danger', 'No se pudo habilitar la solicitud, por favor intente nuevamente.');
                         redirect('solicitudes/listar');
                     }
                 }else{
-                    $this->session->set_flashdata('mensaje', 'La solicitud ya se encuentra habilitada.');
+                    $this->session->set_flashdata('warning', 'La solicitud ya se encuentra habilitada.');
                     redirect('solicitudes/listar');
                 }
             }else{
-                $this->session->set_flashdata('mensaje', 'La solicitud que intenta habilitar no existe.');
+                $this->session->set_flashdata('warning', 'La solicitud que intenta habilitar no existe.');
                 redirect('solicitudes/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -673,7 +673,7 @@ class Solicitudes extends CI_Controller {
             $this->parser->parse('templates/footer', $data);
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -700,14 +700,14 @@ class Solicitudes extends CI_Controller {
                 $this->parser->parse('solicitudes/details', $data);
                 $this->parser->parse('templates/footer', $data);
             }else{
-                $this->session->set_flashdata('mensaje', 'La solicitud que intenta visualizar no existe.');
+                $this->session->set_flashdata('warning', 'La solicitud que intenta visualizar no existe.');
                 redirect('solicitudes/listar');
             }
 
 
         } else {
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -724,7 +724,7 @@ class Solicitudes extends CI_Controller {
 
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
