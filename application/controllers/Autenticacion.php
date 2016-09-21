@@ -17,7 +17,7 @@ class Autenticacion extends CI_Controller {
         //Lo primero es ver si ya ingresó, no?
         $cedula = $this->session->cedula;
         if($cedula){
-            $this->session->set_userdata('mensaje', 'Ya ha ingresado al sistema.');
+            $this->session->set_flashdata('mensaje', 'Ya ha ingresado al sistema.');
             redirect('inicio');
         }
 
@@ -28,7 +28,7 @@ class Autenticacion extends CI_Controller {
 
         if (!$this->form_validation->run()) {
             //Si no pasa las reglas de validación, mostramos el formulario
-            $this->session->set_userdata('mensaje', 'Por favor inicie sesión para continuar');
+            $this->session->set_flashdata('mensaje', 'Por favor inicie sesión para continuar');
             $this->parser->parse('templates/header_basic', $data);
             $this->parser->parse('authentication/login_form', $data);
             $this->parser->parse('templates/footer_basic', $data);
@@ -40,10 +40,10 @@ class Autenticacion extends CI_Controller {
             if($usuario){
                 $this->session->set_userdata($usuario);
 
-                $this->session->set_userdata('mensaje', 'Acaba de ingresar al sistema.');
+                $this->session->set_flashdata('mensaje', 'Acaba de ingresar al sistema.');
                 redirect('inicio');
             }else{
-                $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente ingresar nuevamente.');
+                $this->session->set_flashdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente ingresar nuevamente.');
                 redirect('inicio');
             }
         }
@@ -82,7 +82,7 @@ class Autenticacion extends CI_Controller {
                     //Actualizo el token en la BD
                     $updated = $this->usuarios_model->update_token($usuario['cedula'], $hashed_password);
                 }else{
-                    $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                    $this->session->set_flashdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                     redirect('inicio');
                 }
             }
@@ -97,11 +97,11 @@ class Autenticacion extends CI_Controller {
             $resultado = $this->email->send();
 
             if($resultado){
-                $this->session->set_userdata('mensaje', 'Correo enviado satisfactoriamente.');
+                $this->session->set_flashdata('mensaje', 'Correo enviado satisfactoriamente.');
                 redirect('inicio');
             }
             
-            $this->session->set_userdata('mensaje', 'Hubo un problema al enviar el correo electr&oacute;nico, por favor intente nuevamente.');
+            $this->session->set_flashdata('mensaje', 'Hubo un problema al enviar el correo electr&oacute;nico, por favor intente nuevamente.');
             redirect('inicio');
         }
     }
@@ -116,11 +116,11 @@ class Autenticacion extends CI_Controller {
 
                 $this->reset_password();
             }else{
-                $this->session->set_userdata('mensaje', 'El token ya fue utilizado o es inv&aacute;lido.');
+                $this->session->set_flashdata('mensaje', 'El token ya fue utilizado o es inv&aacute;lido.');
                 redirect('inicio');
             }
         }else{
-            $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+            $this->session->set_flashdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
             redirect('inicio');
         }
     }
@@ -150,12 +150,12 @@ class Autenticacion extends CI_Controller {
                 if($was_updated){
                     $this->salir();
                 }else{
-                    $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente ingresar nuevamente.');
+                    $this->session->set_flashdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente ingresar nuevamente.');
                     redirect('inicio');
                 }
             }
         }else{
-            $this->session->set_userdata('mensaje', 'El token ya fue utilizado o es inv&aacute;lido.');
+            $this->session->set_flashdata('mensaje', 'El token ya fue utilizado o es inv&aacute;lido.');
             redirect('inicio');
         }
     }
@@ -163,7 +163,7 @@ class Autenticacion extends CI_Controller {
     public function salir(){
         $eliminar = array('id', 'cedula', 'administrador', 'reset_password', 'mensaje');
         $this->session->unset_userdata($eliminar);
-        $this->session->set_userdata('mensaje', 'Sesi&oacute;n cerrada.');
+        $this->session->set_flashdata('mensaje', 'Sesi&oacute;n cerrada.');
         redirect('inicio');
     }
 

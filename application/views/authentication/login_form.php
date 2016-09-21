@@ -7,9 +7,36 @@ echo form_open('autenticacion', $attributes);
         <div class="col-md-4 col-md-offset-4">
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Por favor ingrese sus datos para continuar</h3>
+                    <h3 class="panel-title text-center">Por favor ingrese sus datos para continuar</h3>
                 </div>
                 <div class="panel-body">
+                    <?php if($this->session->flashdata('success')): ?>
+                        <div class="alert alert-success">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                            <strong><?php echo $this->session->flashdata('success'); ?></strong>
+                        </div>
+                    <?php endif;  ?>
+
+                    <?php if($this->session->flashdata('info')): ?>
+                        <div class="alert alert-info">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                            <strong><?php echo $this->session->flashdata('info'); ?></strong>
+                        </div>
+                    <?php endif;  ?>
+
+                    <?php if($this->session->flashdata('warning')): ?>
+                        <div class="alert alert-warning">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                            <strong><?php echo $this->session->flashdata('warning'); ?></strong>
+                        </div>
+                    <?php endif;  ?>
+
+                    <?php if($this->session->flashdata('danger')): ?>
+                        <div class="alert alert-danger">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                            <strong><?php echo $this->session->flashdata('danger'); ?></strong>
+                        </div>
+                    <?php endif;  ?>
                     <form role="form">
                         <fieldset>
                             <div class="form-group">

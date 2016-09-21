@@ -15,6 +15,7 @@ class Equipos_model extends CI_Model {
     
     public function get_equipos_sistema($table){
         $this->db->from($table);
+        $this->db->where('habilitado', TRUE);
         $query = $this->db->get();
 
         return $query->result_array();

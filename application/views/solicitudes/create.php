@@ -53,7 +53,7 @@ echo form_open('solicitudes/crear', $attributes);
 
 
 <div class="form-group" id="nuevo-equipo">
-    <div class="col-sm-offset-2 col-sm-3">
+    <div>
         <button type="button" class="btn btn-primary nuevo-equipo">A&ntilde;adir equipo</button>
     </div>
     <?php if(isset($select_nuevo_equipo)){ ?>
@@ -77,7 +77,7 @@ echo form_open('solicitudes/crear', $attributes);
 </div>
 
 <div class="form-group" id="nuevo-espacio">
-    <div class="col-sm-offset-2 col-sm-3">
+    <div>
         <button type="button" class="btn btn-primary nuevo-espacio">A&ntilde;adir espacio</button>
     </div>
 
@@ -119,7 +119,7 @@ echo form_open('solicitudes/crear', $attributes);
 </div>
 
 <div class="form-group" id="nuevo-servicio">
-    <div class="col-sm-offset-2 col-sm-3">
+    <div>
         <button type="button" class="btn btn-primary nuevo-servicio">A&ntilde;adir servicio</button>
     </div>
 

@@ -30,6 +30,7 @@ class Usos_model extends CI_Model {
     public function get_usos_sistema($table){
         $this->db->from($table);
         $this->db->where('otro_uso', FALSE);
+        $this->db->where('habilitado', TRUE);
         $query = $this->db->get();
 
         return $query->result_array();

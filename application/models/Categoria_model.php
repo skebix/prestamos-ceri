@@ -20,6 +20,13 @@ class Categoria_model extends CI_Model {
         return $query->result_array();
     }
 
+    public function get_categorias_habilitadas($table){
+        $this->db->from($table);
+        $this->db->where('habilitado', TRUE);
+
+        return $this->db->get()->result_array();
+    }
+
     public function create_categoria($table, $datos){
         $insert_id = $this->db->insert($table, $datos);
         return $insert_id;

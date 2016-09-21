@@ -39,17 +39,17 @@ class Usos extends CI_Controller {
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_inserted){
-                    $this->session->set_userdata('mensaje', 'El uso fue creado satisfactoriamente.');
+                    $this->session->set_flashdata('mensaje', 'El uso fue creado satisfactoriamente.');
                     redirect('usos/listar');
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el servicio
-                $this->session->set_userdata('mensaje', 'No se pudo crear su uso, por favor intente nuevamente');
+                $this->session->set_flashdata('mensaje', 'No se pudo crear su uso, por favor intente nuevamente');
                 redirect('usos/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -70,12 +70,12 @@ class Usos extends CI_Controller {
                 $this->parser->parse('usos/show', $data);
                 $this->parser->parse('templates/footer', $data);
             }else{
-                $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                $this->session->set_flashdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                 redirect('inicio');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -99,7 +99,7 @@ class Usos extends CI_Controller {
 
                 $data['atributos_otro_uso'] = $atributos_otro_uso;
             }else{
-                $this->session->set_userdata('mensaje', 'El uso que intenta actualizar no existe, o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                $this->session->set_flashdata('mensaje', 'El uso que intenta actualizar no existe, o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                 redirect('inicio');
             }
 
@@ -120,17 +120,17 @@ class Usos extends CI_Controller {
 
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_updated){
-                    $this->session->set_userdata('mensaje', 'El uso fue actualizado satisfactoriamente.');
+                    $this->session->set_flashdata('mensaje', 'El uso fue actualizado satisfactoriamente.');
                     redirect('usos/listar');
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el servicio
-                $this->session->set_userdata('mensaje', 'No se pudo actualizar su uso, por favor intente nuevamente.');
+                $this->session->set_flashdata('mensaje', 'No se pudo actualizar su uso, por favor intente nuevamente.');
                 redirect('usos/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -143,21 +143,21 @@ class Usos extends CI_Controller {
 
             $cantidad_solicitudes = $this->solicitudes_model->get_solicitudes_by_uso($id);
             if($cantidad_solicitudes > 0){
-                $this->session->set_userdata('mensaje', 'Este uso no puede ser eliminado, est&aacute; siendo utilizado por ' . $cantidad_solicitudes . ' solicitudes. Elimine las solicitudes primero, o deshabilite el uso en lugar de eliminarlo.');
+                $this->session->set_flashdata('mensaje', 'Este uso no puede ser eliminado, est&aacute; siendo utilizado por ' . $cantidad_solicitudes . ' solicitudes. Elimine las solicitudes primero, o deshabilite el uso en lugar de eliminarlo.');
                 redirect('usos/listar');
             }else{
                 $delete_id = $this->usos_model->delete_uso('usos', $id);
                 if($delete_id){
-                    $this->session->set_userdata('mensaje', 'Uso eliminado satisfactoriamente.');
+                    $this->session->set_flashdata('mensaje', 'Uso eliminado satisfactoriamente.');
                     redirect('usos/listar');
                 }else{
-                    $this->session->set_userdata('mensaje', 'No se pudo eliminar su uso, por favor intente nuevamente');
+                    $this->session->set_flashdata('mensaje', 'No se pudo eliminar su uso, por favor intente nuevamente');
                     redirect('usos/listar');
                 }
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -175,23 +175,23 @@ class Usos extends CI_Controller {
 
                     $was_updated = $this->usos_model->update_uso('usos', $id, $datos);
                     if($was_updated){
-                        $this->session->set_userdata('mensaje', 'El uso fue deshabilitado satisfactoriamente.');
+                        $this->session->set_flashdata('mensaje', 'El uso fue deshabilitado satisfactoriamente.');
                         redirect('usos/listar');
                     }else{
-                        $this->session->set_userdata('mensaje', 'No se pudo deshabilitar el uso, por favor intente nuevamente.');
+                        $this->session->set_flashdata('mensaje', 'No se pudo deshabilitar el uso, por favor intente nuevamente.');
                         redirect('usos/listar');
                     }
                 }else{
-                    $this->session->set_userdata('mensaje', 'El uso ya se encuentra deshabilitado.');
+                    $this->session->set_flashdata('mensaje', 'El uso ya se encuentra deshabilitado.');
                     redirect('usos/listar');
                 }
             }else{
-                $this->session->set_userdata('mensaje', 'El uso que intenta deshabilitar no existe.');
+                $this->session->set_flashdata('mensaje', 'El uso que intenta deshabilitar no existe.');
                 redirect('usos/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -209,23 +209,23 @@ class Usos extends CI_Controller {
 
                     $was_updated = $this->usos_model->update_uso('usos', $id, $datos);
                     if($was_updated){
-                        $this->session->set_userdata('mensaje', 'El uso fue habilitado satisfactoriamente.');
+                        $this->session->set_flashdata('mensaje', 'El uso fue habilitado satisfactoriamente.');
                         redirect('usos/listar');
                     }else{
-                        $this->session->set_userdata('mensaje', 'No se pudo habilitar el uso, por favor intente nuevamente.');
+                        $this->session->set_flashdata('mensaje', 'No se pudo habilitar el uso, por favor intente nuevamente.');
                         redirect('usos/listar');
                     }
                 }else{
-                    $this->session->set_userdata('mensaje', 'El uso ya se encuentra habilitado.');
+                    $this->session->set_flashdata('mensaje', 'El uso ya se encuentra habilitado.');
                     redirect('usos/listar');
                 }
             }else{
-                $this->session->set_userdata('mensaje', 'El uso que intenta habilitar no existe.');
+                $this->session->set_flashdata('mensaje', 'El uso que intenta habilitar no existe.');
                 redirect('usos/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }

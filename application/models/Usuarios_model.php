@@ -13,6 +13,13 @@ class Usuarios_model extends CI_Model {
         return $query->result_array();
     }
 
+    public function get_usuarios_habilitados(){
+        $this->db->from('usuarios');
+        $this->db->where('habilitado', TRUE);
+
+        return $this->db->get()->result_array();
+    }
+
     public function get_usuario($cedula){
         $this->db->from('usuarios');
         $this->db->where('cedula', $cedula);

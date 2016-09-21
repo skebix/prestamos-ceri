@@ -30,6 +30,7 @@ class Espacios_model extends CI_Model {
     public function get_espacios_sistema($table){
         $this->db->from($table);
         $this->db->where('otro_espacio', FALSE);
+        $this->db->where('habilitado', TRUE);
         $query = $this->db->get();
 
         return $query->result_array();

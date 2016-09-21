@@ -24,7 +24,7 @@ class Usuarios extends CI_Controller {
         if($categorias_usuario){
             $data['categorias_usuario'] = $categorias_usuario;
         }else{
-            $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+            $this->session->set_flashdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
             redirect('inicio');
         }
 
@@ -83,12 +83,12 @@ class Usuarios extends CI_Controller {
 
             //Si lo guardó correctamente, redirigir al inicio con éxito
             if($was_inserted){
-                $this->session->set_userdata('mensaje', 'El usuario fue creado satisfactoriamente.');
+                $this->session->set_flashdata('mensaje', 'El usuario fue creado satisfactoriamente.');
                 redirect('inicio');
             }
 
             //Si llegué a este punto es porque no pudo guardar el usuario
-            $this->session->set_userdata('mensaje', 'No se pudo crear el usuario, por favor intente de nuevo.');
+            $this->session->set_flashdata('mensaje', 'No se pudo crear el usuario, por favor intente de nuevo.');
             redirect('inicio');
         }
     }
@@ -109,12 +109,12 @@ class Usuarios extends CI_Controller {
                 $this->parser->parse('usuarios/show', $data);
                 $this->parser->parse('templates/footer', $data);
             }else{
-                $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                $this->session->set_flashdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                 redirect('inicio');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -140,16 +140,16 @@ class Usuarios extends CI_Controller {
                     $this->parser->parse('usuarios/details', $data);
                     $this->parser->parse('templates/footer', $data);
                 }else{
-                    $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                    $this->session->set_flashdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                     redirect('inicio');
                 }
             }else{
-                $this->session->set_userdata('mensaje', 'El usuario que intenta visualizar no existe, o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                $this->session->set_flashdata('mensaje', 'El usuario que intenta visualizar no existe, o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                 redirect('inicio');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -203,11 +203,11 @@ class Usuarios extends CI_Controller {
                     $data['administrador_actualizar'] = $usuario['administrador'];
                     $data['atributos_administrador'] = $atributos_administrador;
                 }else{
-                    $this->session->set_userdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                    $this->session->set_flashdata('mensaje', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                     redirect('inicio');
                 }
             }else{
-                $this->session->set_userdata('mensaje', 'El usuario que intenta actualizar no existe o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                $this->session->set_flashdata('mensaje', 'El usuario que intenta actualizar no existe o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                 redirect('inicio');
             }
 
@@ -259,17 +259,17 @@ class Usuarios extends CI_Controller {
                 $was_updated = $this->usuarios_model->update_user($id, $usuario);
                 //Si lo guardó correctamente, redirigir al inicio con éxito
                 if($was_updated){
-                    $this->session->set_userdata('mensaje', 'El usuario fue actualizado satisfactoriamente.');
+                    $this->session->set_flashdata('mensaje', 'El usuario fue actualizado satisfactoriamente.');
                     redirect('usuarios/listar');
                 }
 
                 //Si llegué a este punto es porque no pudo guardar el usuario
-                $this->session->set_userdata('mensaje', 'No se pudo actualizar el usuario, por favor intente de nuevo.');
+                $this->session->set_flashdata('mensaje', 'No se pudo actualizar el usuario, por favor intente de nuevo.');
                 redirect('usuarios/detalles/' . $usuario['cedula']);
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -283,27 +283,27 @@ class Usuarios extends CI_Controller {
             $solicitudes = $this->solicitudes_model->get_solicitudes_by_usuario('solicitudes', $id);
             $cantidad_solicitudes = count($solicitudes);
             if($cantidad_solicitudes > 0){
-                $this->session->set_userdata('mensaje', 'Este usuario no puede ser eliminado, posee ' . $cantidad_solicitudes . ' solicitudes. Elimine las solicitudes primero, o deshabilite el usuario en lugar de eliminarlo.');
+                $this->session->set_flashdata('mensaje', 'Este usuario no puede ser eliminado, posee ' . $cantidad_solicitudes . ' solicitudes. Elimine las solicitudes primero, o deshabilite el usuario en lugar de eliminarlo.');
                 redirect('usuarios/listar');
             }else{
                 $usuario = $this->usuarios_model->get_usuario_by_id($id);
                 if($usuario){
                     $delete_id = $this->usuarios_model->delete_user($id);
                     if($delete_id){
-                        $this->session->set_userdata('mensaje', 'Usuario eliminado satisfactoriamente.');
+                        $this->session->set_flashdata('mensaje', 'Usuario eliminado satisfactoriamente.');
                         redirect('usuarios/listar');
                     }else{
-                        $this->session->set_userdata('mensaje', 'No se pudo eliminar su usuario, por favor intente nuevamente');
+                        $this->session->set_flashdata('mensaje', 'No se pudo eliminar su usuario, por favor intente nuevamente');
                         redirect('usuarios/listar');
                     }
                 }else{
-                    $this->session->set_userdata('mensaje', 'El usuario que intenta eliminar no existe.');
+                    $this->session->set_flashdata('mensaje', 'El usuario que intenta eliminar no existe.');
                     redirect('usuarios/listar');
                 }
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -327,23 +327,23 @@ class Usuarios extends CI_Controller {
                     }
 
                     if($was_updated){
-                        $this->session->set_userdata('mensaje', 'El usuario fue deshabilitado satisfactoriamente. Recuerde que al deshabilitar un usuario, tambi&eacute;n est&aacute; deshabilitando sus solicitudes.');
+                        $this->session->set_flashdata('mensaje', 'El usuario fue deshabilitado satisfactoriamente. Recuerde que al deshabilitar un usuario, tambi&eacute;n est&aacute; deshabilitando sus solicitudes.');
                         redirect('usuarios/listar');
                     }else{
-                        $this->session->set_userdata('mensaje', 'No se pudo deshabilitar el usuario, por favor intente nuevamente.');
+                        $this->session->set_flashdata('mensaje', 'No se pudo deshabilitar el usuario, por favor intente nuevamente.');
                         redirect('usuarios/listar');
                     }
                 }else{
-                    $this->session->set_userdata('mensaje', 'El usuario ya se encuentra deshabilitado.');
+                    $this->session->set_flashdata('mensaje', 'El usuario ya se encuentra deshabilitado.');
                     redirect('usuarios/listar');
                 }
             }else{
-                $this->session->set_userdata('mensaje', 'El usuario que intenta deshabilitar no existe.');
+                $this->session->set_flashdata('mensaje', 'El usuario que intenta deshabilitar no existe.');
                 redirect('usuarios/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
@@ -369,23 +369,23 @@ class Usuarios extends CI_Controller {
                     $this->categoria_model->update_categoria('categoria_usuario', $usuario['id_categoria_usuario'], $datos);
 
                     if($was_updated){
-                        $this->session->set_userdata('mensaje', 'El usuario fue habilitado satisfactoriamente. Recuerde que al habilitar un usuario, tambi&eacute;n est&aacute; habilitando sus solicitudes.');
+                        $this->session->set_flashdata('mensaje', 'El usuario fue habilitado satisfactoriamente. Recuerde que al habilitar un usuario, tambi&eacute;n est&aacute; habilitando sus solicitudes.');
                         redirect('usuarios/listar');
                     }else{
-                        $this->session->set_userdata('mensaje', 'No se pudo habilitar el usuario, por favor intente nuevamente.');
+                        $this->session->set_flashdata('mensaje', 'No se pudo habilitar el usuario, por favor intente nuevamente.');
                         redirect('usuarios/listar');
                     }
                 }else{
-                    $this->session->set_userdata('mensaje', 'El usuario ya se encuentra habilitado.');
+                    $this->session->set_flashdata('mensaje', 'El usuario ya se encuentra habilitado.');
                     redirect('usuarios/listar');
                 }
             }else{
-                $this->session->set_userdata('mensaje', 'El usuario que intenta habilitar no existe.');
+                $this->session->set_flashdata('mensaje', 'El usuario que intenta habilitar no existe.');
                 redirect('usuarios/listar');
             }
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
-            $this->session->set_userdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
+            $this->session->set_flashdata('mensaje', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');
             redirect('inicio');
         }
     }
