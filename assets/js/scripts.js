@@ -320,6 +320,13 @@ $(document).ready(function(){
                         }
                     }
 
+                    for(i = 0; i < usos.length; i++) {
+                        if(usos[i].uso == 'Otro (especifique)'){
+                            index_otro_uso = i;
+                            valor_otro_uso = usos[i].id;
+                        }
+                    }
+
                     espacios_disponibles = get_espacios_disponibles();
 
                     nuevo_espacio(espacios, usos);
@@ -462,12 +469,13 @@ $(document).ready(function(){
             $(this).blur();
         },
         "change" : function(e) {
+            console.log(valor_otro_uso);
             id_select_espacio = this.id;
             numero_de_select = id_select_espacio.substr(id_select_espacio.length - 1);
-            if(valor_uso_anterior == valor_otro_espacio) {
+            if(valor_uso_anterior == valor_otro_uso) {
                 $('#input_otro_uso_' + numero_de_select).remove();
             }
-            if($(this).val() == valor_otro_espacio){
+            if($(this).val() == valor_otro_uso){
                 $('<input type="text" class="form-control" name="input_otro_uso[]" id="input_otro_uso_' + numero_de_select + '" data-id="' + numero_de_select + '" />').insertAfter($(this));
             }
         }

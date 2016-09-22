@@ -23,12 +23,12 @@ class Equipos extends CI_Controller {
 
             $data['title'] = 'Nuevo equipo';
 
-            $categorias_equipo = $this->categoria_model->get_categorias('categoria_equipo');
+            $categorias_equipo = $this->categoria_model->get_categorias_habilitadas('categoria_equipo');
             if($categorias_equipo){
                 $data['categorias_equipo'] = $categorias_equipo;
             }else{
-                $this->session->set_flashdata('danger', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
-                redirect('inicio');
+                $this->session->set_flashdata('danger', 'No existen categor&iacute;as de equipo, o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                redirect('equipos/listar');
             }
 
             $this->form_validation->set_rules('nombre_equipo', 'Nombre de equipo', 'trim|required|callback__alpha_special|max_length[255]');
@@ -98,7 +98,7 @@ class Equipos extends CI_Controller {
             //Tomo los datos del equipo de la BD, para poder pre-llenar el formulario
             $data['title'] = 'Actualizar Equipo';
 
-            $categorias_equipo = $this->categoria_model->get_categorias('categoria_equipo');
+            $categorias_equipo = $this->categoria_model->get_categorias_habilitadas('categoria_equipo');
             if($categorias_equipo){
                 $data['categorias_equipo'] = array_column($categorias_equipo, 'categoria', 'id');
 

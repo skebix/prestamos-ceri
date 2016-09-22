@@ -20,12 +20,12 @@ class Usuarios extends CI_Controller {
 
         $data['title'] = 'Registro';
 
-        $categorias_usuario = $this->categoria_model->get_categorias('categoria_usuario');
+        $categorias_usuario = $this->categoria_model->get_categorias_habilitadas('categoria_usuario');
         if($categorias_usuario){
             $data['categorias_usuario'] = $categorias_usuario;
         }else{
-            $this->session->set_flashdata('danger', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
-            redirect('inicio');
+            $this->session->set_flashdata('danger', 'No existen categor&iacute;as de usuario, o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+            redirect('usuarios/listar');
         }
 
         $this->form_validation->set_rules('primer_nombre', 'Primer nombre', 'trim|required|callback__alpha_space|max_length[255]');
@@ -166,7 +166,7 @@ class Usuarios extends CI_Controller {
 
             $usuario = $this->usuarios_model->get_usuario_by_id($id);
             if($usuario){
-                $categorias_usuario = $this->categoria_model->get_categorias('categoria_usuario');
+                $categorias_usuario = $this->categoria_model->get_categorias_habilitadas('categoria_usuario');
                 if($categorias_usuario){
                     $data['categorias_usuario'] = array_column($categorias_usuario, 'categoria', 'id');
 

@@ -23,12 +23,12 @@ class Servicios extends CI_Controller {
 
             $data['title'] = 'Nuevo servicio';
 
-            $categorias_servicio = $this->categoria_model->get_categorias('categoria_servicio');
+            $categorias_servicio = $this->categoria_model->get_categorias_habilitadas('categoria_servicio');
             if($categorias_servicio){
                 $data['categorias_servicio'] = $categorias_servicio;
             }else {
-                $this->session->set_flashdata('danger', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
-                redirect('inicio');
+                $this->session->set_flashdata('danger', 'No existen categor&iacute;as de servicio, o hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                redirect('servicios/listar');
             }
 
             $this->form_validation->set_rules('nombre_servicio', 'Categor&iacute;a de servicio', 'trim|required|callback__alpha_special|max_length[255]');
