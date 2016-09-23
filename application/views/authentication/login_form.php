@@ -51,8 +51,11 @@
                                 <button type="submit" class="btn btn-lg btn-primary btn-block">Ingresar</button>
                             </div>
                             <br>
-                            <p class="text-center">Si ha olvidado su contrase&ntilde;a, haga click
-                                <a href="<?= base_url('autenticacion/forgot-password') ?>"> aqu&iacute;.</a>
+                            <p class="text-center small col-sm-6">¿No tienes cuenta?
+                                <a href="<?= base_url('usuarios/registro') ?>"> Reg&iacute;strate </a>
+                            </p>
+                            <p class="text-center small col-sm-6">
+                                <a href="<?= base_url('autenticacion/forgot-password') ?>">Recuperar mi contrase&ntilde;a</a>
                             </p>
                         </fieldset>
                     </form>

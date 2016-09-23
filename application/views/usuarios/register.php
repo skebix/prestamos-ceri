@@ -1,17 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: skebix
- * Date: 01/04/2016
- * Time: 06:09 PM
- */
-
-$attributes = array('class' => 'form-horizontal');
+$attributes = array();
 echo form_open('usuarios/registro', $attributes);
-
 ?>
-
-<br>
 
 <form class="form-horizontal">
     <fieldset>

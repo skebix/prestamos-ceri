@@ -1,10 +1,4 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-/**
- * Created by PhpStorm.
- * User: skebix
- * Date: 31/03/2016
- * Time: 07:45 AM
- */
 
 class Usuarios extends CI_Controller {
 
