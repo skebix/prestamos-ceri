@@ -6,7 +6,7 @@
  * Time: 13:57
  */
 
-$attributes = array('class' => 'form-horizontal', 'id' => 'consultar-disponibilidad');
+$attributes = array('class' => '', 'id' => 'consultar-disponibilidad');
 echo form_open('consultas/consultar', $attributes);
 ?>
 

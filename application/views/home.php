@@ -24,4 +24,5 @@
         <a href="#" class="close" data-dismiss="alert">&times;</a>
         <strong><?php echo $this->session->flashdata('danger'); ?></strong>
     </div>
-<?php endif;  ?>
+<?php endif;
+redirect('consultas/consultar');?>

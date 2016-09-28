@@ -32,8 +32,6 @@
         <script src="<?= assets_url(); ?>bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
         <!-- Morris Charts JavaScript -->
         <script src="<?= assets_url(); ?>bower_components/raphael/raphael-min.js"></script>
-        <script src="<?= assets_url(); ?>bower_components/morrisjs/morris.min.js"></script>
-        <script src="<?= js_url(); ?>morris-data.js"></script>
         <!-- Custom Theme JavaScript -->
         <script src="<?= assets_url(); ?>dist/js/sb-admin-2.js"></script>
         <script>
