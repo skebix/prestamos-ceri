@@ -5,8 +5,6 @@
  * Date: 15/09/2016
  * Time: 15:03
  */
-
-
 class Consultas extends CI_Controller {
 
     public function __construct(){
