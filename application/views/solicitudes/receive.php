@@ -34,32 +34,34 @@
             confirmar que los servicios solicitados hayan sido provistos exitosamente.
         </p>
     </div>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Solicitante</th>
-            <th>Fecha de solicitud</th>
-            <th>Fecha de uso</th>
-            <th>Opciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        {solicitudes}
-        <tr>
-            <th scope="row">{id}</th>
-            <td>{primer_nombre} {segundo_nombre} {primer_apellido} {segundo_apellido}</td>
-            <td>{fecha_solicitud}</td>
-            <td>{fecha_uso}</td>
-            <td>
-                <a href="<?= base_url('solicitudes/cerrar/{id}') ?>">
-                    <span class="glyphicon glyphicon-file"></span>
-                    Cerrar solicitud
-                </a>
-            </td>
-        </tr>
-        {/solicitudes}
-        </tbody>
-    </table>
+    <div class="dataTable_wrapper">
+        <table class="table table-striped table-bordered table-hover" id="datatable">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Solicitante</th>
+                <th>Fecha de solicitud</th>
+                <th>Fecha de uso</th>
+                <th>Opciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            {solicitudes}
+            <tr>
+                <th scope="row">{id}</th>
+                <td>{primer_nombre} {segundo_nombre} {primer_apellido} {segundo_apellido}</td>
+                <td>{fecha_solicitud}</td>
+                <td>{fecha_uso}</td>
+                <td>
+                    <a href="<?= base_url('solicitudes/cerrar/{id}') ?>">
+                        <span class="glyphicon glyphicon-file"></span>
+                        Cerrar solicitud
+                    </a>
+                </td>
+            </tr>
+            {/solicitudes}
+            </tbody>
+        </table>
+    </div>
 </div>
 <a href="<?= base_url('') ?>">Volver</a>

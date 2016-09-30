@@ -38,35 +38,38 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">{title}</div>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nombre uso</th>
-            <th>Otro uso?</th>
-            <th>Habilitado</th>
-            <th>Actualizar</th>
-            <th>Eliminar</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach($usos as $uso): ?>
+    <div class="dataTable_wrapper">
+        <table class="table table-striped table-bordered table-hover" id="datatable">
+            <thead>
             <tr>
-                <th scope="row"><?= $uso['id'] ?></th>
-                <td><?= $uso['uso'] ?></td>
-                <td><?= ($uso['otro_uso'])? "S&iacute;": "No"; ?></td>
-                <td><?= ($uso['habilitado'])? "S&iacute;": "No"; ?></td>
-                <td><a href="<?= base_url('usos/actualizar/' . $uso['id']) ?>">Actualizar uso</a></td>
-                <td><a href="<?= base_url('usos/eliminar/' . $uso['id']) ?>">Eliminar uso</a></td>
-                <?php if($uso['habilitado']){ ?>
-                    <td><a href="<?= base_url('usos/deshabilitar/' . $uso['id']) ?>">Deshabilitar</a></td>
-                <?php }else{ ?>
-                    <td><a href="<?= base_url('usos/habilitar/' . $uso['id']) ?>">Habilitar</a></td>
-                <?php }; ?>
+                <th>ID</th>
+                <th>Nombre uso</th>
+                <th>¿Otro uso?</th>
+                <th>Habilitado</th>
+                <th>Actualizar</th>
+                <th>Eliminar</th>
+                <th>Habilitar y Deshabilitar</th>
             </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            <?php foreach($usos as $le_uso): ?>
+                <tr>
+                    <th><?= $le_uso['id'] ?></th>
+                    <td><?= $le_uso['uso'] ?></td>
+                    <td><?= ($le_uso['otro_uso'])? "S&iacute;": "No"; ?></td>
+                    <td><?= ($le_uso['habilitado'])? "S&iacute;": "No"; ?></td>
+                    <td><a href="<?= base_url('usos/actualizar/' . $le_uso['id']) ?>">Actualizar uso</a></td>
+                    <td><a href="<?= base_url('usos/eliminar/' . $le_uso['id']) ?>">Eliminar uso</a></td>
+                    <?php if($le_uso['habilitado']): ?>
+                        <td><a href="<?= base_url('usos/deshabilitar/' . $le_uso['id']) ?>">Deshabilitar</a></td>
+                    <?php else: ?>
+                        <td><a href="<?= base_url('usos/habilitar/' . $le_uso['id']) ?>">Habilitar</a></td>
+                    <?php endif; ?>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 <br>
 <a class="logout-button" href="<?= base_url('usos/crear') ?>">

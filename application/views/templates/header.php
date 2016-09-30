@@ -197,7 +197,7 @@
                                 <!-- /.nav-second-level -->
                             </li>
                             <li>
-                                <a href="<?= base_url('servicios/listar') ?>"><i class="fa fa-briefcase fa-fw"></i> Servicios<span class="fa arrow"></span></a>
+                                <a href="<?= base_url('servicios/listar') ?>"><i class="fa fa-angellist fa-fw"></i> Servicios<span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
                                     <li>
                                         <a href="<?= base_url('servicios/crear') ?>"><i class="fa fa-edit fa-fw"></i> Agregar</a>
@@ -221,7 +221,7 @@
                                 <!-- /.nav-second-level -->
                             </li>
                             <li>
-                                <a href="<?= base_url('usos/listar') ?>"><i class="fa fa-play fa-fw"></i> Usos<span class="fa arrow"></span></a>
+                                <a href="<?= base_url('usos/listar') ?>"><i class="fa fa-gamepad fa-fw"></i> Usos<span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
                                     <li>
                                         <a href="<?= base_url('usos/crear') ?>"><i class="fa fa-edit fa-fw"></i> Agregar</a>
@@ -233,7 +233,7 @@
                                 <!-- /.nav-second-level -->
                             </li>
                             <li>
-                                <a href="<?= base_url('estadisticas') ?>"><span class="glyphicon glyphicon-equalizer"></span> Estad&iacutesticas de uso</a>
+                                <a href="<?= base_url('estadisticas') ?>"><i class="fa fa-bar-chart fa-fw"></i> Estad&iacutesticas generales</a>
                             </li>
                         <?php elseif(isset($cedula)): ?>
                             <li>

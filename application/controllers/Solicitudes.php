@@ -80,11 +80,11 @@ class Solicitudes extends CI_Controller {
                             }
                         }
                     }else{
-                        $this->session->set_flashdata('danger', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                        $this->session->set_flashdata('danger', '1 Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                         redirect('inicio');
                     }
                 }else{
-                    $this->session->set_flashdata('danger', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                    $this->session->set_flashdata('danger', '2 Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                     redirect('inicio');
                 }
             }else{

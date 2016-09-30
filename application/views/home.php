@@ -41,7 +41,7 @@
                         <i class="fa fa-calendar fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge badge">1</div>
+                        <div class="huge">1</div>
                         <div>Administraci&oacute;n de solicitudes.</div>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                         <i class="fa fa-user fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge badge">2</div>
+                        <div class="huge">2</div>
                         <div>Administraci&oacute;n de usuarios.</div>
                     </div>
                 </div>
@@ -85,7 +85,7 @@
                         <i class="fa fa-clock-o fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge badge">3</div>
+                        <div class="huge">3</div>
                         <div>Recepci&oacute;n de pr&eacute;stamos.</div>
                     </div>
                 </div>
@@ -111,7 +111,7 @@
                         <i class="fa fa-bank fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge badge">4</div>
+                        <div class="huge">4</div>
                         <div>Administraci&oacute;n de espacios.</div>
                     </div>
                 </div>
@@ -133,7 +133,7 @@
                         <i class="fa fa-camera-retro fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge badge">5</div>
+                        <div class="huge">5</div>
                         <div>Administraci&oacute;n de equipos.</div>
                     </div>
                 </div>
@@ -152,10 +152,10 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-briefcase fa-5x"></i>
+                        <i class="fa fa-angellist fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge badge">6</div>
+                        <div class="huge">6</div>
                         <div>Administraci&oacute;n de servicios.</div>
                     </div>
                 </div>

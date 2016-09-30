@@ -38,36 +38,38 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">Lista de Equipos</div>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nombre de Equipo</th>
-            <th>Categor&iacute;a de Equipo</th>
-            <th>Habilitado</th>
-            <th>Actualizar</th>
-            <th>Eliminar</th>
-            <th>Habilitar y Deshabilitar</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach($equipos as $k => $equipo): ?>
-        <tr>
-            <th scope="row"><?= $equipo['id'] ?></th>
-            <td><?= $equipo['nombre_equipo'] ?></td>
-            <td><?= $equipo['categoria'] ?></td>
-            <td><?= ($equipo['habilitado'])? 'S&iacute': 'No'; ?></td>
-            <td><a href="<?= base_url('equipos/actualizar/' . $equipo['id']) ?>">Actualizar</a></td>
-            <td><a href="<?= base_url('equipos/eliminar/' . $equipo['id']) ?>">Eliminar</a></td>
-            <?php if($equipo['habilitado']){ ?>
-                <td><a href="<?= base_url('equipos/deshabilitar/' . $equipo['id']) ?>">Deshabilitar</a></td>
-            <?php }else{ ?>
-                <td><a href="<?= base_url('equipos/habilitar/' . $equipo['id']) ?>">Habilitar</a></td>
-            <?php }; ?>
-        </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
+    <div class="dataTable_wrapper">
+        <table class="table table-striped table-bordered table-hover" id="datatable">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre de Equipo</th>
+                <th>Categor&iacute;a de Equipo</th>
+                <th>Habilitado</th>
+                <th>Actualizar</th>
+                <th>Eliminar</th>
+                <th>Habilitar y Deshabilitar</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach($equipos as $k => $equipo): ?>
+            <tr>
+                <th scope="row"><?= $equipo['id'] ?></th>
+                <td><?= $equipo['nombre_equipo'] ?></td>
+                <td><?= $equipo['categoria'] ?></td>
+                <td><?= ($equipo['habilitado'])? 'S&iacute': 'No'; ?></td>
+                <td><a href="<?= base_url('equipos/actualizar/' . $equipo['id']) ?>">Actualizar</a></td>
+                <td><a href="<?= base_url('equipos/eliminar/' . $equipo['id']) ?>">Eliminar</a></td>
+                <?php if($equipo['habilitado']){ ?>
+                    <td><a href="<?= base_url('equipos/deshabilitar/' . $equipo['id']) ?>">Deshabilitar</a></td>
+                <?php }else{ ?>
+                    <td><a href="<?= base_url('equipos/habilitar/' . $equipo['id']) ?>">Habilitar</a></td>
+                <?php }; ?>
+            </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 <a class="logout-button" href="<?= base_url('equipos/crear') ?>">
     <button type="button" class="btn btn-primary">

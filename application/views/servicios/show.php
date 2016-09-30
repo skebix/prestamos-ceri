@@ -38,36 +38,38 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">Lista de Servicios</div>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nombre del Servicio</th>
-            <th>Categor&iacute;a del Servicio</th>
-            <th>Habilitado</th>
-            <th>Actualizar</th>
-            <th>Eliminar</th>
-            <th>Habilitar y Deshabilitar</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach($servicios as $k => $servicio): ?>
+    <div class="dataTable_wrapper">
+        <table class="table table-striped table-bordered table-hover" id="datatable">
+            <thead>
             <tr>
-                <th scope="row"><?= $servicio['id'] ?></th>
-                <td><?= $servicio['nombre_servicio'] ?></td>
-                <td><?= $servicio['categoria'] ?></td>
-                <td><?= ($servicio['habilitado'])? 'S&iacute': 'No'; ?></td>
-                <td><a href="<?= base_url('servicios/actualizar/' . $servicio['id']) ?>">Actualizar</a></td>
-                <td><a href="<?= base_url('servicios/eliminar/' . $servicio['id']) ?>">Eliminar</a></td>
-                <?php if($servicio['habilitado']){ ?>
-                    <td><a href="<?= base_url('servicios/deshabilitar/' . $servicio['id']) ?>">Deshabilitar</a></td>
-                <?php }else{ ?>
-                    <td><a href="<?= base_url('servicios/habilitar/' . $servicio['id']) ?>">Habilitar</a></td>
-                <?php }; ?>
+                <th>ID</th>
+                <th>Nombre del Servicio</th>
+                <th>Categor&iacute;a del Servicio</th>
+                <th>Habilitado</th>
+                <th>Actualizar</th>
+                <th>Eliminar</th>
+                <th>Habilitar y Deshabilitar</th>
             </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            <?php foreach($servicios as $k => $servicio): ?>
+                <tr>
+                    <th scope="row"><?= $servicio['id'] ?></th>
+                    <td><?= $servicio['nombre_servicio'] ?></td>
+                    <td><?= $servicio['categoria'] ?></td>
+                    <td><?= ($servicio['habilitado'])? 'S&iacute': 'No'; ?></td>
+                    <td><a href="<?= base_url('servicios/actualizar/' . $servicio['id']) ?>">Actualizar</a></td>
+                    <td><a href="<?= base_url('servicios/eliminar/' . $servicio['id']) ?>">Eliminar</a></td>
+                    <?php if($servicio['habilitado']){ ?>
+                        <td><a href="<?= base_url('servicios/deshabilitar/' . $servicio['id']) ?>">Deshabilitar</a></td>
+                    <?php }else{ ?>
+                        <td><a href="<?= base_url('servicios/habilitar/' . $servicio['id']) ?>">Habilitar</a></td>
+                    <?php }; ?>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 <a class="logout-button" href="<?= base_url('servicios/crear') ?>">
     <button type="button" class="btn btn-primary">

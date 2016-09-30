@@ -6,29 +6,38 @@
  * Time: 09:58 AM
  */
 
-$attributes = array('class' => 'form-horizontal');
+$attributes = array();
 echo form_open('usos/crear', $attributes);
 ?>
-
-<br>
-
-<div class="form-group">
-    <label for="inputUsos" class="col-sm-2 control-label">Nombre del uso</label>
-    <div class="col-sm-10">
-        <?php echo form_error('uso'); ?>
-        <input type="text" class="form-control" id="inputUsos" name="uso" value="<?php echo set_value('uso'); ?>" placeholder="Nombre uso">
+<div class="container">
+    <div class="row">
+        <div class="col-md-5 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading text-center">
+                    <i class="fa fa-gamepad fa-5x"></i>
+                    <h3 class="panel-title">
+                    <strong>Nombre del nuevo uso</strong>
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form">
+                        <fieldset>
+                            <div class="form-group">
+                                <?php echo form_error('uso'); ?>
+                                <input type="text" class="form-control" id="inputUsos" name="uso" value="<?php echo set_value('uso'); ?>" placeholder="Nombre uso">
+                            </div>
+                            <div class="button pull-left">
+                                <button type="submit" class="btn btn-primary">A&ntilde;adir uso</button>
+                            </div>
+                            <div class="button pull-right">
+                                <a href="<?= base_url('inicio') ?>">
+                                    <button type="button" class="btn btn-danger">Cancelar</button>
+                                </a>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
-<div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-primary">A&ntilde;adir uso</button>
-    </div>
-</div>
-</form>
-
-<a class="logout-button" href="<?= base_url() ?>">
-    <button type="button" class="btn btn-primary">
-        Volver al home
-    </button>
-</a>
