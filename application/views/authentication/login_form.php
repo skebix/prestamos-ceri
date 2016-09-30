@@ -3,7 +3,10 @@
         <div class="col-md-4 col-md-offset-4">
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Por favor ingrese sus datos para continuar</h3>
+                    <h3 class="panel-title text-center">
+                        <i class="fa fa-key fa-fw"></i>
+                     Por favor indique sus datos de acceso
+                        <i class="fa fa-lock fa-fw"></i></h3>
                 </div>
                 <div class="panel-body">
 

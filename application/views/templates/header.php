@@ -64,20 +64,21 @@
                     <ul class="dropdown-menu dropdown-messages">
                         <li>
                             <a href="#">
-                                <div>
-                                    <strong><?= $this->session->primer_nombre . ' ' . $this->session->primer_apellido; ?></strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Hoy</em>
-                                    </span>
-                                </div>
-                                <div><?= $this->session->mensaje; ?></div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>Ver todos los mensajes</strong>
-                                <i class="fa fa-angle-right"></i>
+                                <?php $cedula = $this->session->cedula;
+                                if (isset($cedula)):
+                                ?>
+                                    <div>
+                                        <?= $this->session->mensaje; ?>
+                                        <strong><?= $this->session->primer_nombre;?></strong>
+                                        <strong><?= $this->session->primer_apellido;?></strong>,
+                                        recuerda cerrar sesi&oacute;n al terminar.
+                                    </div>
+                                <?php else:?>
+                                    <div>
+                                        <?= $this->session->mensaje; ?>
+                                        Puedes registrarte o consultar fechas disponibles para reservas aqu&iacute;.
+                                    </div>
+                                <?php endif;?>
                             </a>
                         </li>
                     </ul>
@@ -89,13 +90,21 @@
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> Perfil de usuario</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Configuraci&oacuten</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="<?= base_url('autenticacion/salir') ?>"><i class="fa fa-sign-out fa-fw"></i> Salir</a>
-                        </li>
+                        <?php $id = $this->session->id;
+                        $cedula = $this->session->cedula;
+                        if (isset($cedula)):
+                            ?>
+                            <li><a href="<?= base_url('usuarios/detalles/'.$cedula) ?>"><i class="fa fa-user fa-fw"></i> Perfil de usuario</a>
+                            </li>
+                            <li><a href="<?= base_url('usuarios/actualizar/'.$id) ?>"><i class="fa fa-gear fa-fw"></i> Configuraci&oacuten</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a href="<?= base_url('autenticacion/salir') ?>"><i class="fa fa-sign-out fa-fw"></i> Salir</a>
+                            </li>
+                        <?php else: ?>
+                            <li><a href="<?= base_url('autenticacion') ?>"><i class="fa fa-sign-in fa-fw"></i> Iniciar sesión</a>
+                            </li>
+                        <?php endif;?>
                     </ul>
                     <!-- /.dropdown-user -->
                 </li>
@@ -106,123 +115,138 @@
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-                        <li>
-                            <a href="<?= base_url('') ?>"><i class="fa fa-dashboard fa-fw"></i> Panel de Control</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Solicitudes<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="<?= base_url('solicitudes/crear') ?>"><i class="fa fa-edit fa-fw"></i> Crear</a>
-                                </li>
-                                <li>
-                                    <a href="<?= base_url('solicitudes/listar') ?>"><i class="fa fa-th-list fa-fw"></i> Listar</a>
-                                </li>
-                                <li>
-                                    <a href="<?= base_url('solicitudes/recibir') ?>"><span class="glyphicon glyphicon-erase"></span> Recepción de préstamos</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="<?= base_url('usuarios/listar') ?>"><span class="glyphicon glyphicon-user"></span> Usuarios<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="<?= base_url('usuarios/registro') ?>"><i class="fa fa-edit fa-fw"></i> Agregar</a>
-                                </li>
-                                <li>
-                                    <a href="<?= base_url('usuarios/listar') ?>"><i class="fa fa-th-list fa-fw"></i> Listar</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="<?= base_url('categorias-usuario/listar') ?>"><span class="glyphicon glyphicon-list-alt"></span> Categor&iacute;as de Usuario<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="<?= base_url('categorias-usuario/crear') ?>"><i class="fa fa-edit fa-fw"></i> Agregar</a>
-                                </li>
-                                <li>
-                                    <a href="<?= base_url('categorias-usuario/listar') ?>"><i class="fa fa-th-list fa-fw"></i> Listar</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="<?= base_url('categorias-equipo/listar') ?>"><span class="glyphicon glyphicon-print"></span> Categor&iacute;as de Equipos<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="<?= base_url('categorias-equipo/crear') ?>"><i class="fa fa-edit fa-fw"></i> Agregar</a>
-                                </li>
-                                <li>
-                                    <a href="<?= base_url('categorias-equipo/listar') ?>"><i class="fa fa-th-list fa-fw"></i> Listar</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="<?= base_url('categorias-servicio/listar') ?>"><span class="glyphicon glyphicon-briefcase"></span> Categor&iacute;as de Servicios<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="<?= base_url('categorias-servicio/crear') ?>"><i class="fa fa-edit fa-fw"></i> Agregar</a>
-                                </li>
-                                <li>
-                                    <a href="<?= base_url('categorias-servicio/listar') ?>"><i class="fa fa-th-list fa-fw"></i> Listar</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="<?= base_url('equipos/listar') ?>"><span class="glyphicon glyphicon-cd"></span> Equipos<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="<?= base_url('equipos/crear') ?>"><i class="fa fa-edit fa-fw"></i> Agregar</a>
-                                </li>
-                                <li>
-                                    <a href="<?= base_url('equipos/listar') ?>"><i class="fa fa-th-list fa-fw"></i> Listar</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="<?= base_url('servicios/listar') ?>"><span class="glyphicon glyphicon-blackboard"></span> Servicios<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="<?= base_url('servicios/crear') ?>"><i class="fa fa-edit fa-fw"></i> Agregar</a>
-                                </li>
-                                <li>
-                                    <a href="<?= base_url('servicios/listar') ?>"><i class="fa fa-th-list fa-fw"></i> Listar</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="<?= base_url('espacios/listar') ?>"><span class="glyphicon glyphicon-calendar"></span> Espacios<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="<?= base_url('espacios/crear') ?>"><i class="fa fa-edit fa-fw"></i> Agregar</a>
-                                </li>
-                                <li>
-                                    <a href="<?= base_url('espacios/listar') ?>"><i class="fa fa-th-list fa-fw"></i> Listar</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="<?= base_url('usos/listar') ?>"><i class="fa fa-play fa-fw"></i> Usos<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="<?= base_url('usos/crear') ?>"><i class="fa fa-edit fa-fw"></i> Agregar</a>
-                                </li>
-                                <li>
-                                    <a href="<?= base_url('usos/listar') ?>"><i class="fa fa-th-list fa-fw"></i> Listar</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="<?= base_url('estadisticas') ?>"><span class="glyphicon glyphicon-equalizer"></span> Estad&iacutesticas de uso</a>
-                        </li>
+                        <?php $administrador = $this->session->administrador;
+                        if ($administrador):
+                            ?>
+                            <li>
+                                <a href="<?= base_url('') ?>"><i class="fa fa-dashboard fa-fw"></i> Panel de Control</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-calendar fa-fw"></i> Solicitudes<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="<?= base_url('solicitudes/crear') ?>"><i class="fa fa-edit fa-fw"></i> Crear</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= base_url('solicitudes/listar') ?>"><i class="fa fa-th-list fa-fw"></i> Listar</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= base_url('solicitudes/recibir') ?>"><span class="glyphicon glyphicon-erase"></span> Recepción de préstamos</a>
+                                    </li>
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                            <li>
+                                <a href="<?= base_url('usuarios/listar') ?>"><span class="glyphicon glyphicon-user"></span> Usuarios<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="<?= base_url('usuarios/registro') ?>"><i class="fa fa-edit fa-fw"></i> Agregar</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= base_url('usuarios/listar') ?>"><i class="fa fa-th-list fa-fw"></i> Listar</a>
+                                    </li>
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                            <li>
+                                <a href="<?= base_url('categorias-usuario/listar') ?>"><span class="glyphicon glyphicon-list-alt"></span> Categor&iacute;as de Usuario<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="<?= base_url('categorias-usuario/crear') ?>"><i class="fa fa-edit fa-fw"></i> Agregar</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= base_url('categorias-usuario/listar') ?>"><i class="fa fa-th-list fa-fw"></i> Listar</a>
+                                    </li>
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                            <li>
+                                <a href="<?= base_url('categorias-equipo/listar') ?>"><span class="glyphicon glyphicon-print"></span> Categor&iacute;as de Equipos<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="<?= base_url('categorias-equipo/crear') ?>"><i class="fa fa-edit fa-fw"></i> Agregar</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= base_url('categorias-equipo/listar') ?>"><i class="fa fa-th-list fa-fw"></i> Listar</a>
+                                    </li>
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                            <li>
+                                <a href="<?= base_url('categorias-servicio/listar') ?>"><span class="glyphicon glyphicon-briefcase"></span> Categor&iacute;as de Servicios<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="<?= base_url('categorias-servicio/crear') ?>"><i class="fa fa-edit fa-fw"></i> Agregar</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= base_url('categorias-servicio/listar') ?>"><i class="fa fa-th-list fa-fw"></i> Listar</a>
+                                    </li>
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                            <li>
+                                <a href="<?= base_url('equipos/listar') ?>"><i class="fa fa-camera-retro fa-fw"></i> Equipos<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="<?= base_url('equipos/crear') ?>"><i class="fa fa-edit fa-fw"></i> Agregar</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= base_url('equipos/listar') ?>"><i class="fa fa-th-list fa-fw"></i> Listar</a>
+                                    </li>
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                            <li>
+                                <a href="<?= base_url('servicios/listar') ?>"><i class="fa fa-briefcase fa-fw"></i> Servicios<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="<?= base_url('servicios/crear') ?>"><i class="fa fa-edit fa-fw"></i> Agregar</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= base_url('servicios/listar') ?>"><i class="fa fa-th-list fa-fw"></i> Listar</a>
+                                    </li>
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                            <li>
+                                <a href="<?= base_url('espacios/listar') ?>"><i class="fa fa-bank fa-fw"></i> Espacios<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="<?= base_url('espacios/crear') ?>"><i class="fa fa-edit fa-fw"></i> Agregar</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= base_url('espacios/listar') ?>"><i class="fa fa-th-list fa-fw"></i> Listar</a>
+                                    </li>
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                            <li>
+                                <a href="<?= base_url('usos/listar') ?>"><i class="fa fa-play fa-fw"></i> Usos<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="<?= base_url('usos/crear') ?>"><i class="fa fa-edit fa-fw"></i> Agregar</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= base_url('usos/listar') ?>"><i class="fa fa-th-list fa-fw"></i> Listar</a>
+                                    </li>
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                            <li>
+                                <a href="<?= base_url('estadisticas') ?>"><span class="glyphicon glyphicon-equalizer"></span> Estad&iacutesticas de uso</a>
+                            </li>
+                        <?php elseif(isset($cedula)): ?>
+                            <li>
+                                <a href="<?= base_url('consultas/consultar') ?>"><i class="fa fa-columns fa-fw"></i> Consultar fechas disponibles</a>
+                            </li>
+                        <?php else: ?>
+                            <li>
+                                <a href="<?= base_url('usuarios/registro') ?>"><i class="fa fa-user fa-fw"></i> Registrarse</a>
+                            </li>
+                            <li>
+                                <a href="<?= base_url('consultas/consultar') ?>"><i class="fa fa-columns fa-fw"></i> Consultar fechas disponibles</a>
+                            </li>
+                        <?php endif;?>
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
@@ -231,88 +255,7 @@
         </nav>
 
         <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">Panel de Control</h1>
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
-            <div class="row">
-                <div class="col-lg-4 col-md-6">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-comments fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">5</div>
-                                    <div>¡Hay nuevas solicitudes!</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">Ver detalles</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="panel panel-green">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-star fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">6</div>
-                                    <div>¡Hay nuevos usuarios!</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">Ver detalles</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="panel panel-yellow">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-clock-o fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">3</div>
-                                    <div>¡Hay reservas vencidas!</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">Ver detalles</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <!-- /.row -->
-            <div class="row">
-                <div class="col-lg-8">
-                </div>
-                <!-- /.col-lg-8 -->
-            </div>
-            <hr>
+                <br>
             <!-- /.row -->
             <div class="row">
 

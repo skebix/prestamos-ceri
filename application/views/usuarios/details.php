@@ -7,22 +7,21 @@
  */
 ?>
 
-<ul>
-    <li>ID Base de datos: {id}</li>
-    <li>Primer nombre: {primer_nombre}</li>
-    <li>Segundo nombre: {segundo_nombre}</li>
-    <li>Primer apellido {primer_apellido}</li>
-    <li>Segundo apellido: {segundo_apellido}</li>
-    <li>C&eacute;dula: {cedula}</li>
-    <li>Tel&eacute;fono: {telefono}</li>
-    <li>Correo electr&oacute;nico: {email}</li>
-    <li>Correo institucional: {correo_institucional}</li>
-    <li>Contrase&ntilde;a hasheada: {hashed_password}</li>
-    <li>Tipo de usuario: {tipo_usuario}</li>
-    <li>Categor&iacute;a: {categoria}</li>
-    <li>Facebook: {facebook}</li>
-    <li>Instagram: {instagram}</li>
-    <li>Twitter: {twitter}</li>
+<ul class="list-group">
+    <li class="list-group-item">ID Base de datos:   <strong>{id}</strong></li>
+    <li class="list-group-item">Primer nombre:   <strong>{primer_nombre}</strong></li>
+    <li class="list-group-item">Segundo nombre:   <strong>{segundo_nombre}</strong></li>
+    <li class="list-group-item">Primer apellido:   <strong>{primer_apellido}</strong></li>
+    <li class="list-group-item">Segundo apellido:  <strong>{segundo_apellido}</strong></li>
+    <li class="list-group-item">C&eacute;dula:   <strong>{cedula}</strong></li>
+    <li class="list-group-item">Tel&eacute;fono:   <strong>{telefono}</strong></li>
+    <li class="list-group-item">Correo electr&oacute;nico:   <strong>{email}</strong></li>
+    <li class="list-group-item">Correo institucional:   <strong>{correo_institucional}</strong></li>
+    <li class="list-group-item">Tipo de usuario:   <strong>{tipo_usuario}</strong></li>
+    <li class="list-group-item">Categor&iacute;a:  <strong>{categoria}</strong></li>
+    <li class="list-group-item">Facebook:   <strong>{facebook}</strong></li>
+    <li class="list-group-item">Instagram:   <strong>{instagram}</strong></li>
+    <li class="list-group-item">Twitter:   <strong>{twitter}</strong></li>
 </ul>
 
 <a class="logout-button btn btn-success" href="<?= base_url('usuarios/actualizar/{id}') ?>">Editar usuario</a>

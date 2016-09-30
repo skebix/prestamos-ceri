@@ -8,13 +8,16 @@ echo form_open('categorias-equipo/crear', $attributes);
         <div class="col-md-6 col-md-offset-0">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Escriba la nueva categor&iacute;a</h3>
+                    <h3 class="text-center panel-title">
+                    <i class="fa fa-certificate"></i>
+                    Nombre de nueva categor&iacute;a
+                    <i class="fa fa-certificate"></i>
+                    </h3>
                 </div>
                 <div class="panel-body">
                     <form role="form">
                         <fieldset>
                             <div class="form-group">
-                                <label for="inputCategoriasEquipo" class="control-label">Categor&iacute;a de equipo</label>
                                 <?php echo form_error('categoria_equipo'); ?>
                                 <input type="text" class="form-control" id="inputCategoriasEquipo" name="categoria_equipo" value="<?php echo set_value('categoria_equipo'); ?>" placeholder="Categor&iacute;a equipo">
                             </div>
@@ -24,11 +27,11 @@ echo form_open('categorias-equipo/crear', $attributes);
                             <br>
                         </fieldset>
                     </form>
-                    <a class="logout-button" href="<?= base_url() ?>">
-                        <button type="button" class="btn btn-lg btn-primary btn-block">
-                            Volver al home
-                        </button>
-                    </a>
+                    <p class="text-center small">
+                                <a href="<?= base_url('inicio') ?>"> 
+                                <i class="fa fa-times"></i>
+                                Cancelar</a>
+                    </p>
                 </div>
             </div>
         </div>

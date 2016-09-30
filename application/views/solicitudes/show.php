@@ -38,12 +38,6 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">Lista de Equipos</div>
-    <div class="panel-body">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur at cum cumque, cupiditate dignissimos
-            dolor earum facere ipsa ipsam laborum officia, perferendis provident qui rem sit tempore unde veritatis? Nam.
-        </p>
-    </div>
-
     <table class="table">
         <thead>
         <tr>

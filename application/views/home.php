@@ -24,5 +24,150 @@
         <a href="#" class="close" data-dismiss="alert">&times;</a>
         <strong><?php echo $this->session->flashdata('danger'); ?></strong>
     </div>
-<?php endif;
-redirect('consultas/consultar');?>
+<?php endif;?>
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header text-center text-uppercase">Panel de Control</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-4 col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-calendar fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge badge">1</div>
+                        <div>Administraci&oacute;n de solicitudes.</div>
+                    </div>
+                </div>
+            </div>
+            <a href="<?= base_url('solicitudes/listar') ?>">
+                <div class="panel-footer">
+                    <span class="pull-left">Ver detalles</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-user fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge badge">2</div>
+                        <div>Administraci&oacute;n de usuarios.</div>
+                    </div>
+                </div>
+            </div>
+            <a href="<?= base_url('usuarios/listar') ?>">
+                <div class="panel-footer">
+                    <span class="pull-left">Ver detalles</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-clock-o fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge badge">3</div>
+                        <div>Recepci&oacute;n de pr&eacute;stamos.</div>
+                    </div>
+                </div>
+            </div>
+            <a href="<?= base_url('solicitudes/recibir') ?>">
+                <div class="panel-footer">
+                    <span class="pull-left">Ver detalles</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- /.first row -->
+<hr>
+<div class="row">
+    <div class="col-lg-4 col-md-6">
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-bank fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge badge">4</div>
+                        <div>Administraci&oacute;n de espacios.</div>
+                    </div>
+                </div>
+            </div>
+            <a href="<?= base_url('espacios/listar') ?>">
+                <div class="panel-footer">
+                    <span class="pull-left">Ver detalles</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-camera-retro fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge badge">5</div>
+                        <div>Administraci&oacute;n de equipos.</div>
+                    </div>
+                </div>
+            </div>
+            <a href="<?= base_url('equipos/listar') ?>">
+                <div class="panel-footer">
+                    <span class="pull-left">Ver detalles</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-briefcase fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge badge">6</div>
+                        <div>Administraci&oacute;n de servicios.</div>
+                    </div>
+                </div>
+            </div>
+            <a href="<?= base_url('servicios/listar') ?>">
+                <div class="panel-footer">
+                    <span class="pull-left">Ver detalles</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<hr>
