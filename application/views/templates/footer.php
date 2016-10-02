@@ -39,6 +39,15 @@
                 $('#datatable').DataTable({
                     responsive: true
                 });
+                $('#datatable2').DataTable({
+                    responsive: true
+                });
+                $('#datatable3').DataTable({
+                    responsive: true
+                });
+                $('#datatable4').DataTable({
+                    responsive: true
+                });
             });
         </script>
     </body>

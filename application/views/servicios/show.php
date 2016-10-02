@@ -37,48 +37,51 @@
 <br>
 
 <div class="panel panel-default">
-    <div class="panel-heading">Lista de Servicios</div>
-    <div class="dataTable_wrapper">
-        <table class="table table-striped table-bordered table-hover" id="datatable">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre del Servicio</th>
-                <th>Categor&iacute;a del Servicio</th>
-                <th>Habilitado</th>
-                <th>Actualizar</th>
-                <th>Eliminar</th>
-                <th>Habilitar y Deshabilitar</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php foreach($servicios as $k => $servicio): ?>
+    <div class="panel-heading text-center"><strong>{title}</strong></div>
+    <div class="panel-body">
+        <div class="dataTable_wrapper">
+            <table class="table table-striped table-bordered table-hover" id="datatable">
+                <thead>
                 <tr>
-                    <th scope="row"><?= $servicio['id'] ?></th>
-                    <td><?= $servicio['nombre_servicio'] ?></td>
-                    <td><?= $servicio['categoria'] ?></td>
-                    <td><?= ($servicio['habilitado'])? 'S&iacute': 'No'; ?></td>
-                    <td><a href="<?= base_url('servicios/actualizar/' . $servicio['id']) ?>">Actualizar</a></td>
-                    <td><a href="<?= base_url('servicios/eliminar/' . $servicio['id']) ?>">Eliminar</a></td>
-                    <?php if($servicio['habilitado']){ ?>
-                        <td><a href="<?= base_url('servicios/deshabilitar/' . $servicio['id']) ?>">Deshabilitar</a></td>
-                    <?php }else{ ?>
-                        <td><a href="<?= base_url('servicios/habilitar/' . $servicio['id']) ?>">Habilitar</a></td>
-                    <?php }; ?>
+                    <th class="text-center">#</th>
+                    <th class="text-center">Nombre del Servicio</th>
+                    <th class="text-center">Categor&iacute;a del Servicio</th>
+                    <th class="text-center">Habilitado</th>
+                    <th class="text-center">Modificar</th>
+                    <th class="text-center">Eliminar</th>
+                    <th class="text-center">Habilitar / Deshabilitar</th>
                 </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                <?php foreach($servicios as $k => $servicio): ?>
+                    <tr>
+                        <th scope="row" class="text-center"><?= $servicio['id'] ?></th>
+                        <td class="text-center"><?= $servicio['nombre_servicio'] ?></td>
+                        <td class="text-center"><?= $servicio['categoria'] ?></td>
+                        <td class="text-center"><?= ($servicio['habilitado'])? 'S&iacute': 'No'; ?></td>
+                        <td class="text-center"><a href="<?= base_url('servicios/actualizar/' . $servicio['id']) ?>"><i class="fa fa-pencil-square-o fa-2x"></i></a></td>
+                        <td class="text-center"><a href="<?= base_url('servicios/eliminar/' . $servicio['id']) ?>"><i class="fa fa-times fa-2x"></i></a></td>
+                        <?php if($servicio['habilitado']){ ?>
+                            <td class="text-center"><a href="<?= base_url('servicios/deshabilitar/' . $servicio['id']) ?>"><i class="fa fa-lock fa-2x"></i></a></td>
+                        <?php }else{ ?>
+                            <td class="text-center"><a href="<?= base_url('servicios/habilitar/' . $servicio['id']) ?>"><i class="fa fa-unlock fa-2x"></i></a></td>
+                        <?php }; ?>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <label>
+        <a class="logout-button" href="<?= base_url('servicios/crear') ?>">
+            <button type="button" class="btn btn-success">
+                Agregar servicio
+            </button>
+        </a>
+        <a class="logout-button" href="<?= base_url() ?>">
+            <button type="button" class="btn btn-warning">
+                Volver al inicio
+            </button>
+        </a>
+        </label>
     </div>
 </div>
-<a class="logout-button" href="<?= base_url('servicios/crear') ?>">
-    <button type="button" class="btn btn-primary">
-        Agregar servicio
-    </button>
-</a>
-
-<a class="logout-button" href="<?= base_url() ?>">
-    <button type="button" class="btn btn-primary">
-        Volver al home
-    </button>
-</a>

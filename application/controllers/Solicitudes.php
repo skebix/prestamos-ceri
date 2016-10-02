@@ -524,10 +524,6 @@ class Solicitudes extends CI_Controller {
                     $this->session->set_flashdata('danger', 'No se pudo cerrar la solicitud, por favor intente nuevamente.');
                     redirect('solicitudes/cerrar/' . $solicitud['id']);
                 }
-
-                $this->parser->parse('templates/header', $data);
-                $this->parser->parse('solicitudes/confirm', $data);
-                $this->parser->parse('templates/footer', $data);
             }else{
                 $this->session->set_flashdata('warning', 'La solicitud que intenta cerrar no existe.');
                 redirect('solicitudes/recibir');
@@ -664,7 +660,7 @@ class Solicitudes extends CI_Controller {
         $administrador = $this->session->administrador;
         if($administrador){
 
-            $data['title'] = 'Lista de Solicitudes';
+            $data['title'] = 'Solicitudes';
 
             $data['solicitudes'] = $this->solicitudes_model->get_solicitudes_extended(false);
 

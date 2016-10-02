@@ -60,7 +60,7 @@ class Categorias_servicio extends CI_Controller {
         $administrador = $this->session->administrador;
         if($administrador){
 
-            $data['title'] = 'Lista de categor&iacute;as de servicio';
+            $data['title'] = 'Categor&iacute;as de servicio disponibles';
 
             $categorias = $this->categoria_model->get_categorias('categoria_servicio');
 

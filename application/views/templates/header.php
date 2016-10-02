@@ -31,6 +31,7 @@
 
         <!-- Custom CSS -->
         <link href="<?= assets_url(); ?>dist/css/sb-admin-2.css" rel="stylesheet">
+        <link href="<?= assets_url(); ?>css/style.css" rel="stylesheet">
 
         <!-- Morris Charts CSS -->
         <link href="<?= assets_url(); ?>bower_components/morrisjs/morris.css" rel="stylesheet">
@@ -185,7 +186,7 @@
                                 <!-- /.nav-second-level -->
                             </li>
                             <li>
-                                <a href="<?= base_url('equipos/listar') ?>"><i class="fa fa-camera-retro fa-fw"></i> Equipos<span class="fa arrow"></span></a>
+                                <a href="<?= base_url('equipos/listar') ?>"><i class="fa fa-laptop fa-fw"></i> Equipos<span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
                                     <li>
                                         <a href="<?= base_url('equipos/crear') ?>"><i class="fa fa-edit fa-fw"></i> Agregar</a>
@@ -253,9 +254,7 @@
             </div>
             <!-- /.navbar-static-side -->
         </nav>
-
-        <div id="page-wrapper">
-                <br>
+        <div id="page-wrapper" class="hyper-background">
+            <br>
             <!-- /.row -->
             <div class="row">
-

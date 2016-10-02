@@ -27,7 +27,7 @@
 <?php endif;?>
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header text-center text-uppercase">Panel de Control</h1>
+        <h1 class="page-header text-center text-uppercase"><strong>Panel de Control</strong></h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -41,8 +41,7 @@
                         <i class="fa fa-calendar fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">1</div>
-                        <div>Administraci&oacute;n de solicitudes.</div>
+                        <h3>Administraci&oacute;n de solicitudes.</h3>
                     </div>
                 </div>
             </div>
@@ -63,8 +62,7 @@
                         <i class="fa fa-user fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">2</div>
-                        <div>Administraci&oacute;n de usuarios.</div>
+                        <h3>Administraci&oacute;n de usuarios.</h3>
                     </div>
                 </div>
             </div>
@@ -85,8 +83,7 @@
                         <i class="fa fa-clock-o fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">3</div>
-                        <div>Recepci&oacute;n de pr&eacute;stamos.</div>
+                        <h3>Recepci&oacute;n de pr&eacute;stamos.</h3>
                     </div>
                 </div>
             </div>
@@ -101,7 +98,7 @@
     </div>
 </div>
 <!-- /.first row -->
-<hr>
+<br>
 <div class="row">
     <div class="col-lg-4 col-md-6">
         <div class="panel panel-warning">
@@ -111,8 +108,7 @@
                         <i class="fa fa-bank fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">4</div>
-                        <div>Administraci&oacute;n de espacios.</div>
+                        <h3>Administraci&oacute;n de espacios.</h3>
                     </div>
                 </div>
             </div>
@@ -130,11 +126,10 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-camera-retro fa-5x"></i>
+                        <i class="fa fa-laptop fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">5</div>
-                        <div>Administraci&oacute;n de equipos.</div>
+                        <h3>Administraci&oacute;n de equipos.</h3>
                     </div>
                 </div>
             </div>
@@ -155,8 +150,7 @@
                         <i class="fa fa-angellist fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">6</div>
-                        <div>Administraci&oacute;n de servicios.</div>
+                        <h3>Administraci&oacute;n de servicios.</h3>
                     </div>
                 </div>
             </div>

@@ -102,7 +102,7 @@ class Estadisticas extends CI_Controller {
         $result2 = array(array("espacio","cantidad_prestamo","tiempo_prestamo"));
         $total2 = array( "cantidad_total" => 0, "tiempo_total" => '0:00');
         $espacios = $this->db->get('espacios')->result_array();
-        $sols_espacios = $this->db->get('solicitudes_espacios')->result_array();
+        $sols_espacios = $this->db->get('solicitudes_espacios_usos')->result_array();
         $N_espacios = count($espacios);
         $N_sols_espacios = count($sols_espacios);
         $ttt2 = new DateTime('0:00');
@@ -150,7 +150,7 @@ class Estadisticas extends CI_Controller {
         $total3 = array( "cantidad_total" => 0,
             "tiempo_total" => '0:00'
         );
-        $usos_espacios = $this->db->get('usos_espacios')->result_array();
+        $usos_espacios = $this->db->get('usos')->result_array();
         $usos = $this->db->get('usos')->result_array();
         $N_usos_espacios = count($usos_espacios);
         $N_usos = count($usos);

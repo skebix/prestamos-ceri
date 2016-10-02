@@ -60,7 +60,7 @@ class Categorias_usuario extends CI_Controller {
         $administrador = $this->session->administrador;
         if($administrador){
 
-            $data['title'] = 'Lista de categor&iacute;as de usuario';
+            $data['title'] = 'Categor&iacute;as de usuario disponibles';
 
             $categorias = $this->categoria_model->get_categorias('categoria_usuario');
             if($categorias){

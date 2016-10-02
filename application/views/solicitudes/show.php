@@ -37,51 +37,55 @@
 <br>
 
 <div class="panel panel-default">
-    <div class="panel-heading">Lista de solicitudes</div>
-    <div class="dataTable_wrapper">
-        <table class="table table-striped table-bordered table-hover" id="datatable">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Solicitante</th>
-                <th>Fecha de solicitud</th>
-                <th>Fecha de uso</th>
-                <th>Habilitado</th>
-                <th>Actualizar</th>
-                <th>Eliminar</th>
-                <th>Habilitar y Deshabilitar</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php foreach($solicitudes as $k => $solicitud): ?>
+    <div class="panel-heading text-center"><strong>{title}</strong></div>
+    <div class="panel-body">
+        <div class="dataTable_wrapper">
+            <table class="table table-striped table-bordered table-hover" id="datatable">
+                <thead>
                 <tr>
-                    <th scope="row"><?= $solicitud['id'] ?></th>
-                    <td><?= $solicitud['primer_nombre'] ?> <?= $solicitud['segundo_nombre'] ?> <?= $solicitud['primer_apellido'] ?> <?= $solicitud['segundo_apellido'] ?></td>
-                    <td><?= $solicitud['fecha_solicitud'] ?></td>
-                    <td><?= $solicitud['fecha_uso'] ?></td>
-                    <td><?= ($solicitud['habilitado'])? 'S&iacute': 'No'; ?></td>
-                    <td><a href="<?= base_url('solicitudes/actualizar/' . $solicitud['id']) ?>">Actualizar</a></td>
-                    <td><a href="<?= base_url('solicitudes/eliminar/' . $solicitud['id']) ?>">Eliminar</a></td>
-                    <?php if($solicitud['habilitado']){ ?>
-                        <td><a href="<?= base_url('solicitudes/deshabilitar/' . $solicitud['id']) ?>">Deshabilitar</a></td>
-                    <?php }else{ ?>
-                        <td><a href="<?= base_url('solicitudes/habilitar/' . $solicitud['id']) ?>">Habilitar</a></td>
-                    <?php }; ?>
+                    <th class="text-center">#</th>
+                    <th class="text-center">Solicitante</th>
+                    <th class="text-center">Fecha de solicitud</th>
+                    <th class="text-center">Fecha de uso</th>
+                    <th class="text-center">Habilitado</th>
+                    <th class="text-center">Ver detalles</th>
+                    <th class="text-center">Modificar</th>
+                    <th class="text-center">Eliminar</th>
+                    <th class="text-center">Habilitar / Deshabilitar</th>
                 </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                <?php foreach($solicitudes as $k => $solicitud): ?>
+                    <tr>
+                        <th scope="row" class="text-center"><?= $solicitud['id'] ?></th>
+                        <td class="text-center"><?= $solicitud['primer_nombre'] ?> <?= $solicitud['primer_apellido'] ?> </td>
+                        <td class="text-center"><?= $solicitud['fecha_solicitud'] ?></td>
+                        <td class="text-center"><?= $solicitud['fecha_uso'] ?></td>
+                        <td class="text-center"><?= ($solicitud['habilitado'])? 'S&iacute': 'No'; ?></td>
+                        <td class="text-center"><a href="<?= base_url('solicitudes/detalles/' . $solicitud['id']) ?>"><i class="fa fa-file-text fa-2x"></i></a></td>
+                        <td class="text-center"><a href="<?= base_url('solicitudes/actualizar/' . $solicitud['id']) ?>"><i class="fa fa-pencil-square-o fa-2x"></i></a></td>
+                        <td class="text-center"><a href="<?= base_url('solicitudes/eliminar/' . $solicitud['id']) ?>"><i class="fa fa-times fa-2x"></i></a></td>
+                        <?php if($solicitud['habilitado']){ ?>
+                            <td class="text-center"><a href="<?= base_url('solicitudes/deshabilitar/' . $solicitud['id']) ?>"><i class="fa fa-lock fa-2x"></i></a></td>
+                        <?php }else{ ?>
+                            <td class="text-center"><a href="<?= base_url('solicitudes/habilitar/' . $solicitud['id']) ?>"><i class="fa fa-unlock fa-2x"></i></a></td>
+                        <?php }; ?>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <label>
+            <a class="logout-button" href="<?= base_url('solicitudes/crear') ?>">
+                <button type="button" class="btn btn-success">
+                    Crear solicitud
+                </button>
+            </a>
+            <a class="logout-button" href="<?= base_url() ?>">
+                <button type="button" class="btn btn-warning">
+                    Volver al inicio
+                </button>
+            </a>
+        </label>
     </div>
 </div>
-
-<a class="logout-button" href="<?= base_url('solicitudes/crear') ?>">
-    <button type="button" class="btn btn-primary">
-        Crear solicitud
-    </button>
-</a>
-
-<a class="logout-button" href="<?= base_url() ?>">
-    <button type="button" class="btn btn-primary">
-        Volver al home
-    </button>
-</a>

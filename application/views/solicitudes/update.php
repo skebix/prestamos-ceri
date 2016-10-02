@@ -13,7 +13,7 @@
  * Time: 9:37
  */
 
-$attributes = array('class' => 'form-horizontal', 'id' => 'nueva-solicitud');
+$attributes = array('class' => '', 'id' => 'nueva-solicitud');
 echo form_open('solicitudes/actualizar/{id_solicitud}', $attributes);
 ?>
 

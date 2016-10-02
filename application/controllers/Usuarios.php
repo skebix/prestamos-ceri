@@ -91,7 +91,7 @@ class Usuarios extends CI_Controller {
         $administrador = $this->session->administrador;
         if($administrador){
 
-            $data['title'] = 'Lista de Usuarios';
+            $data['title'] = 'Usuarios del sistema';
 
             $usuarios = $this->usuarios_model->get_usuarios();
             if($usuarios){

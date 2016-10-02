@@ -5,12 +5,9 @@
  * Date: 08/04/2016
  * Time: 10:00 AM
  */
-
-$attributes = array('class' => 'form-horizontal');
+$attributes = array('');
 echo form_open('categorias-equipo/actualizar/{id}', $attributes);
-
 ?>
-
 <?php if($this->session->flashdata('success')): ?>
     <div class="alert alert-success">
         <a href="#" class="close" data-dismiss="alert">&times;</a>
@@ -38,25 +35,31 @@ echo form_open('categorias-equipo/actualizar/{id}', $attributes);
         <strong><?php echo $this->session->flashdata('danger'); ?></strong>
     </div>
 <?php endif;  ?>
-<br>
-
-<div class="form-group">
-    <label for="inputCategoriasEquipo" class="col-sm-2 control-label">Categor&iacute;a de equipo</label>
-    <div class="col-sm-10">
-        <?php echo form_error('categoria_equipo'); ?>
-        <input type="text" class="form-control" id="inputCategoriasEquipo" name="categoria_equipo" value="<?php echo set_value('categoria_equipo', $categoria); ?>" placeholder="Categor&iacute;a equipo">
+<div class="col-md-5 col-md-offset-3">
+    <div class="panel panel-default">
+        <div class="panel-heading text-center">
+            <i class="fa fa-refresh fa-3x"></i>
+            <h3 class="panel-title">
+            <strong>Modificar categor&iacute;a de equipo</strong>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <form role="form">
+                <fieldset>
+                    <div class="form-group">
+                        <?php echo form_error('categoria_equipo'); ?>
+                        <input type="text" class="form-control" id="inputCategoriasEquipo" name="categoria_equipo" value="<?php echo set_value('categoria_equipo', $categoria); ?>" placeholder="Categor&iacute;a equipo">
+                    </div>
+                    <div class="button pull-left">
+                        <button type="submit" class="btn btn-primary">Actualizar categor&iacute;a</button>
+                    </div>
+                    <div class="button pull-right">
+                        <a href="<?= base_url('inicio') ?>">
+                            <button type="button" class="btn btn-danger">Cancelar</button>
+                        </a>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
     </div>
 </div>
-
-<div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-success">Actualizar categor&iacute;a</button>
-    </div>
-</div>
-</form>
-
-<a class="logout-button" href="<?= base_url() ?>">
-    <button type="button" class="btn btn-primary">
-        Volver al home
-    </button>
-</a>

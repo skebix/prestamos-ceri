@@ -35,67 +35,67 @@
     </div>
 <?php endif;  ?>
 <br>
+<div class="col-md-6 col-md-offset-3">
+    <div class="panel panel-default">
+        <div class="panel-heading text-center"><strong>{title}</strong></div>
+        <?php if(!empty($id_recibido)): ?>
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>Esta solicitud se encuentra cerrada.</strong>
+                <br>
+                <p><strong>Observaciones:</strong></p>
+                <p>{observaciones}</p>
+            </div>
+        <?php endif; ?>
 
-<div class="panel panel-default">
+        <div class="container">
+            <p><strong>Solicitante:</strong></p>
+            {primer_nombre} {segundo_nombre} {primer_apellido} {segundo_apellido}
+            <hr>
+            <p><strong>Fecha de solicitud:</strong></p>
+                {fecha_solicitud}
+            <hr>
+            <p><strong>Fecha de uso:</strong></p>
+                {fecha_uso}
+            <hr>
 
-    <div class="panel-heading">Detalles de la solicitud</div>
+            <?php if(!empty($equipos)): ?>
+            <p><strong>Equipos reservados:</strong></p>
+            <ul>
+                {equipos}
+                    <li>{nombre_equipo}</li>
+                {/equipos}
+            </ul>
+            <hr>
+            <?php endif; ?>
 
-    <?php if(!empty($id_recibido)): ?>
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <strong>Esta solicitud se encuentra cerrada.</strong>
+            <?php if(!empty($espacios)): ?>
+            <p><strong>Espacios reservados:</strong></p>
+            <ul>
+                {espacios}
+                <li>{nombre_espacio}</li>
+                {/espacios}
+            </ul>
+            <hr>
+            <?php endif; ?>
+
+            <?php if(!empty($servicios)): ?>
+            <p><strong>Servicios reservados:</strong></p>
+            <ul>
+                {servicios}
+                <li>{nombre_servicio}</li>
+                {/servicios}
+            </ul>
+            <?php endif; ?>
             <br>
-            <p><strong>Observaciones:</strong></p>
-            <p>{observaciones}</p>
-        </div>
-    <?php endif; ?>
-
-    <div class="container">
-        <p><strong>Solicitante:</strong></p>
-        {primer_nombre} {segundo_nombre} {primer_apellido} {segundo_apellido}
-        <hr>
-        <p><strong>Fecha de solicitud:</strong></p>
-            {fecha_solicitud}
-        <hr>
-        <p><strong>Fecha de uso:</strong></p>
-            {fecha_uso}
-        <hr>
-
-        <?php if(!empty($equipos)): ?>
-        <p><strong>Equipos reservados:</strong></p>
-        <ul>
-            {equipos}
-                <li>{nombre_equipo}</li>
-            {/equipos}
-        </ul>
-        <hr>
-        <?php endif; ?>
-
-        <?php if(!empty($espacios)): ?>
-        <p><strong>Espacios reservados:</strong></p>
-        <ul>
-            {espacios}
-            <li>{nombre_espacio}</li>
-            {/espacios}
-        </ul>
-        <hr>
-        <?php endif; ?>
-
-        <?php if(!empty($servicios)): ?>
-        <p><strong>Servicios reservados:</strong></p>
-        <ul>
-            {servicios}
-            <li>{nombre_servicio}</li>
-            {/servicios}
-        </ul>
-        <?php endif; ?>
-
-        <div class="form-group">
-            <form action="<?= base_url('solicitudes/cerrar/{id}') ?>" method="post">
-                <button type="submit" class="btn btn-danger">Cerrar solicitud</button>
-            </form>
+            <div class="form-group">
+                <form action="<?= base_url('solicitudes/cerrar/{id}') ?>" method="post">
+                    <?php if(empty($id_recibido)): ?>
+                        <button type="submit" class="btn btn-danger">Cerrar solicitud</button>
+                    <?php endif; ?>
+                    <a href="<?= base_url('solicitudes/listar') ?>"><button type="button" class="btn btn-warning">Volver</button></a>
+                </form>
+            </div>
         </div>
     </div>
 </div>
-<button class="btn-default"><a href="<?= base_url('') ?>">Volver</a></button>
-</a>

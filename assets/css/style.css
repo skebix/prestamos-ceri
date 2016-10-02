@@ -29,3 +29,14 @@
     height: 5px;
     width: 100%;
 }
+
+.hyper-background {
+    content: "";
+    background: url(../img/wp-main.jpg);
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
+}

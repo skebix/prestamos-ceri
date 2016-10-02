@@ -61,7 +61,7 @@ class Espacios extends CI_Controller {
         $administrador = $this->session->administrador;
         if($administrador){
 
-            $data['title'] = 'Lista de Espacios';
+            $data['title'] = 'Espacios disponibles';
 
             $espacios = $this->espacios_model->get_espacios('espacios');
             if($espacios){

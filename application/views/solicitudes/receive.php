@@ -28,34 +28,32 @@
 <br>
 
 <div class="panel panel-default">
-    <div class="panel-heading">Lista de solicitudes</div>
+    <div class="panel-heading text-center"><strong>{title}</strong></div>
     <div class="panel-body">
-        <p>En esta sección podrá recibir los equipos y espacios prestados, así como
-            confirmar que los servicios solicitados hayan sido provistos exitosamente.
-        </p>
+        <h4 class="text-center">En esta sección podrá cerrar la solicitud de los equipos, espacios y servicios prestados para darla por finalizada.
+        </h4>
     </div>
     <div class="dataTable_wrapper">
         <table class="table table-striped table-bordered table-hover" id="datatable">
             <thead>
             <tr>
-                <th>ID</th>
-                <th>Solicitante</th>
-                <th>Fecha de solicitud</th>
-                <th>Fecha de uso</th>
-                <th>Opciones</th>
+                <th class="text-center">#</th>
+                <th class="text-center">Solicitante</th>
+                <th class="text-center">Fecha de solicitud</th>
+                <th class="text-center">Fecha de uso</th>
+                <th class="text-center">Finalizar y cerrar</th>
             </tr>
             </thead>
             <tbody>
             {solicitudes}
             <tr>
-                <th scope="row">{id}</th>
-                <td>{primer_nombre} {segundo_nombre} {primer_apellido} {segundo_apellido}</td>
-                <td>{fecha_solicitud}</td>
-                <td>{fecha_uso}</td>
-                <td>
+                <th scope="row" class="text-center">{id}</th>
+                <td class="text-center">{primer_nombre} {segundo_nombre} {primer_apellido} {segundo_apellido}</td>
+                <td class="text-center">{fecha_solicitud}</td>
+                <td class="text-center">{fecha_uso}</td>
+                <td class="text-center">
                     <a href="<?= base_url('solicitudes/cerrar/{id}') ?>">
-                        <span class="glyphicon glyphicon-file"></span>
-                        Cerrar solicitud
+                        <i class="fa fa-check-circle-o fa-2x"></i>
                     </a>
                 </td>
             </tr>
@@ -63,5 +61,11 @@
             </tbody>
         </table>
     </div>
+    <label>
+        <a class="logout-button" href="<?= base_url() ?>">
+            <button type="button" class="btn btn-warning">
+                Volver al inicio
+            </button>
+        </a>
+    </label>
 </div>
-<a href="<?= base_url('') ?>">Volver</a>

@@ -69,7 +69,7 @@ class Servicios extends CI_Controller {
         $administrador = $this->session->administrador;
         if($administrador){
 
-            $data['title'] = 'Listado de servicios';
+            $data['title'] = 'Servicios disponibles';
 
             $servicios = $this->servicios_model->get_servicios('servicios');
             if($servicios){

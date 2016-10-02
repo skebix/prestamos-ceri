@@ -37,54 +37,56 @@
 <br>
 
 <div class="panel panel-default">
-    <div class="panel-heading">Lista de Usuarios</div>
-    <div class="dataTable_wrapper">
-        <table class="table table-striped table-bordered table-hover" id="datatable">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombres</th>
-                <th>Apellidos</th>
-                <th>C&eacute;dula</th>
-                <th>Tel&eacute;fono</th>
-                <th>Correo electr&oacute;nico</th>
-                <th>Habilitado</th>
-                <th>Actualizar</th>
-                <th>Eliminar</th>
-                <th>Habilitar y Deshabilitar</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php foreach($usuarios as $k => $usuario): ?>
+    <div class="panel-heading text-center"><strong>{title}</strong></div>
+    <div class="panel-body">
+        <div class="dataTable_wrapper">
+            <table class="table table-striped table-bordered table-hover" id="datatable">
+                <thead>
                 <tr>
-                    <th scope="row"><?= $usuario['id'] ?></th>
-                    <td><?= $usuario['primer_nombre'] ?> <?= $usuario['segundo_nombre'] ?></td>
-                    <td><?= $usuario['primer_apellido'] ?> <?= $usuario['segundo_apellido'] ?></td>
-                    <td><a href="<?= base_url('usuarios/detalles/' . $usuario['cedula']) ?>"><?= $usuario['cedula'] ?></a></td>
-                    <td><?= $usuario['telefono'] ?></td>
-                    <td><?= $usuario['email'] ?></td>
-                    <td><?= ($usuario['habilitado'])? 'S&iacute': 'No'; ?></td>
-                    <td><a href="<?= base_url('usuarios/actualizar/' . $usuario['id']) ?>">Actualizar</a></td>
-                    <td><a href="<?= base_url('usuarios/eliminar/' . $usuario['id']) ?>">Eliminar</a></td>
-                    <?php if($usuario['habilitado']){ ?>
-                        <td><a href="<?= base_url('usuarios/deshabilitar/' . $usuario['id']) ?>">Deshabilitar</a></td>
-                    <?php }else{ ?>
-                        <td><a href="<?= base_url('usuarios/habilitar/' . $usuario['id']) ?>">Habilitar</a></td>
-                    <?php }; ?>
+                    <th class="text-center">C&eacute;dula</th>
+                    <th class="text-center">Nombres</th>
+                    <th class="text-center">Apellidos</th>
+                    <th class="text-center">Correo electr&oacute;nico</th>
+                    <th class="text-center">Habilitado</th>
+                    <th class="text-center">Ver detalles</th>
+                    <th class="text-center">Modificar</th>
+                    <th class="text-center">Eliminar</th>
+                    <th class="text-center">Habilitar / Deshabilitar</th>
                 </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                <?php foreach($usuarios as $k => $usuario): ?>
+                    <tr>
+                        <th class="text-center"><?= $usuario['cedula'] ?></th>
+                        <td class="text-center"><?= $usuario['primer_nombre'] ?> <?= $usuario['segundo_nombre'] ?></td>
+                        <td class="text-center"><?= $usuario['primer_apellido'] ?> <?= $usuario['segundo_apellido'] ?></td>
+                        <td class="text-center"><?= $usuario['email'] ?></td>
+                        <td class="text-center"><?= ($usuario['habilitado'])? 'S&iacute': 'No'; ?></td>
+                        <td class="text-center"><a href="<?= base_url('usuarios/detalles/' . $usuario['cedula']) ?>"><i class="fa fa-file-text fa-2x"></i></a></td>
+                        <td class="text-center"><a href="<?= base_url('usuarios/actualizar/' . $usuario['id']) ?>"><i class="fa fa-pencil-square-o fa-2x"></i></a></td>
+                        <td class="text-center"><a href="<?= base_url('usuarios/eliminar/' . $usuario['id']) ?>"><i class="fa fa-times fa-2x"></i></a></td>
+                        <?php if($usuario['habilitado']){ ?>
+                            <td class="text-center"><a href="<?= base_url('usuarios/deshabilitar/' . $usuario['id']) ?>"><i class="fa fa-lock fa-2x"></i></a></td>
+                        <?php }else{ ?>
+                            <td class="text-center"><a href="<?= base_url('usuarios/habilitar/' . $usuario['id']) ?>"><i class="fa fa-unlock fa-2x"></i></a></td>
+                        <?php }; ?>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <label>
+            <a class="logout-button" href="<?= base_url('usuarios/registro') ?>">
+                <button type="button" class="btn btn-success">
+                    Agregar usuario
+                </button>
+            </a>
+            <a class="logout-button" href="<?= base_url() ?>">
+                <button type="button" class="btn btn-warning">
+                    Volver al inicio
+                </button>
+            </a>
+        </label>
     </div>
 </div>
-<a class="logout-button" href="<?= base_url('usuarios/registro') ?>">
-    <button type="button" class="btn btn-primary">
-        Agregar usuario
-    </button>
-</a>
-
-<a class="logout-button" href="<?= base_url() ?>">
-    <button type="button" class="btn btn-primary">
-        Volver al home
-    </button>
-</a>
