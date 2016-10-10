@@ -78,13 +78,13 @@
         <br>
         <label>
             <a class="logout-button" href="<?= base_url('usuarios/registro') ?>">
-                <button type="button" class="btn btn-success">
-                    Agregar usuario
+                <button type="button" class="btn btn-default">
+                    <strong>Agregar usuario</strong>
                 </button>
             </a>
             <a class="logout-button" href="<?= base_url() ?>">
-                <button type="button" class="btn btn-warning">
-                    Volver al inicio
+                <button type="button" class="btn btn-primary">
+                    <strong>Volver al inicio</strong>
                 </button>
             </a>
         </label>

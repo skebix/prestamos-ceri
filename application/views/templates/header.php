@@ -38,13 +38,17 @@
 
         <!-- Custom Fonts -->
         <link href="<?= assets_url(); ?>bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
     </head>
     <body>
     <!-- Navigation -->
     <div id="wrapper">
 
         <!-- Navigation -->
+        <div class="bg-primary">
+            <img class="header-logo" src="<?= assets_url(); ?>img\logoceri1.jpg">
+            Sistema de Reservas CERI-PRES
+            <img class="header-logo pull-right" src="<?= assets_url(); ?>img\logo-ucv.jpg">
+        </div>
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
