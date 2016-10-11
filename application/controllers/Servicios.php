@@ -69,19 +69,15 @@ class Servicios extends CI_Controller {
         $administrador = $this->session->administrador;
         if($administrador){
 
-            $data['title'] = 'Servicios disponibles';
+            $data['title'] = 'Servicios';
 
             $servicios = $this->servicios_model->get_servicios('servicios');
-            if($servicios){
-                $data['servicios'] = $servicios;
 
-                $this->parser->parse('templates/header', $data);
-                $this->parser->parse('servicios/show', $data);
-                $this->parser->parse('templates/footer', $data);
-            }else{
-                $this->session->set_flashdata('danger', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
-                redirect('inicio');
-            }
+            $data['servicios'] = $servicios;
+
+            $this->parser->parse('templates/header', $data);
+            $this->parser->parse('servicios/show', $data);
+            $this->parser->parse('templates/footer', $data);
         }else{
             //Si llegué a este punto es porque no ha ingresado, o no es Administrador
             $this->session->set_flashdata('warning', 'S&oacute;lo los administradores pueden ver esa secci&oacute;n.');

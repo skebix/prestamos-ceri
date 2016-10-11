@@ -1,7 +1,3 @@
-<?php
-$attributes = array('class' => 'form-horizontal');
-echo form_open('autenticacion/reset_password', $attributes);
-?>
 <div class="container">
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
@@ -39,20 +35,27 @@ echo form_open('autenticacion/reset_password', $attributes);
                         </div>
                     <?php endif;  ?>
 
-                    <form role="form">
+                    <form role="form" action="<?= base_url('autenticacion/reset-password') ?>" method="post">
                         <fieldset>
                             <div class="form-group">
-                                <label for="inputPassword" class="col-sm-2 control-label">Contrase&ntilde;a</label>
+                                <label for="inputPassword" class="control-label">Contrase&ntilde;a</label>
                                 <?php echo form_error('password'); ?>
                                 <input type="password" class="form-control" id="inputPassword" name="password" value="<?php echo set_value('password'); ?>" placeholder="Contrase&ntilde;a">
                             </div>
+
                             <div class="form-group">
-                                <label for="inputPasswordConfirmation" class="col-sm-2 control-label">Confirmar contrase&ntilde;a</label>
+                                <label for="inputPasswordConfirmation" class="control-label">Confirmar contrase&ntilde;a</label>
                                 <?php echo form_error('password_confirmation'); ?>
                                 <input type="password" class="form-control" id="inputPasswordConfirmation" name="password_confirmation" value="<?php echo set_value('password_confirmation'); ?>" placeholder="Confirmar contrase&ntilde;a">
                             </div>
+
                             <div class="button">
-                                <button type="submit" class="btn btn-lg btn-primary btn-block">Cambiar contrase&ntilde;a</button>
+                                <button type="submit" class="btn btn-lg btn-primary col-lg-7">Cambiar contrase&ntilde;a</button>
+                                <a class="logout-button" href="<?= base_url() ?>">
+                                    <button type="button" class="btn btn-lg btn-warning col-lg-4 pull-right">
+                                        Volver
+                                    </button>
+                                </a>
                             </div>
                             <br>
                         </fieldset>

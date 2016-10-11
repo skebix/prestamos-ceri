@@ -80,11 +80,11 @@ class Solicitudes extends CI_Controller {
                             }
                         }
                     }else{
-                        $this->session->set_flashdata('danger', '1 Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                        $this->session->set_flashdata('danger', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                         redirect('inicio');
                     }
                 }else{
-                    $this->session->set_flashdata('danger', '2 Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                    $this->session->set_flashdata('danger', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
                     redirect('inicio');
                 }
             }else{
@@ -490,6 +490,8 @@ class Solicitudes extends CI_Controller {
 
             if($solicitud){
                 $usuario = $this->usuarios_model->get_usuario_by_id($solicitud['id_solicitante']);
+                $usuario_reservado = $this->usuarios_model->get_usuario_by_id($solicitud['id_reservado']);
+                $usuario_recibido = $this->usuarios_model->get_usuario_by_id($solicitud['id_recibido']);
 
                 $data['equipos'] = $this->equipos_model->get_equipos_solicitud($id);
                 $data['espacios'] = $this->espacios_model->get_espacios_solicitud($id);
@@ -497,6 +499,22 @@ class Solicitudes extends CI_Controller {
 
                 $data = array_merge($data, $usuario);
                 $data = array_merge($data, $solicitud);
+
+                $hora_entrega = DateTime::createFromFormat('H:i:s', $solicitud['hora_entrega']);
+                $hora_devolucion = DateTime::createFromFormat('H:i:s', $solicitud['hora_devolucion']);
+
+                $data['hora_entrega'] = $hora_entrega->format('h:i A');
+                $data['hora_devolucion'] = $hora_devolucion->format('h:i A');
+
+                $data['primer_nombre_reservado'] = $usuario_reservado['primer_nombre'];
+                $data['segundo_nombre_reservado'] = $usuario_reservado['segundo_nombre'];
+                $data['primer_apellido_reservado'] = $usuario_reservado['primer_apellido'];
+                $data['segundo_apellido_reservado'] = $usuario_reservado['segundo_apellido'];
+
+                $data['primer_nombre_recibido'] = $usuario_recibido['primer_nombre'];
+                $data['segundo_nombre_recibido'] = $usuario_recibido['segundo_nombre'];
+                $data['primer_apellido_recibido'] = $usuario_recibido['primer_apellido'];
+                $data['segundo_apellido_recibido'] = $usuario_recibido['segundo_apellido'];
 
                 $this->form_validation->set_rules('observaciones', 'observaciones', 'trim|required');
 
@@ -684,6 +702,8 @@ class Solicitudes extends CI_Controller {
 
             if($solicitud){
                 $usuario = $this->usuarios_model->get_usuario_by_id($solicitud['id_solicitante']);
+                $usuario_reservado = $this->usuarios_model->get_usuario_by_id($solicitud['id_reservado']);
+                $usuario_recibido = $this->usuarios_model->get_usuario_by_id($solicitud['id_recibido']);
 
                 $data['equipos'] = $this->equipos_model->get_equipos_solicitud($id);
                 $data['espacios'] = $this->espacios_model->get_espacios_solicitud($id);
@@ -691,6 +711,22 @@ class Solicitudes extends CI_Controller {
 
                 $data = array_merge($data, $usuario);
                 $data = array_merge($data, $solicitud);
+
+                $hora_entrega = DateTime::createFromFormat('H:i:s', $solicitud['hora_entrega']);
+                $hora_devolucion = DateTime::createFromFormat('H:i:s', $solicitud['hora_devolucion']);
+
+                $data['hora_entrega'] = $hora_entrega->format('h:i A');
+                $data['hora_devolucion'] = $hora_devolucion->format('h:i A');
+
+                $data['primer_nombre_reservado'] = $usuario_reservado['primer_nombre'];
+                $data['segundo_nombre_reservado'] = $usuario_reservado['segundo_nombre'];
+                $data['primer_apellido_reservado'] = $usuario_reservado['primer_apellido'];
+                $data['segundo_apellido_reservado'] = $usuario_reservado['segundo_apellido'];
+
+                $data['primer_nombre_recibido'] = $usuario_recibido['primer_nombre'];
+                $data['segundo_nombre_recibido'] = $usuario_recibido['segundo_nombre'];
+                $data['primer_apellido_recibido'] = $usuario_recibido['primer_apellido'];
+                $data['segundo_apellido_recibido'] = $usuario_recibido['segundo_apellido'];
 
                 $this->parser->parse('templates/header', $data);
                 $this->parser->parse('solicitudes/details', $data);

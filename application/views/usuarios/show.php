@@ -76,17 +76,17 @@
             </table>
         </div>
         <br>
-        <label>
-            <a class="logout-button" href="<?= base_url('usuarios/registro') ?>">
-                <button type="button" class="btn btn-default">
-                    <strong>Agregar usuario</strong>
-                </button>
-            </a>
-            <a class="logout-button" href="<?= base_url() ?>">
-                <button type="button" class="btn btn-primary">
-                    <strong>Volver al inicio</strong>
-                </button>
-            </a>
-        </label>
+
+        <a class="logout-button" href="<?= base_url('usuarios/registro') ?>">
+            <button type="button" class="btn btn-primary">
+                <strong>Agregar usuario</strong>
+            </button>
+        </a>
+        <a class="logout-button pull-right" href="<?= base_url() ?>">
+            <button type="button" class="btn btn-default">
+                <strong>Volver al inicio</strong>
+            </button>
+        </a>
+
     </div>
 </div>

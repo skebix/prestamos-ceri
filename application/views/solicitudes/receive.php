@@ -30,42 +30,40 @@
 <div class="panel panel-default">
     <div class="panel-heading text-center"><strong>{title}</strong></div>
     <div class="panel-body">
-        <h4 class="text-center">En esta sección podrá cerrar la solicitud de los equipos, espacios y servicios prestados para darla por finalizada.
-        </h4>
-    </div>
-    <div class="dataTable_wrapper">
-        <table class="table table-striped table-bordered table-hover" id="datatable">
-            <thead>
-            <tr>
-                <th class="text-center">#</th>
-                <th class="text-center">Solicitante</th>
-                <th class="text-center">Fecha de solicitud</th>
-                <th class="text-center">Fecha de uso</th>
-                <th class="text-center">Finalizar y cerrar</th>
-            </tr>
-            </thead>
-            <tbody>
-            {solicitudes}
-            <tr>
-                <th scope="row" class="text-center">{id}</th>
-                <td class="text-center">{primer_nombre} {segundo_nombre} {primer_apellido} {segundo_apellido}</td>
-                <td class="text-center">{fecha_solicitud}</td>
-                <td class="text-center">{fecha_uso}</td>
-                <td class="text-center">
-                    <a href="<?= base_url('solicitudes/cerrar/{id}') ?>">
-                        <i class="fa fa-check-circle-o fa-2x"></i>
-                    </a>
-                </td>
-            </tr>
-            {/solicitudes}
-            </tbody>
-        </table>
-    </div>
-    <label>
-        <a class="logout-button" href="<?= base_url() ?>">
-            <button type="button" class="btn btn-warning">
+        <div class="dataTable_wrapper">
+            <table class="table table-striped table-bordered table-hover" id="datatable">
+                <thead>
+                <tr>
+                    <th class="text-center">#</th>
+                    <th class="text-center">Solicitante</th>
+                    <th class="text-center">Fecha de solicitud</th>
+                    <th class="text-center">Fecha de uso</th>
+                    <th class="text-center">Finalizar y cerrar</th>
+                </tr>
+                </thead>
+                <tbody>
+                {solicitudes}
+                <tr>
+                    <th scope="row" class="text-center">{id}</th>
+                    <td class="text-center">{primer_nombre} {segundo_nombre} {primer_apellido} {segundo_apellido}</td>
+                    <td class="text-center">{fecha_solicitud}</td>
+                    <td class="text-center">{fecha_uso}</td>
+                    <td class="text-center">
+                        <a href="<?= base_url('solicitudes/cerrar/{id}') ?>">
+                            <i class="fa fa-check-circle-o fa-2x"></i>
+                        </a>
+                    </td>
+                </tr>
+                {/solicitudes}
+                </tbody>
+            </table>
+        </div>
+
+        <a class="logout-button pull-right" href="<?= base_url() ?>">
+            <button type="button" class="btn btn-primary">
                 Volver al inicio
             </button>
         </a>
-    </label>
+
+    </div>
 </div>

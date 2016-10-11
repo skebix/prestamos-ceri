@@ -71,17 +71,18 @@
                 </tbody>
             </table>
         </div>
-        <label>
+
         <a class="logout-button" href="<?= base_url('servicios/crear') ?>">
-            <button type="button" class="btn btn-success">
-                Agregar servicio
+            <button type="button" class="btn btn-primary">
+                <strong>Nuevo servicio</strong>
             </button>
         </a>
-        <a class="logout-button" href="<?= base_url() ?>">
-            <button type="button" class="btn btn-warning">
-                Volver al inicio
+
+        <a class="logout-button pull-right" href="<?= base_url() ?>">
+            <button type="button" class="btn btn-default">
+                <strong>Volver al inicio</strong>
             </button>
         </a>
-        </label>
+
     </div>
 </div>

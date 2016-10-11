@@ -71,18 +71,18 @@
                 </tbody>
             </table>
         </div>
-        <label>
-            <a class="logout-button" href="<?= base_url('usos/crear') ?>">
-                <button type="button" class="btn btn-success">
-                    Agregar uso
-                </button>
-            </a>
 
-            <a class="logout-button" href="<?= base_url() ?>">
-                <button type="button" class="btn btn-warning">
-                    Volver al inicio
-                </button>
-            </a>
-        </label>
+        <a class="logout-button" href="<?= base_url('usos/crear') ?>">
+            <button type="button" class="btn btn-primary">
+                <strong>Nuevo uso</strong>
+            </button>
+        </a>
+
+        <a class="logout-button pull-right" href="<?= base_url() ?>">
+            <button type="button" class="btn btn-default">
+                <strong>Volver al inicio</strong>
+            </button>
+        </a>
+
     </div>
 </div>

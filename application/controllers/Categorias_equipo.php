@@ -60,7 +60,7 @@ class Categorias_equipo extends CI_Controller {
         $administrador = $this->session->administrador;
         if($administrador){
 
-            $data['title'] = 'Categor&iacute;as de equipo disponibles';
+            $data['title'] = 'Categor&iacute;as de equipo';
 
             $categorias = $this->categoria_model->get_categorias('categoria_equipo');
 

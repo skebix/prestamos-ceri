@@ -28,8 +28,6 @@ class Autenticacion extends CI_Controller {
 
         if (!$this->form_validation->run()) {
             //Si no pasa las reglas de validación, mostramos el formulario
-            $this->session->set_flashdata('info', 'Por favor inicie sesión para continuar.');
-
             $this->parser->parse('templates/header_basic', $data);
             $this->parser->parse('authentication/login_form', $data);
             $this->parser->parse('templates/footer_basic', $data);
@@ -66,26 +64,23 @@ class Autenticacion extends CI_Controller {
             $email = $this->input->post('email');
 
             //Si los datos tienen el formato correcto, debo crear un token temporal para cambio de contraseña
-            $updated = false;
-            while(!$updated){
-                //Acá genero el token de un sólo uso
-                $token_temporal = bin2hex(openssl_random_pseudo_bytes(16));
-                $hashed_password['forgot_password_token'] = $this->bcrypt->hash_password($token_temporal);
 
-                $data['token_temporal'] = $token_temporal;
+            //Acá genero el token de un sólo uso
+            $token_temporal = bin2hex(openssl_random_pseudo_bytes(16));
+            $hashed_password['forgot_password_token'] = $this->bcrypt->hash_password($token_temporal);
 
-                //Tomo el email del formulario y busco ese usuario en la BD (va a existir, porque ya se validó con email_exist)
+            $data['token_temporal'] = $token_temporal;
 
-                $usuario = $this->usuarios_model->get_usuario_by_email($email);
-                if($usuario){
-                    $data['cedula'] = $usuario['cedula'];
+            //Tomo el email del formulario y busco ese usuario en la BD (va a existir, porque ya se validó con email_exist)
+            $usuario = $this->usuarios_model->get_usuario_by_email($email);
+            if($usuario){
+                $data['cedula'] = $usuario['cedula'];
 
-                    //Actualizo el token en la BD
-                    $updated = $this->usuarios_model->update_token($usuario['cedula'], $hashed_password);
-                }else{
-                    $this->session->set_flashdata('danger', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
-                    redirect('inicio');
-                }
+                //Actualizo el token en la BD
+                $this->usuarios_model->update_token($usuario['cedula'], $hashed_password);
+            }else{
+                $this->session->set_flashdata('danger', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente nuevamente.');
+                redirect('inicio');
             }
 
             $this->email->from('skebix@skebix.com.ve', 'PRESTAMOS-CERI');
@@ -103,7 +98,7 @@ class Autenticacion extends CI_Controller {
             }
             
             $this->session->set_flashdata('danger', 'Hubo un problema al enviar el correo electr&oacute;nico, por favor intente nuevamente.');
-            redirect('inicio');
+            redirect('autenticacion/forgot_password');
         }
     }
 
@@ -149,7 +144,10 @@ class Autenticacion extends CI_Controller {
                 $was_updated = $this->usuarios_model->update_by_cedula('usuarios', $cedula, $data);
                 
                 if($was_updated){
-                    $this->salir();
+                    $eliminar = array('id', 'cedula', 'administrador', 'reset_password', 'mensaje');
+                    $this->session->unset_userdata($eliminar);
+                    $this->session->set_flashdata('success', 'Contrase&ntilde;a cambiada satisfactoriamente.');
+                    redirect('inicio');
                 }else{
                     $this->session->set_flashdata('danger', 'Hubo un problema al conectarse con la Base de Datos. Por favor intente ingresar nuevamente.');
                     redirect('inicio');

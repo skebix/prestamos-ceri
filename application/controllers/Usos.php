@@ -60,7 +60,7 @@ class Usos extends CI_Controller {
         $administrador = $this->session->administrador;
         if($administrador){
 
-            $data['title'] = 'Usos autorizados para salas y espacios';
+            $data['title'] = 'Usos de los espacios';
 
             $usos = $this->usos_model->get_usos('usos');
             if($usos){

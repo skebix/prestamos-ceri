@@ -44,9 +44,9 @@
     <div id="wrapper">
 
         <!-- Navigation -->
-        <div class="bg-primary">
+        <div>
             <img class="header-logo" src="<?= assets_url(); ?>img\logoceri1.jpg">
-            Sistema de Reservas CERI-PRES
+            
             <img class="header-logo pull-right" src="<?= assets_url(); ?>img\logo-ucv.jpg">
         </div>
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -258,7 +258,7 @@
             </div>
             <!-- /.navbar-static-side -->
         </nav>
-        <div id="page-wrapper" class="hyper-background">
+        <div id="page-wrapper">
             <br>
             <!-- /.row -->
             <div class="row">

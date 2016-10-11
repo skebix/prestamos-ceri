@@ -21,6 +21,9 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="<?= bootstrap_js_url(); ?>bootstrap.min.js"></script>
 
+<!-- Homemade JavaScript -->
+<script src="<?= js_url(); ?>scripts.js"></script>
+
 <!-- Metis Menu Plugin JavaScript -->
 <script src="<?= assets_url(); ?>bower_components/metisMenu/dist/metisMenu.min.js"></script>
 

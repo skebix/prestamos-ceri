@@ -4,7 +4,7 @@
 
 $(document).ready(function(){
 
-    $(".help-block").parent().parent().addClass('has-error');
+    $(".help-block").parent().addClass('has-error');
 
     $('#fecha_uso').datetimepicker({ //Poner minDate: new Date() si se quiere que la fecha no pueda ser anterior a hoy
         format: 'DD/MM/YYYY',

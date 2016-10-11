@@ -40,3 +40,8 @@
     position: absolute;
     z-index: -1;
 }
+
+.titulo-azul {
+    font-size: 24px;
+    color: #337ab7;
+}

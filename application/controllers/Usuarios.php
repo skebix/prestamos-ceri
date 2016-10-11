@@ -11,7 +11,9 @@ class Usuarios extends CI_Controller {
     }
 
     function registro(){
+        
         $data['title'] = 'Registro';
+
         $categorias_usuario = $this->categoria_model->get_categorias_habilitadas('categoria_usuario');
         if($categorias_usuario){
             $data['categorias_usuario'] = $categorias_usuario;
@@ -61,7 +63,7 @@ class Usuarios extends CI_Controller {
             $telefono = $this->input->post('telefono');
             $usuario['telefono'] = $codigo_area . '-' . $telefono;
 
-            $usuario['correo_institucional'] = $this->input->post('correo_institucional');
+            $usuario['correo_institucional'] = ($this->input->post('correo_institucional') ? $this->input->post('correo_institucional') : null);
             $usuario['twitter'] = $this->input->post('twitter');
             $usuario['facebook'] = $this->input->post('facebook');
             $usuario['instagram'] = $this->input->post('instagram');
@@ -243,7 +245,7 @@ class Usuarios extends CI_Controller {
                 $usuario['hashed_password'] = $password;
                 $usuario['administrador'] = ($this->input->post('administrador')) ? $this->input->post('administrador') : FALSE;
 
-                $usuario['correo_institucional'] = $this->input->post('correo_institucional');
+                $usuario['correo_institucional'] = ($this->input->post('correo_institucional') ? $this->input->post('correo_institucional') : null);
                 $usuario['twitter'] = $this->input->post('twitter');
                 $usuario['facebook'] = $this->input->post('facebook');
                 $usuario['instagram'] = $this->input->post('instagram');

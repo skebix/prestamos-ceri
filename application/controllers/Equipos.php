@@ -69,7 +69,7 @@ class Equipos extends CI_Controller {
         $administrador = $this->session->administrador;
         if($administrador){
 
-            $data['title'] = 'Equipos disponibles';
+            $data['title'] = 'Equipos';
 
             $equipos = $this->equipos_model->get_equipos('equipos');
             if($equipos){

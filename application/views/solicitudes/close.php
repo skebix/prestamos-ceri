@@ -11,20 +11,25 @@
         <div class="panel-heading text-center"><strong>{title}</strong></div>
         <div class="panel-body">
             <p class="text-center">Por favor confirme los datos del prestamo que será cerrado.</p>
-            <p class="text-center alert-info"><strong>IMPORTANTE:</strong>
-            <br>Confirme que el solicitante ha devuelto todos los equipos utilizados y desocupado los espacios prestados.
-            Indique en el campo de observaciones el nivel de satisfacción del usuario con el servicio así como cualquier inquietud o eventualidad que haya ocurrido.
-            </p>
             <hr>
-            <p><strong>Solicitante:</strong></p>
-            {primer_nombre} {segundo_nombre} {primer_apellido} {segundo_apellido}
-            <hr>
-            <p><strong>Fecha de solicitud:</strong></p>
-            {fecha_solicitud}
-            <hr>
-            <p><strong>Fecha de uso:</strong></p>
-            {fecha_uso}
-            <hr>
+
+            <ul class="list-group">
+                <li class="list-group-item">Solicitud n&uacute;mero:   <strong>{id}</strong></li>
+                <?php if(!empty($id_recibido)): ?>
+                    <li class="list-group-item">Observaciones:   <strong>{observaciones}</strong></li>
+                <?php endif; ?>
+                <li class="list-group-item">Reservado por:   <strong>{primer_nombre_reservado} {segundo_nombre_reservado} {primer_apellido_reservado} {segundo_apellido_reservado}</strong></li>
+                <?php if(!empty($id_recibido)): ?>
+                    <li class="list-group-item">Recibido por:  <strong>{primer_nombre_recibido} {segundo_nombre_recibido} {primer_apellido_recibido} {segundo_apellido_recibido}</strong></li>
+                <?php endif; ?>
+                <li class="list-group-item">Solicitante:   <strong>{primer_nombre} {segundo_nombre} {primer_apellido} {segundo_apellido}</strong></li>
+                <li class="list-group-item">Fecha solicitud:   <strong>{fecha_solicitud}</strong></li>
+                <li class="list-group-item">Fecha uso:   <strong>{fecha_uso}</strong></li>
+                <li class="list-group-item">Hora entrega:   <strong>{hora_entrega}</strong></li>
+                <li class="list-group-item">Hora devoluci&oacute;n:   <strong>{hora_devolucion}</strong></li>
+            </ul>
+
+
             <?php if(!empty($equipos)): ?>
                 <p><strong>Equipos reservados:</strong></p>
                 <ul>
@@ -34,6 +39,7 @@
                 </ul>
                 <hr>
             <?php endif; ?>
+
             <?php if(!empty($espacios)): ?>
                 <p><strong>Espacios reservados:</strong></p>
                 <ul>
@@ -43,6 +49,7 @@
                 </ul>
                 <hr>
             <?php endif; ?>
+
             <?php if(!empty($servicios)): ?>
                 <p><strong>Servicios reservados:</strong></p>
                 <ul>
@@ -51,6 +58,8 @@
                     {/servicios}
                 </ul>
             <?php endif; ?>
+            <br>
+
             <form action="<?= base_url('solicitudes/cerrar/{id}') ?>" method="post">
                 <div class="form-group">
                     <label for="observaciones">Observaciones</label>
@@ -59,10 +68,15 @@
                     </div>
                     <textarea class="form-control" id="observaciones" name="observaciones" rows="5" placeholder="Observaciones"></textarea>
                     <br>
-                    <button type="submit" class="btn btn-danger">Confirmar cierre</button>
-                    <a href="<?= base_url('solicitudes/recibir') ?>"><button type="button" class="btn btn-warning">Volver</button></a>
+
+                    <button type="submit" class="btn btn-danger"><strong>Confirmar cierre</strong></button>
+
+                    <a class="logout-button pull-right" href="<?= base_url('solicitudes/recibir') ?>">
+                        <button type="button" class="btn btn-primary"><strong>Volver</strong></button>
+                    </a>
                 </div>
             </form>
+
         </div>
     </div>
 </div>

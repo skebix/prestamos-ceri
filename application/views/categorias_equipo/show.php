@@ -71,17 +71,17 @@
                 </tbody>
             </table>
         </div>
-        <label>
+
         <a class="logout-button" href="<?= base_url('categorias-equipo/crear') ?>">
-            <button type="button" class="btn btn-success">
-                Agregar categor&iacute;a
+            <button type="button" class="btn btn-primary">
+                <strong>Agregar categor&iacute;a de equipo</strong>
             </button>
         </a>
-        <a class="logout-button" href="<?= base_url() ?>">
-            <button type="button" class="btn btn-warning">
-                Volver al inicio
+        <a class="logout-button pull-right" href="<?= base_url() ?>">
+            <button type="button" class="btn btn-default">
+                <strong>Volver al inicio</strong>
             </button>
         </a>
-        </label>
+
     </div>
 </div>

@@ -35,29 +35,38 @@
     </div>
 <?php endif;  ?>
 <br>
+
 <div class="col-md-6 col-md-offset-3">
+
+    <?php if(!empty($id_recibido)): ?>
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Esta solicitud se encuentra cerrada.</strong>
+            <br>
+        </div>
+    <?php endif; ?>
+
     <div class="panel panel-default">
         <div class="panel-heading text-center"><strong>{title}</strong></div>
-        <?php if(!empty($id_recibido)): ?>
-            <div class="alert alert-danger alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <strong>Esta solicitud se encuentra cerrada.</strong>
-                <br>
-                <p><strong>Observaciones:</strong></p>
-                <p>{observaciones}</p>
-            </div>
-        <?php endif; ?>
 
-        <div class="container">
-            <p><strong>Solicitante:</strong></p>
-            {primer_nombre} {segundo_nombre} {primer_apellido} {segundo_apellido}
-            <hr>
-            <p><strong>Fecha de solicitud:</strong></p>
-                {fecha_solicitud}
-            <hr>
-            <p><strong>Fecha de uso:</strong></p>
-                {fecha_uso}
-            <hr>
+        <div class="panel-body">
+
+            <ul class="list-group">
+                <li class="list-group-item">Solicitud n&uacute;mero:   <strong>{id}</strong></li>
+                <?php if(!empty($id_recibido)): ?>
+                <li class="list-group-item">Observaciones:   <strong>{observaciones}</strong></li>
+                <?php endif; ?>
+                <li class="list-group-item">Reservado por:   <strong>{primer_nombre_reservado} {segundo_nombre_reservado} {primer_apellido_reservado} {segundo_apellido_reservado}</strong></li>
+                <?php if(!empty($id_recibido)): ?>
+                    <li class="list-group-item">Recibido por:  <strong>{primer_nombre_recibido} {segundo_nombre_recibido} {primer_apellido_recibido} {segundo_apellido_recibido}</strong></li>
+                <?php endif; ?>
+                <li class="list-group-item">Solicitante:   <strong>{primer_nombre} {segundo_nombre} {primer_apellido} {segundo_apellido}</strong></li>
+                <li class="list-group-item">Fecha solicitud:   <strong>{fecha_solicitud}</strong></li>
+                <li class="list-group-item">Fecha uso:   <strong>{fecha_uso}</strong></li>
+                <li class="list-group-item">Hora entrega:   <strong>{hora_entrega}</strong></li>
+                <li class="list-group-item">Hora devoluci&oacute;n:   <strong>{hora_devolucion}</strong></li>
+            </ul>
+
 
             <?php if(!empty($equipos)): ?>
             <p><strong>Equipos reservados:</strong></p>
@@ -88,14 +97,22 @@
             </ul>
             <?php endif; ?>
             <br>
-            <div class="form-group">
-                <form action="<?= base_url('solicitudes/cerrar/{id}') ?>" method="post">
-                    <?php if(empty($id_recibido)): ?>
-                        <button type="submit" class="btn btn-danger">Cerrar solicitud</button>
-                    <?php endif; ?>
-                    <a href="<?= base_url('solicitudes/listar') ?>"><button type="button" class="btn btn-warning">Volver</button></a>
-                </form>
-            </div>
+
+
+            <?php if(empty($id_recibido)): ?>
+                <a class="logout-button" href="<?= base_url('solicitudes/cerrar/{id}') ?>">
+                    <button type="button" class="btn btn-danger">
+                        <strong>Cerrar solicitud</strong>
+                    </button>
+                </a>
+            <?php endif; ?>
+
+            <a class="logout-button pull-right" href="<?= base_url('solicitudes/listar') ?>">
+                <button type="button" class="btn btn-primary">
+                    <strong>Volver</strong>
+                </button>
+            </a>
+
         </div>
     </div>
 </div>

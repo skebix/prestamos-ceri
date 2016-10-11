@@ -23,7 +23,7 @@ class Inicio extends CI_Controller {
 		} else {
 			//No ha ingresado
 			$this->session->mensaje = "Bienvenido usuario anónimo.";
-			$this->session->set_flashdata('info', 'Por favor inicie sesión para continuar.');
+
 			$this->parser->parse('templates/header_basic', $data);
 			$this->parser->parse('authentication/login_form', $data);
 			$this->parser->parse('templates/footer_basic', $data);

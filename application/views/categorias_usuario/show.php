@@ -71,18 +71,17 @@
                 </tbody>
             </table>
         </div>
-        <label>
-            <a class="logout-button" href="<?= base_url('categorias-usuario/crear') ?>">
-                <button type="button" class="btn btn-success">
-                    Agregar categor&iacute;a
-                </button>
-            </a>
 
-            <a class="logout-button" href="<?= base_url() ?>">
-                <button type="button" class="btn btn-warning">
-                    Volver al inicio
-                </button>
-            </a>
-        </label>
+        <a class="logout-button" href="<?= base_url('categorias-usuario/crear') ?>">
+            <button type="button" class="btn btn-primary">
+                <strong>Agregar categor&iacute;a de usuario</strong>
+            </button>
+        </a>
+        <a class="logout-button pull-right" href="<?= base_url() ?>">
+            <button type="button" class="btn btn-default">
+                <strong>Volver al inicio</strong>
+            </button>
+        </a>
+
     </div>
 </div>
