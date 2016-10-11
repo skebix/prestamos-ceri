@@ -59,7 +59,7 @@ class Solicitudes extends CI_Controller {
                         if(isset($viejos_espacios)){
                             foreach($viejos_espacios as $k => $v){
                                 $data['input_nuevo_espacio_' . $indices_espacios[$k]] = $v;
-                                $this->form_validation->set_rules('input_nuevo_espacio[' . $indices_espacios[$k] . ']', 'nombre nuevo espacio', 'required');
+                                $this->form_validation->set_rules('input_nuevo_espacio[' . $k . ']', 'nombre nuevo espacio', 'required');
                             }
                         }
 
@@ -76,7 +76,7 @@ class Solicitudes extends CI_Controller {
                         if(isset($viejos_usos)){
                             foreach($viejos_usos as $k => $v){
                                 $data['input_otro_uso_' . $indices_usos[$k]] = $v;
-                                $this->form_validation->set_rules('input_otro_uso[' . $indices_usos[$k] . ']', 'uso del espacio', 'required');
+                                $this->form_validation->set_rules('input_otro_uso[' . $k . ']', 'uso del espacio', 'required');
                             }
                         }
                     }else{
@@ -315,7 +315,7 @@ class Solicitudes extends CI_Controller {
                 if(isset($viejos_espacios)){
                     foreach($viejos_espacios as $k => $v){
                         $data['input_nuevo_espacio_' . $indices_espacios[$k]] = $v;
-                        $this->form_validation->set_rules('input_nuevo_espacio[' . $indices_espacios[$k] . ']', 'nombre nuevo espacio', 'required');
+                        $this->form_validation->set_rules('input_nuevo_espacio[' . $k . ']', 'nombre nuevo espacio', 'required');
                     }
                 }
 
@@ -332,7 +332,7 @@ class Solicitudes extends CI_Controller {
                 if(isset($viejos_usos)){
                     foreach($viejos_usos as $k => $v){
                         $data['input_otro_uso_' . $indices_usos[$k]] = $v;
-                        $this->form_validation->set_rules('input_otro_uso[' . $indices_usos[$k] . ']', 'uso del espacio', 'required');
+                        $this->form_validation->set_rules('input_otro_uso[' . $k . ']', 'uso del espacio', 'required');
                     }
                 }
 

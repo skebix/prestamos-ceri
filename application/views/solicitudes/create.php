@@ -36,7 +36,7 @@ echo form_open('solicitudes/crear', $attributes);
                                 <div class="input-group">
                                     <span class="input-group-addon" id="basic-addon2">Fecha a reservar</span>
                                     <div class='input-group date' id="fecha_uso">
-                                        <input type="text" class="form-control" name="fecha_uso" placeholder="DD/MM/YYYY" />
+                                        <input type="text" class="form-control col-lg-5" name="fecha_uso" placeholder="DD/MM/YYYY" />
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                     </div>
                                 </div>
@@ -67,7 +67,7 @@ echo form_open('solicitudes/crear', $attributes);
                             </div>
                             <div class="form-group" id="nuevo-equipo">
                                 <div>
-                                    <button type="button" class="btn btn-primary nuevo-equipo">A&ntilde;adir equipo</button>
+                                    <button type="button" class="btn btn-success nuevo-equipo">A&ntilde;adir equipo</button>
                                 </div>
                                 <?php if(isset($select_nuevo_equipo)){ ?>
                                     <?php $len = count($select_nuevo_equipo); ?>
@@ -90,7 +90,7 @@ echo form_open('solicitudes/crear', $attributes);
                             </div>
                             <div class="form-group" id="nuevo-espacio">
                                 <div>
-                                    <button type="button" class="btn btn-primary nuevo-espacio">A&ntilde;adir espacio</button>
+                                    <button type="button" class="btn btn-success nuevo-espacio">A&ntilde;adir espacio</button>
                                 </div>
 
                                 <?php if(isset($select_nuevo_espacio)){ ?>
@@ -130,7 +130,7 @@ echo form_open('solicitudes/crear', $attributes);
                             </div>
                             <div class="form-group" id="nuevo-servicio">
                                 <div>
-                                    <button type="button" class="btn btn-primary nuevo-servicio">A&ntilde;adir servicio</button>
+                                    <button type="button" class="btn btn-success nuevo-servicio">A&ntilde;adir servicio</button>
                                 </div>
 
                                 <?php if(isset($select_nuevo_servicio)){ ?>
@@ -143,7 +143,7 @@ echo form_open('solicitudes/crear', $attributes);
                                         <div>
                                             <?php echo form_error('input_nuevo_servicio[' . $i . ']'); ?>
                                         </div>
-                                    
+
                                         <div id="div-nuevo-servicio-<?= $i; ?>">
                                             <select class="form-control" id="select_nuevo_servicio_<?= $i; ?>" name="select_nuevo_servicio[]">
                                                 <option value="<?= $select; ?>"><?= $select; ?></option>
