@@ -86,6 +86,7 @@
 	 * @property Espacios_model      $espacios_model
 	 * @property Usos_model          $usos_model
 	 * @property Solicitudes_model   $solicitudes_model
+	 * @property Estadisticas_model  $estadisticas_model
 	 * @property user_model          $user_model           ,$user
 	 * @property data_model          $data_model
 	 * @property products_model      $products_model
