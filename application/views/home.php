@@ -144,14 +144,14 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-angellist fa-5x"></i>
+                        <i class="fa fa-search fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <h3>Administraci&oacute;n de servicios.</h3>
+                        <h3>Consultar disponibilidad.</h3>
                     </div>
                 </div>
             </div>
-            <a href="<?= base_url('servicios/listar') ?>">
+            <a href="<?= base_url('consultas/consultar') ?>">
                 <div class="panel-footer">
                     <span class="pull-left">Ver detalles</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>

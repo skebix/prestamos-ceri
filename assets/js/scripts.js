@@ -4,6 +4,10 @@
 
 $(document).ready(function(){
 
+    $('.confirmar-borrado').click(function(){
+        return confirm("¿Seguro que desea eliminar el elemento?");
+    });
+
     $(".help-block").parent().addClass('has-error');
 
     $('#fecha_uso').datetimepicker({ //Poner minDate: new Date() si se quiere que la fecha no pueda ser anterior a hoy

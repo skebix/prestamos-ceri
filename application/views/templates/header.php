@@ -44,10 +44,8 @@
     <div id="wrapper">
 
         <!-- Navigation -->
-        <div>
-            <img class="header-logo" src="<?= assets_url(); ?>img\logoceri1.jpg">
-            
-            <img class="header-logo pull-right" src="<?= assets_url(); ?>img\logo-ucv.jpg">
+        <div class="text-center">
+            <img src="<?= assets_url(); ?>img\banner.png">
         </div>
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
