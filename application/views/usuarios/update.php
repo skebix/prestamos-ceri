@@ -79,16 +79,16 @@ echo form_open('usuarios/actualizar/{id}', $attributes);
                         </div>
                     </div>
                     <div class="form-group">
+                        <?php echo form_error('password'); ?>
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon8">Contrase&ntilde;a</span>
-                            <?php echo form_error('password'); ?>
                             <input type="password" class="form-control" id="inputPassword" name="password" value="<?php echo set_value('password'); ?>" placeholder="Contrase&ntilde;a">
                         </div>
                     </div>
                     <div class="form-group">
+                        <?php echo form_error('password_confirmation'); ?>
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon9">Confirmar contrase&ntilde;a</span>
-                            <?php echo form_error('password_confirmation'); ?>
                             <input type="password" class="form-control" id="inputPasswordConfirmation" name="password_confirmation" value="<?php echo set_value('password_confirmation'); ?>" placeholder="Confirmar contrase&ntilde;a">
                         </div>
                     </div>
@@ -99,23 +99,24 @@ echo form_open('usuarios/actualizar/{id}', $attributes);
                         </div>
                     </div>
                     <div class="form-group">
+                        <?php echo form_error('twitter'); ?>
                         <div class="input-group">
+
                             <span class="input-group-addon" id="basic-addon11">Twitter</span>
-                            <?php echo form_error('twitter'); ?>
                             <input type="text" class="form-control" id="inputTwitter" name="twitter" value="<?php echo set_value('twitter', $twitter); ?>" placeholder="Twitter">
                         </div>
                     </div>
                     <div class="form-group">
+                        <?php echo form_error('facebook'); ?>
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon12">Facebook</span>
-                            <?php echo form_error('facebook'); ?>
                             <input type="text" class="form-control" id="inputFacebook" name="facebook" value="<?php echo set_value('facebook',$facebook); ?>" placeholder="Facebook">
                         </div>
                     </div>
                     <div class="form-group">
+                        <?php echo form_error('instagram'); ?>
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon13">Instagram</span>
-                            <?php echo form_error('instagram'); ?>
                             <input type="text" class="form-control" id="inputInstagram" name="instagram" value="<?php echo set_value('instagram', $instagram); ?>" placeholder="Instagram">
                         </div>
                     </div>

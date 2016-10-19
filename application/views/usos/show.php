@@ -60,7 +60,7 @@
                         <td class="text-center"><?= ($le_uso['otro_uso'])? "S&iacute;": "No"; ?></td>
                         <td class="text-center"><?= ($le_uso['habilitado'])? "S&iacute;": "No"; ?></td>
                         <td class="text-center"><a href="<?= base_url('usos/actualizar/' . $le_uso['id']) ?>"><i class="fa fa-pencil-square-o fa-2x"></i></a></td>
-                        <td class="text-center"><a href="<?= base_url('usos/eliminar/' . $le_uso['id']) ?>"><i class="fa fa-times fa-2x"></i></a></td>
+                        <td class="text-center"><a class="confirmar-borrado" href="<?= base_url('usos/eliminar/' . $le_uso['id']) ?>"><i class="fa fa-times fa-2x"></i></a></td>
                         <?php if($le_uso['habilitado']): ?>
                             <td class="text-center"><a href="<?= base_url('usos/deshabilitar/' . $le_uso['id']) ?>"><i class="fa fa-lock fa-2x"></i></a></td>
                         <?php else: ?>

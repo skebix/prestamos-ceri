@@ -39,7 +39,6 @@
         <div class="panel-heading text-center"><strong>{title}</strong></div>
         <div class="panel-body">
             <ul class="list-group">
-                <li class="list-group-item">ID Base de datos:   <strong>{id}</strong></li>
                 <li class="list-group-item">Primer nombre:   <strong>{primer_nombre}</strong></li>
                 <li class="list-group-item">Segundo nombre:   <strong>{segundo_nombre}</strong></li>
                 <li class="list-group-item">Primer apellido:   <strong>{primer_apellido}</strong></li>
@@ -54,14 +53,15 @@
                 <li class="list-group-item">Instagram:   <strong>{instagram}</strong></li>
                 <li class="list-group-item">Twitter:   <strong>{twitter}</strong></li>
             </ul>
-            <label>
-                <a class="logout-button btn btn-success" href="<?= base_url('usuarios/actualizar/{id}') ?>">Editar usuario</a>
-                <a class="logout-button" href="<?= base_url('usuarios/listar') ?>">
-                    <button type="button" class="btn btn-warning">
-                        Volver
-                    </button>
+
+            <div class="button pull-left">
+                <a class="logout-button btn btn-primary" href="<?= base_url('usuarios/actualizar/{id}') ?>">Editar usuario</a>
+            </div>
+            <div class="button pull-right">
+                <a href="<?= base_url('inicio') ?>">
+                    <button type="button" class="btn btn-default">Volver</button>
                 </a>
-            </label>
+            </div>
         </div>
     </div>
 </div>

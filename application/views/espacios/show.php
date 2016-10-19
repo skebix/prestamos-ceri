@@ -60,7 +60,7 @@
                     <td class="text-center"><?= ($espacio['otro_espacio'])? "S&iacute;": "No"; ?></td>
                     <td class="text-center"><?= ($espacio['habilitado'])? "S&iacute;": "No"; ?></td>
                     <td class="text-center"><a href="<?= base_url('espacios/actualizar/' . $espacio['id']) ?>"><i class="fa fa-pencil-square-o fa-2x"></i></a></td>
-                    <td class="text-center"><a href="<?= base_url('espacios/eliminar/' . $espacio['id']) ?>"><i class="fa fa-times fa-2x"></i></a></td>
+                    <td class="text-center"><a class="confirmar-borrado" href="<?= base_url('espacios/eliminar/' . $espacio['id']) ?>"><i class="fa fa-times fa-2x"></i></a></td>
                     <?php if($espacio['habilitado']){ ?>
                         <td class="text-center"><a href="<?= base_url('espacios/deshabilitar/' . $espacio['id']) ?>"><i class="fa fa-lock fa-2x"></i></a></td>
                     <?php }else{ ?>

@@ -52,7 +52,7 @@
                             <div class="button">
                                 <button type="submit" class="btn btn-lg btn-primary col-lg-7">Cambiar contrase&ntilde;a</button>
                                 <a class="logout-button" href="<?= base_url() ?>">
-                                    <button type="button" class="btn btn-lg btn-warning col-lg-4 pull-right">
+                                    <button type="button" class="btn btn-lg btn-danger col-lg-4 pull-right">
                                         Volver
                                     </button>
                                 </a>

@@ -58,7 +58,7 @@
                         <td class="text-center"><?= $categoria['categoria']; ?></td>
                         <td class="text-center"><?= ($categoria['habilitado'])? 'S&iacute': 'No'; ?></td>
                         <td class="text-center"><a href="<?= base_url('categorias-usuario/actualizar/' . $categoria['id']) ?>"><i class="fa fa-pencil-square-o fa-2x"></i></a></td>
-                        <td class="text-center"><a href="<?= base_url('categorias-usuario/eliminar/' . $categoria['id']) ?>"><i class="fa fa-times fa-2x"></i></a></td>
+                        <td class="text-center"><a class="confirmar-borrado" href="<?= base_url('categorias-usuario/eliminar/' . $categoria['id']) ?>"><i class="fa fa-times fa-2x"></i></a></td>
                         <td class="text-center">
                             <?php if($categoria['habilitado']){ ?>
                                 <a href="<?= base_url('categorias-usuario/deshabilitar/' . $categoria['id']) ?>"><i class="fa fa-lock fa-2x"></i></a>

@@ -215,6 +215,10 @@ class Usuarios extends CI_Controller {
             $this->form_validation->set_rules('password', 'Contrase&ntilde;a', 'required');
             $this->form_validation->set_rules('password_confirmation', 'Confirmar contrase&ntilde;a', 'required|matches[password]');
 
+            $this->form_validation->set_rules('twitter', 'Twitter', 'trim|max_length[15]|callback__valid_twitter_username');
+            $this->form_validation->set_rules('facebook', 'Facebook', 'trim|min_length[5]|callback__valid_facebook_username');
+            $this->form_validation->set_rules('instagram', 'Instagram', 'trim|max_length[30]|callback__valid_instagram_username');
+
             if (!$this->form_validation->run()){
 
                 //Si el que intenta actualizar la cuenta es un Administrador, le doy opciones para cambiar el tipo a Administrador.

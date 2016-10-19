@@ -8,6 +8,8 @@
 $attributes = array('id' => 'consultar-disponibilidad');
 echo form_open('consultas/consultar', $attributes);
 ?>
+
+
 <div class="col-md-5 col-md-offset-3">
     <div class="panel panel-default">
         <div class="panel-heading text-center">

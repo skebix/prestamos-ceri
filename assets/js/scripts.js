@@ -10,29 +10,32 @@ $(document).ready(function(){
 
     $(".help-block").parent().addClass('has-error');
 
-    $('#fecha_uso').datetimepicker({ //Poner minDate: new Date() si se quiere que la fecha no pueda ser anterior a hoy
-        format: 'DD/MM/YYYY',
-        minDate: new Date(),
-        locale: 'es'
-    });
-
+    var dtp = $('#fecha_uso');
     var hora_entrega = $('#hora_entrega');
     var hora_devolucion = $('#hora_devolucion');
 
-    hora_entrega.datetimepicker({
-        format: 'hh:mm A',
-        minDate: moment().startOf('day'),
-        maxDate: moment().endOf('day'),
-        locale: 'es'
-    });
+    if(dtp.length > 0){
+        dtp.datetimepicker({ //Poner minDate: new Date() si se quiere que la fecha no pueda ser anterior a hoy
+            format: 'DD/MM/YYYY',
+            minDate: new Date(),
+            locale: 'es'
+        });
 
-    hora_devolucion.datetimepicker({
-        format: 'hh:mm A',
-        useCurrent: false,
-        minDate: moment().startOf('day'),
-        maxDate: moment().endOf('day'),
-        locale: 'es'
-    });
+        hora_entrega.datetimepicker({
+            format: 'hh:mm A',
+            minDate: moment().startOf('day'),
+            maxDate: moment().endOf('day'),
+            locale: 'es'
+        });
+
+        hora_devolucion.datetimepicker({
+            format: 'hh:mm A',
+            useCurrent: false,
+            minDate: moment().startOf('day'),
+            maxDate: moment().endOf('day'),
+            locale: 'es'
+        });
+    }
 
     hora_entrega.on("dp.change", function(e) {
         hora_devolucion.data("DateTimePicker").minDate(e.date);

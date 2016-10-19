@@ -64,7 +64,7 @@
                         <td class="text-center"><?= ($solicitud['habilitado'])? 'S&iacute': 'No'; ?></td>
                         <td class="text-center"><a href="<?= base_url('solicitudes/detalles/' . $solicitud['id']) ?>"><i class="fa fa-file-text fa-2x"></i></a></td>
                         <td class="text-center"><a href="<?= base_url('solicitudes/actualizar/' . $solicitud['id']) ?>"><i class="fa fa-pencil-square-o fa-2x"></i></a></td>
-                        <td class="text-center"><a href="<?= base_url('solicitudes/eliminar/' . $solicitud['id']) ?>"><i class="fa fa-times fa-2x"></i></a></td>
+                        <td class="text-center"><a class="confirmar-borrado" href="<?= base_url('solicitudes/eliminar/' . $solicitud['id']) ?>"><i class="fa fa-times fa-2x"></i></a></td>
                         <?php if($solicitud['habilitado']){ ?>
                             <td class="text-center"><a href="<?= base_url('solicitudes/deshabilitar/' . $solicitud['id']) ?>"><i class="fa fa-lock fa-2x"></i></a></td>
                         <?php }else{ ?>
