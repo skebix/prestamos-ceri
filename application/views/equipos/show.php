@@ -60,7 +60,7 @@
                     <td class="text-center"><?= $equipo['categoria'] ?></td>
                     <td class="text-center"><?= ($equipo['habilitado'])? 'S&iacute': 'No'; ?></td>
                     <td class="text-center"><a href="<?= base_url('equipos/actualizar/' . $equipo['id']) ?>"><i class="fa fa-pencil-square-o fa-2x"></i></a></td>
-                    <td class="text-center"><a href="<?= base_url('equipos/eliminar/' . $equipo['id']) ?>"><i class="fa fa-times fa-2x"></i></a></td>
+                    <td class="text-center"><a class="confirmar-borrado" href="<?= base_url('equipos/eliminar/' . $equipo['id']) ?>"><i class="fa fa-times fa-2x"></i></a></td>
                     <?php if($equipo['habilitado']){ ?>
                         <td class="text-center"><a href="<?= base_url('equipos/deshabilitar/' . $equipo['id']) ?>"><i class="fa fa-lock fa-2x"></i></a></td>
                     <?php }else{ ?>

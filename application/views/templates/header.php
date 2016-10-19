@@ -45,7 +45,7 @@
 
         <!-- Navigation -->
         <div class="text-center">
-            <img src="<?= assets_url(); ?>img\banner.png">
+            <img src="<?= assets_url(); ?>img/banner.png">
         </div>
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">

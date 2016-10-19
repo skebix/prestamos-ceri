@@ -34,9 +34,9 @@
 
 </head>
 <body>
-<div class="container-fluid header-basic-top">
-    <h1>
-    <img class="header-logo" src="<?= assets_url(); ?>img\logoceri1.jpg">
-    CERI-PRES</h1>
+<div class="container header-basic-top text-center">
+    <div><img class="header-logo pull-left" src="<?= assets_url(); ?>img/logoceri1.jpg"></div>
+    <div><h1 class="header-text"><strong>CERI-PRES</strong></h1></div>
 </div>
+<br>
 <div class="header-stripe"></div>

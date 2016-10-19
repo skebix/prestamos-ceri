@@ -1,8 +1,23 @@
+@font-face{
+    font-family: "zealoto";
+    src: url("../fonts/zealoto.ttf")
+}
+
+.header-text {
+    font-family: zealoto;
+    font-size: 72px;
+    color: #337ab7;
+}
+
 .logout-button, .logout-button:hover, .login-button, .login-button:hover {
     text-decoration: none;
 }
 .header-basic-top {
     background-color: #FFF;
+}
+.header-logo {
+    height: 120px;
+    width: 120px;
 }
 .header-stripe {
     background-color: #55bbeb;

@@ -64,7 +64,7 @@
                         <td class="text-center"><?= ($usuario['habilitado'])? 'S&iacute': 'No'; ?></td>
                         <td class="text-center"><a href="<?= base_url('usuarios/detalles/' . $usuario['cedula']) ?>"><i class="fa fa-file-text fa-2x"></i></a></td>
                         <td class="text-center"><a href="<?= base_url('usuarios/actualizar/' . $usuario['id']) ?>"><i class="fa fa-pencil-square-o fa-2x"></i></a></td>
-                        <td class="text-center"><a href="<?= base_url('usuarios/eliminar/' . $usuario['id']) ?>"><i class="fa fa-times fa-2x"></i></a></td>
+                        <td class="text-center"><a class="confirmar-borrado" href="<?= base_url('usuarios/eliminar/' . $usuario['id']) ?>"><i class="fa fa-times fa-2x"></i></a></td>
                         <?php if($usuario['habilitado']){ ?>
                             <td class="text-center"><a href="<?= base_url('usuarios/deshabilitar/' . $usuario['id']) ?>"><i class="fa fa-lock fa-2x"></i></a></td>
                         <?php }else{ ?>

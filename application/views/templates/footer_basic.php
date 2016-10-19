@@ -1,16 +1,17 @@
 <div class="footer-stripe"></div>
 <footer class="page-footer footer-basic-bottom">
+    <br>
     <div class="container text-center">
-        <p><br></p>
-        <div class="col-md-1"> <img class="header-logo" src="<?= assets_url(); ?>img\logoceri1.jpg"></div>
-        <div class="col-md-8">
-            Ciudad Universitaria, Centro de Experimentaci&oacuten de Recursos Instruccionales, Edificio Trasbordo, Escuela de Educaci&oacuten, piso 3 Parroquia San Pedro, Caracas, Venezuela.
+        <div>
+            Ciudad Universitaria, Centro de Experimentaci&oacute;n de Recursos Instruccionales. <br>
+            Edificio Trasbordo, Escuela de Educaci&oacute;n, piso 3.
+            Parroquia San Pedro, Caracas, Venezuela. <br>
             +58(212)-6052877 y +58(212)-6052979
             ucv.ee.ceri@gmail.com 2016
         </div>
     </div>
     <div class="footer-copyright">
-        <div class="container">
+        <div class="container text-center">
             © 2016 CERI-PRES
         </div>
     </div>
