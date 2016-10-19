@@ -35,6 +35,9 @@ class Espacios extends CI_Controller {
                 //Si los datos tienen el formato correcto, debo registrar la nueva categoría en la BD
                 $datos['nombre_espacio'] = $this->input->post('espacio');
                 $datos['otro_espacio'] = $this->input->post('otro_espacio');
+                if ($datos['otro_espacio']==NULL){
+                    $datos['otro_espacio'] = 0;
+                }
 
                 $was_inserted = $this->espacios_model->create_espacio('espacios', $datos);
 
