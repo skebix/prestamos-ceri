@@ -355,11 +355,11 @@ $(document).ready(function(){
         });
 
         lista_espacios = $.map(espacios, function(n){
-            return n['id'];
+            return n.id;
         });
-
+        
         espacios_disponibles = lista_espacios.diff(opciones_seleccionadas);
-
+        console.log(opciones_seleccionadas, lista_espacios, espacios_disponibles);
         return espacios_disponibles;
     }
 
@@ -476,7 +476,6 @@ $(document).ready(function(){
             $(this).blur();
         },
         "change" : function(e) {
-            console.log(valor_otro_uso);
             id_select_espacio = this.id;
             numero_de_select = id_select_espacio.substr(id_select_espacio.length - 1);
             if(valor_uso_anterior == valor_otro_uso) {

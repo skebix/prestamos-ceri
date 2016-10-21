@@ -30,7 +30,7 @@ echo form_open('espacios/crear', $attributes);
                             <span class="input-group-addon">
                             <?= form_checkbox('otro_espacio', '1', FALSE,  array('class' => 'checkbox')); ?>
                             </span>
-                            <input type="text" class="form-control" aria-label="Text input with checkbox" disabled="true" value="¿Otro espacio?">
+                            <input type="text" class="form-control" aria-label="Text input with checkbox" name="otro_espacio" disabled="true" value="¿Otro espacio?">
                         </div>
                     </div>
                     <div class="button pull-left">

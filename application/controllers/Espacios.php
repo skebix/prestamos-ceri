@@ -34,7 +34,7 @@ class Espacios extends CI_Controller {
             }else{
                 //Si los datos tienen el formato correcto, debo registrar la nueva categoría en la BD
                 $datos['nombre_espacio'] = $this->input->post('espacio');
-                $datos['otro_espacio'] = $this->input->post('otro_espacio');
+                $datos['otro_espacio'] = ($this->input->post('otro_espacio') ? $this->input->post('otro_espacio') : 0);
 
                 $was_inserted = $this->espacios_model->create_espacio('espacios', $datos);
 
@@ -150,7 +150,7 @@ class Espacios extends CI_Controller {
             }else{
                 $delete_id = $this->espacios_model->delete_espacio('espacios', $id);
                 if($delete_id){
-                    $this->session->set_flashdata('success', 'espacio eliminado satisfactoriamente.');
+                    $this->session->set_flashdata('success', 'Espacio eliminado satisfactoriamente.');
                     redirect('espacios/listar');
                 }else{
                     $this->session->set_flashdata('danger', 'No se pudo eliminar su espacio, por favor intente nuevamente');
